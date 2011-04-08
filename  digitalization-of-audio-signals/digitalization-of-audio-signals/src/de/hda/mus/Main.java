@@ -9,9 +9,8 @@ public class Main {
 	 * @throws LineUnavailableException 
 	 */
 	public static void main(String[] args) throws LineUnavailableException {
-		// TODO Auto-generated method stub
-		// AnnotationA
 		SinusGenerator sinusGenerator = new SinusGenerator();
+		sinusGenerator.setSampleRate(16000f);
 		
 		/**
 		 * Fequency: 100 Hz
@@ -19,7 +18,9 @@ public class Main {
 		 * Phase: 0.0f
 		 * Duration: 500 ms
 		 */
-		sinusGenerator.play(100f, 100, 0.0f, 500);
+		for (Float i=1f;i<5f;i++) {
+			sinusGenerator.play(10000f, 150, i*250f, 500);
+		}
 	}
 
 }
