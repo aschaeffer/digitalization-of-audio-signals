@@ -31,7 +31,7 @@ public class SinusGenerator {
 	AudioInputStream audioInputStream;
 	SourceDataLine sourceDataLine;
 
-	float sampleRate = 16000.0F;
+	float sampleRate = 44100f;
 	//Allowable 8000,11025,16000,22050,44100
 	int sampleSizeInBits = 16;
 	//Allowable 8,16
@@ -43,7 +43,7 @@ public class SinusGenerator {
 	//Allowable true,false
 	
 	public void play(Float herz, Integer amplitude, Float phase, Integer milliseconds) throws LineUnavailableException {
-		Float frequency = 44100f;
+		Float frequency = sampleRate;
 		Boolean addHarmonic = true;
 		byte[] buf;
 		AudioFormat af;
@@ -62,7 +62,7 @@ public class SinusGenerator {
 			buf[0] = (byte) (Math.sin(angle) * amplitude);
 
 			if (addHarmonic) {
-				double angle2 = (i) / (frequency / herz) * 2.0 * Math.PI;
+				double angle2 = ((i) / (frequency / herz) * 2.0 * Math.PI) + phase;
 				buf[1] = (byte) (Math.sin(2 * angle2) * amplitude * 0.6);
 				sdl.write(buf, 0, 2);
 			} else {
@@ -72,6 +72,14 @@ public class SinusGenerator {
 		sdl.drain();
 		sdl.stop();
 		sdl.close();
+	}
+
+	public float getSampleRate() {
+		return sampleRate;
+	}
+
+	public void setSampleRate(float sampleRate) {
+		this.sampleRate = sampleRate;
 	}
 
 }
