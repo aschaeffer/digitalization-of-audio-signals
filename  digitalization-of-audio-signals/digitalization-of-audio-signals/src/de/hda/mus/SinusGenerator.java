@@ -2,6 +2,8 @@ package de.hda.mus;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 /**
@@ -40,5 +42,36 @@ public class SinusGenerator {
 	boolean bigEndian = true;
 	//Allowable true,false
 	
+	public void play(Float herz, Integer amplitude, Float phase, Integer milliseconds) throws LineUnavailableException {
+		Float frequency = 44100f;
+		Boolean addHarmonic = true;
+		byte[] buf;
+		AudioFormat af;
+		if (addHarmonic) {
+			buf = new byte[2];
+			af = new AudioFormat(frequency, 8, 2, true, false);
+		} else {
+			buf = new byte[1];
+			af = new AudioFormat(frequency, 8, 1, true, false);
+		}
+		SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
+		sdl.open(af);
+		sdl.start();
+		for (int i = 0; i < milliseconds * frequency / 1000; i++) {
+			double angle = i / (frequency / herz) * 2.0 * Math.PI;
+			buf[0] = (byte) (Math.sin(angle) * amplitude);
+
+			if (addHarmonic) {
+				double angle2 = (i) / (frequency / herz) * 2.0 * Math.PI;
+				buf[1] = (byte) (Math.sin(2 * angle2) * amplitude * 0.6);
+				sdl.write(buf, 0, 2);
+			} else {
+				sdl.write(buf, 0, 1);
+			}
+		}
+		sdl.drain();
+		sdl.stop();
+		sdl.close();
+	}
 
 }
