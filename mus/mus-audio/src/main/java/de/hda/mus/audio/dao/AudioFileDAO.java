@@ -42,7 +42,6 @@ public class AudioFileDAO {
 		// is unknown. We have to count the frames ourself by running through
 		// the whole AudioInputStream
 		if (isEncoded(sourceAff.getFormat().getEncoding())) {
-			System.out.println("**isEncoded");
 			int frameLength = 0;
 			int bRead = 0;
 			byte buf[] = new byte[4096];
@@ -52,15 +51,12 @@ public class AudioFileDAO {
 					frameLength += bRead;
 				}
 				frameLength /= ais.getFormat().getChannels() * ais.getFormat().getSampleSizeInBits() / 8;
-				System.out.println("**  frameLength: " + frameLength);
 				internalAff = new AudioFileFormat(AudioFileFormat.Type.WAVE, internalFormat, frameLength);
 				audioContent = new AudioContent(sourceAff, internalAff);
 			} catch (IOException ioe) {
 				return null;
 			}
 		} else {
-			System.out.println("**notEncoded");
-			System.out.println("**  frameLength: " + sourceAff.getFrameLength());
 			internalAff = new AudioFileFormat(AudioFileFormat.Type.WAVE, internalFormat, sourceAff.getFrameLength());
 			audioContent = new AudioContent(sourceAff, internalAff);
 		}
