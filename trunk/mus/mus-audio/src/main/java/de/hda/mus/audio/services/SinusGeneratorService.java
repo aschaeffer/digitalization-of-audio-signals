@@ -43,7 +43,7 @@ public class SinusGeneratorService {
 	public AudioContainer generate(File file, Float herz, Integer amplitude, Float phase, Integer milliseconds) {
 		Integer frameLength = FrameLength.getFrameLength(DefaultAudioValues.DEFAULT_SAMPLERATE, milliseconds);
 		AudioFormat internalFormat = new AudioFormat(DefaultAudioValues.DEFAULT_SAMPLERATE, DefaultAudioValues.DEFAULT_SAMPLESIZE, DefaultAudioValues.DEFAULT_CHANNELS, true, false);
-		AudioContent audioContent = _generate(10000f, 150, 250f, 300);
+		AudioContent audioContent = _generate(herz, amplitude, phase, milliseconds);
 		AudioFileFormat internalAff = new AudioFileFormat(AudioFileFormat.Type.WAVE, internalFormat, frameLength);
 		Peaks peaks = PeakAnalyzerService.createPeaks(internalAff, audioContent.getSamples());
 		AudioContainer container = new AudioContainer(file, audioContent, peaks);
@@ -58,11 +58,12 @@ public class SinusGeneratorService {
 		double[][] samples = new double[1][frameLength];
 		System.out.println("sampleLength: " + frameLength);
 		for (int i = 0; i < frameLength; i++) {
-			double angle = i / (DefaultAudioValues.DEFAULT_SAMPLERATE / herz) * 2.0 * Math.PI;
+			double angle = (i / (DefaultAudioValues.DEFAULT_SAMPLERATE / herz) * 2.0 * Math.PI) + phase;
+			// System.out.println("i:"+i+" a:"+angle+" p:"+phase);
 			samples[0][i] = (Math.sin(angle) * amplitude);
 		}
 		AudioContent audioContent = new AudioContent(daff, iaff, samples);
 		return audioContent;
 	}
-	
+
 }
