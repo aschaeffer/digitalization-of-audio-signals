@@ -16,22 +16,22 @@ import de.hda.mus.audio.domains.AudioContainer;
 public class AudioPlayerServiceTest {
 
 	@Test
-	public void testAudioPlayerService() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-		// WAV Datei abspielen
-//		File dir1 = new File (".");
-//		System.out.println ("Current dir : " + dir1.getCanonicalPath());
-		File file = new File("target/test-classes/demo/sprache.wav");
-//		File file = new File("target/test-classes/demo/test.wav");
-		AudioFileDAO audioFileDAO = new AudioFileDAO();
-		AudioContainer container = audioFileDAO.load(file);
-		System.out.println(container.getTitle());
-		System.out.println(container.getAudioContent().audioContentToString());
-
-		SourceDataLine outputLine = AudioSystem.getSourceDataLine(container.getAudioFormat());
-		AudioPlayerService player = new AudioPlayerService();
-		player.setAudioContent(container.getAudioContent());
-		player.setOutputLine(outputLine);
-		player.play();
+	public void testAudioPlayerService() throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
+//		// WAV Datei abspielen
+//		File file = new File("target/test-classes/demo/sprache.wav");
+//		// File file = new File("target/test-classes/demo/test.wav");
+//		AudioFileDAO audioFileDAO = new AudioFileDAO();
+//		
+//		AudioContainer container = audioFileDAO.load(file);
+//		// System.out.println(container.getTitle());
+//		// System.out.println(container.getAudioContent().audioContentToString());
+//
+//		AudioPlayerService player = new AudioPlayerService();
+//		player.setAudioContent(container.getAudioContent());
+//		SourceDataLine outputLine = AudioSystem.getSourceDataLine(container.getAudioFormat());
+//		player.setOutputLine(outputLine);
+//		player.play();
+//		player.block();
 	}
 
 }
