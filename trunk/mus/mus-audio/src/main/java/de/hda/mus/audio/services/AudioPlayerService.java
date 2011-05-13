@@ -268,16 +268,12 @@ public class AudioPlayerService implements Runnable {
 		monitor = new Object();
 		samples = audioContent.getSamples();
 		sampleIndex = audioContent.getStartMark();
-System.out.println("samples.length: "+samples.length);
-System.out.println("sampleIndex: "+sampleIndex);
 		buffer = new byte[bufferSize];
 		// int channels = audioContent.getAudioFormat().getChannels();
 		int channels = samples.length;
 		int bytesWritten = 0;
 		int usedBufferLength = 0;
 		int remainingSamples = audioContent.getEndMark() - audioContent.getStartMark();
-System.out.println("endMark: "+audioContent.getEndMark());
-System.out.println("remainingSamples: "+remainingSamples);
 		readLength = 0;
 		int bytesRead = 0;
 
@@ -310,7 +306,6 @@ System.out.println("remainingSamples: "+remainingSamples);
 				// no need to get frame size in every while-loop
 				// --> do it somewhere else
 				int frameSize = audioContent.getAudioFormat().getFrameSize();
-// System.out.println("frameSize: "+frameSize);
 
 				// take control of how many samples we are allowed to read
 				// without running in
@@ -320,6 +315,7 @@ System.out.println("remainingSamples: "+remainingSamples);
 //				System.out.println(readLength);
 //				System.out.println("bytesWritten: "+bytesWritten +
 //				" bytesRead: "+bytesRead);
+
 
 				// ---READ-------------------------------------------------------------
 				if (bytesWritten == bytesRead) {
@@ -344,12 +340,10 @@ System.out.println("remainingSamples: "+remainingSamples);
 					// condition.
 					bytesWritten = 0;
 				}
-				System.out.println("bytesWritten: "+bytesWritten);
 
 				// ---WRITE-------------------------------------------------------------
 				if (bytesRead > 0) {
 					bytesWritten += outputLine.write(buffer, bytesWritten, bytesRead - bytesWritten);
-					System.out.println("WRITE TO OUTPUTLINE");
 					/*
 					 * if(currentState == RESUMED || currentState == STARTED){
 					 * outputLine.start(); }
@@ -359,7 +353,6 @@ System.out.println("remainingSamples: "+remainingSamples);
 				// bytesWritten != bytesRead --> following operations depend on
 				// loop
 				else {
-System.out.println("LOOP");
 					// ---LOOP:
 					// YES--------------------------------------------------------
 					if (loopState) {
@@ -372,12 +365,10 @@ System.out.println("LOOP");
 						// playback
 						// using the audioContents mark positions
 						remainingSamples = audioContent.getEndMark() - audioContent.getStartMark();
-System.out.println("remainingSamples: "+remainingSamples);
 					}
 					// ---LOOP:
 					// NO---------------------------------------------------------
 					else {
-						System.out.println("DRAIN");
 						// let the line play its remaining Samples.
 						outputLine.drain();
 						// stop the player
@@ -435,6 +426,10 @@ System.out.println("remainingSamples: "+remainingSamples);
 
 		}
 	}
+	
+	public void block() throws InterruptedException {
+		playerThread.join();
+	}
 
 	/**
 	 * Stop playing.
@@ -448,6 +443,7 @@ System.out.println("remainingSamples: "+remainingSamples);
 		 * outputLine.stop(); notifyListenersOnPlayerStateChanged(); }
 		 */
 		else {
+System.out.println("STOPPING");
 			currentState = STOPPED;
 			run = false;
 			sampleIndex = audioContent.getStartMark();
