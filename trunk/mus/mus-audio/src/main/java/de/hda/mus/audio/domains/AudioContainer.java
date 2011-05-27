@@ -77,8 +77,16 @@ public class AudioContainer {
 		this.audioContent = audioContent;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public AudioFormat getAudioFormat() {
 		return audioContent.getAudioFormat();
+	}
+	
+	public void setAudioFormat(AudioFormat audioFormat) {
+		audioContent.setAudioFormat(audioFormat);
 	}
 	
 	/**

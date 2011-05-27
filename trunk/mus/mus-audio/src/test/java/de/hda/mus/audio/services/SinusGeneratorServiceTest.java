@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
@@ -169,7 +170,6 @@ public class SinusGeneratorServiceTest {
 
 	@Test
 	public void testSuperponieren() throws Exception {
-		AudioFileDAO audioFileDAO = new AudioFileDAO();
 		SuperponierService superponierService = new SuperponierService();
 		SinusGeneratorService sinusGenerator = new SinusGeneratorService();
 		File sinus3 = new File("target/test-classes/demo/Testdatei-400Hz-1.wav");
@@ -177,6 +177,7 @@ public class SinusGeneratorServiceTest {
 		File superponiert = new File("target/test-classes/demo/Testdatei-400Hz-2.wav");
 		
 		// laden der dateien sinus
+//		AudioFileDAO audioFileDAO = new AudioFileDAO();
 //		AudioContainer container3 = audioFileDAO.load(sinus3);
 //		AudioContainer container4 = audioFileDAO.load(sinus4);
 
@@ -203,4 +204,22 @@ public class SinusGeneratorServiceTest {
 		player.play();
 		player.block();
 	}
+
+	@Test
+	public void testChangeSampleRate() throws FileNotFoundException, IOException, LineUnavailableException, InterruptedException, UnsupportedAudioFileException {
+		AudioFileDAO audioFileDAO = new AudioFileDAO();
+		File sprache_original= new File("target/test-classes/demo/sprache.wav");
+		File sprache_8khz = new File("target/test-classes/demo/sprache-8khz.wav");
+		AudioContainer container = audioFileDAO.load(sprache_original);
+		Integer channels = container.getAudioFormat().getChannels();
+		Float sampleRate = 8000f; // container.getAudioFormat().getSampleRate();
+		Integer sampleSizeInBits = container.getAudioFormat().getSampleSizeInBits();
+		Float frameRate = container.getAudioFormat().getFrameRate();
+		Integer frameSize = container.getAudioFormat().getFrameSize();
+		AudioFormat.Encoding encoding = container.getAudioFormat().getEncoding();
+		container.setAudioFormat(new AudioFormat(encoding, sampleRate, sampleSizeInBits, channels, frameSize, frameRate, false));
+		container.setFile(sprache_8khz);
+		audioFileDAO.save(container, container.getAudioContent().getStartMark(), container.getAudioContent().getEndMark());
+	}
+
 }

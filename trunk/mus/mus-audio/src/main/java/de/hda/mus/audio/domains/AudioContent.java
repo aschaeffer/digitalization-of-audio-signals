@@ -204,6 +204,14 @@ public class AudioContent {
 	public AudioFormat getAudioFormat() {
 		return this.internalAudioFileFormat.getFormat();
 	}
+	
+	/**
+	 * Modify the AudioFormat.
+	 * @param audioFormat
+	 */
+	public void setAudioFormat(AudioFormat audioFormat) {
+		this.internalAudioFileFormat = new AudioFileFormat(this.internalAudioFileFormat.getType(), audioFormat, this.internalAudioFileFormat.getFrameLength(), this.internalAudioFileFormat.properties());
+	}
 
 	/**
 	 * Get the 'original' <code>AudioFileFormat</code> of the source audio file.
