@@ -19,6 +19,20 @@ import de.hda.mus.audio.domains.AudioContainer;
 
 public class QuantizationServiceTest {
 
+	/**
+	 * Erstellen Sie bitte ein Programm mit dessen Hilfe Sie die Signale der Testdateien quantisieren
+	 * können. Realisieren Sie das Programm bitte so, dass Sie die Genauigkeit der Quantisierung
+	 * frei wählen können. Beschreiben Sie den Höreindruck bei einer Quantisierung mit 1 bit für die
+	 * „Testdatei Sprache“. Hinweis: Die manipulierten Zahlenwerte sollen weiterhin mit 2 Byte abge-
+	 * legt werden. Die Quantisierung resultiert in einer entsprechend reduzierten Anzahl möglicher
+	 * Zahlenwerte.
+	 * 
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws LineUnavailableException
+	 * @throws InterruptedException
+	 * @throws UnsupportedAudioFileException
+	 */
 	@Test
 	public void testQuantization1Bit() throws FileNotFoundException, IOException, LineUnavailableException, InterruptedException, UnsupportedAudioFileException {
 		AudioFileDAO audioFileDAO = new AudioFileDAO();
@@ -33,6 +47,15 @@ public class QuantizationServiceTest {
 		assertTrue(success);
 	}
 
+	/**
+	 * Just for fun: wie hört es sich bei 2 Bit an?
+	 * 
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws LineUnavailableException
+	 * @throws InterruptedException
+	 * @throws UnsupportedAudioFileException
+	 */
 	@Test
 	public void testQuantization2Bit() throws FileNotFoundException, IOException, LineUnavailableException, InterruptedException, UnsupportedAudioFileException {
 		AudioFileDAO audioFileDAO = new AudioFileDAO();
@@ -47,6 +70,15 @@ public class QuantizationServiceTest {
 		assertTrue(success);
 	}
 
+	/**
+	 * Just for fun: wie hört es sich bei 8 Bit an?
+	 * 
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws LineUnavailableException
+	 * @throws InterruptedException
+	 * @throws UnsupportedAudioFileException
+	 */
 	@Test
 	public void testQuantization8Bit() throws FileNotFoundException, IOException, LineUnavailableException, InterruptedException, UnsupportedAudioFileException {
 		AudioFileDAO audioFileDAO = new AudioFileDAO();
