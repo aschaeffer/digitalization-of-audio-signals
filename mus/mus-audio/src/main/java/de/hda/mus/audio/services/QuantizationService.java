@@ -13,7 +13,7 @@ public class QuantizationService {
 
 	public AudioContainer quantize(File file, AudioContainer container, Integer resolution) {
 		int sampleSize = container.getAudioFormat().getSampleSizeInBits();
-		System.out.println("old sampleSize "+sampleSize);
+		// System.out.println("old sampleSize "+sampleSize);
 		
 		AudioFormat internalFormat = new AudioFormat(container.getAudioFormat().getSampleRate(), container.getAudioFormat().getSampleSizeInBits(), container.getAudioFormat().getChannels(), true, false);
 		AudioFileFormat internalAff = new AudioFileFormat(AudioFileFormat.Type.WAVE, internalFormat, container.getAudioContent().getAudioFormat().getFrameSize());
@@ -25,21 +25,21 @@ public class QuantizationService {
 		double[] qValues = new double[levels];
 		double highestValue = getHighestValue(samples);
 		double lowestValue = getLowestValue(samples);
-		System.out.println("lowestValue "+lowestValue);
-		System.out.println("highestValue "+highestValue);
+		// System.out.println("lowestValue "+lowestValue);
+		// System.out.println("highestValue "+highestValue);
 		if (Math.abs(highestValue) > Math.abs(lowestValue)) {
 			double totalRangeValue = 2*Math.abs(highestValue);
 			double singleRangeValue = totalRangeValue / (levels - 1);
 			for (int i=levels-1; i>=0; i--) {
 				qValues[i] = highestValue - (i*singleRangeValue);
-				System.out.println(" level "+i+": "+qValues[i]);
+				// System.out.println(" level "+i+": "+qValues[i]);
 			}
 		} else {
 			double totalRangeValue = 2*Math.abs(lowestValue);
 			double singleRangeValue = totalRangeValue / (levels - 1);
 			for (int i=0; i<levels; i++) {
 				qValues[i] = lowestValue + (i*singleRangeValue);
-				System.out.println(" level "+i+": "+qValues[i]);
+				// System.out.println(" level "+i+": "+qValues[i]);
 			}
 		}
 
