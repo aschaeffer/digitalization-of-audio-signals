@@ -43,11 +43,11 @@ public class MLPTest {
 
 		bias = multiLayerPerceptron.getBiasNeuron();
 		
-		neuron1 = multiLayerPerceptron.addInputNeuron(0);
-		neuron2 = multiLayerPerceptron.addInputNeuron(0);
-		neuron3 = multiLayerPerceptron.addHiddenNeuron();
-		neuron4 = multiLayerPerceptron.addHiddenNeuron();
-		neuron5 = multiLayerPerceptron.addOutputNeuron();
+		neuron1 = multiLayerPerceptron.addInputNeuron("neuron 1", 0);
+		neuron2 = multiLayerPerceptron.addInputNeuron("neuron 2", 0);
+		neuron3 = multiLayerPerceptron.addHiddenNeuron("neuron 3");
+		neuron4 = multiLayerPerceptron.addHiddenNeuron("neuron 4");
+		neuron5 = multiLayerPerceptron.addOutputNeuron("neuron 5");
 
 		neuron3.putPreNeuron(bias, 1.166454e-02); // set threshold
 		neuron3.putPreNeuron(neuron1, 8.514623e-02); // set weight

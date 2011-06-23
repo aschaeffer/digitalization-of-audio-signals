@@ -2,6 +2,7 @@ package de.hda.mus.neuronalnet;
 
 import java.util.ArrayList;
 
+import de.hda.mus.neuronalnet.transferfunction.LinearFunction;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
@@ -24,7 +25,8 @@ public class MLP {
 	TransferFunction defaultTransferFunction = new SigmoidFunction();
 
 	public MLP() {
-		this.biasNeuron = new InputNeuron(BIAS_VALUE, this.defaultTransferFunction);
+		this.biasNeuron = new InputNeuron(BIAS_VALUE, new LinearFunction());
+		this.biasNeuron.setName("Bias Neuron 0");
 	}
 
 	public void setDefaultTransferFunction(TransferFunction transferFunction) {
@@ -35,39 +37,45 @@ public class MLP {
 		return this.biasNeuron;
 	}
 
-	public InputNeuron addInputNeuron(double value) {
-		InputNeuron neuron = new InputNeuron(value, this.defaultTransferFunction);
+	public InputNeuron addInputNeuron(String name, double value) {
+		InputNeuron neuron = new InputNeuron(value, new LinearFunction());
 		inputLayer.add(neuron);
+		neuron.setName("Input " + name);
 		return neuron;
 	}
 
-	public InputNeuron addInputNeuron(double value, TransferFunction transferFunction) {
+	public InputNeuron addInputNeuron(String name, double value, TransferFunction transferFunction) {
 		InputNeuron neuron = new InputNeuron(value, transferFunction);
 		inputLayer.add(neuron);
+		neuron.setName("Input " + name);
 		return neuron;
 	}
 
-	public Neuron addHiddenNeuron() {
+	public Neuron addHiddenNeuron(String name) {
 		Neuron neuron = new Neuron(this.defaultTransferFunction);
 		hiddenLayer.add(neuron);
+		neuron.setName("Hidden " + name);
 		return neuron;
 	}
 
-	public Neuron addHiddenNeuron(TransferFunction transferFunction) {
+	public Neuron addHiddenNeuron(String name, TransferFunction transferFunction) {
 		Neuron neuron = new Neuron(transferFunction);
 		hiddenLayer.add(neuron);
+		neuron.setName("Hidden " + name);
 		return neuron;
 	}
 
-	public Neuron addOutputNeuron() {
+	public Neuron addOutputNeuron(String name) {
 		Neuron neuron = new Neuron(this.defaultTransferFunction);
 		outputLayer.add(neuron);
+		neuron.setName("Output " + name);
 		return neuron;
 	}
 
-	public Neuron addOutputNeuron(TransferFunction transferFunction) {
+	public Neuron addOutputNeuron(String name, TransferFunction transferFunction) {
 		Neuron neuron = new Neuron(transferFunction);
 		outputLayer.add(neuron);
+		neuron.setName("Output " + name);
 		return neuron;
 	}
 
