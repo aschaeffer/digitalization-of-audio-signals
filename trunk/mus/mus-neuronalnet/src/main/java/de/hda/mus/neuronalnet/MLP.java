@@ -2,6 +2,7 @@ package de.hda.mus.neuronalnet;
 
 import java.util.ArrayList;
 
+import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
 public class MLP {
@@ -19,6 +20,17 @@ public class MLP {
 	private ArrayList<Neuron> inputLayer = new ArrayList<Neuron>();
 	private ArrayList<Neuron> hiddenLayer = new ArrayList<Neuron>();
 	private ArrayList<Neuron> outputLayer = new ArrayList<Neuron>();
+	TransferFunction defaultTransferFunction = new SigmoidFunction();
+
+	public void setDefaultTransferFunction(TransferFunction transferFunction) {
+		this.defaultTransferFunction = transferFunction;
+	}
+
+	public InputNeuron addInputNeuron(double value) {
+		InputNeuron neuron = new InputNeuron(value, this.defaultTransferFunction);
+		inputLayer.add(neuron);
+		return neuron;
+	}
 
 	public InputNeuron addInputNeuron(double value, TransferFunction transferFunction) {
 		InputNeuron neuron = new InputNeuron(value, transferFunction);
@@ -26,14 +38,26 @@ public class MLP {
 		return neuron;
 	}
 
-	public Neuron addHiddenNeuron(double threshold , TransferFunction transferFunction) {
-		Neuron neuron = new Neuron(threshold, transferFunction);
+	public Neuron addHiddenNeuron() {
+		Neuron neuron = new Neuron(this.defaultTransferFunction);
 		hiddenLayer.add(neuron);
 		return neuron;
 	}
 
-	public Neuron addOutputNeuron(double threshold , TransferFunction transferFunction) {
-		Neuron neuron = new Neuron(threshold, transferFunction);
+	public Neuron addHiddenNeuron(TransferFunction transferFunction) {
+		Neuron neuron = new Neuron(transferFunction);
+		hiddenLayer.add(neuron);
+		return neuron;
+	}
+
+	public Neuron addOutputNeuron() {
+		Neuron neuron = new Neuron(this.defaultTransferFunction);
+		outputLayer.add(neuron);
+		return neuron;
+	}
+
+	public Neuron addOutputNeuron(TransferFunction transferFunction) {
+		Neuron neuron = new Neuron(transferFunction);
 		outputLayer.add(neuron);
 		return neuron;
 	}
