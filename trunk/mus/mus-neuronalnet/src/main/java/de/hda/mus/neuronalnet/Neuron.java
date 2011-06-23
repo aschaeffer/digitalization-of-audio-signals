@@ -10,7 +10,6 @@ public class Neuron {
 	private HashMap<Neuron, Double> preNeurons;
 	
 	public Neuron(TransferFunction transferFunction){
-
 		this.setPreNeurons(new HashMap<Neuron, Double>());
 		this.transferFunction = transferFunction;
 	}
@@ -21,6 +20,7 @@ public class Neuron {
 		inputSum = inputSummation();
 		Neuron[] neurons = new Neuron[preNeurons.size()];
 		Neuron bias = preNeurons.keySet().toArray(neurons)[0];
+		System.out.println("bias neuron Value " + bias.activation());
 		if(inputSum>=bias.activation())
 			return transferFunction.proceedFunction(inputSum);
 		else
