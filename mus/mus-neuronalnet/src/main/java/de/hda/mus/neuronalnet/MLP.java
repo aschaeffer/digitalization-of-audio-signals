@@ -24,27 +24,67 @@ import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
  */
 public class MLP {
 
-
-	public static double BIAS_VALUE = 1;
+	/**
+	 * The bias weight is a constant.
+	 */
+	public static final double BIAS_VALUE = 1;
+	
+	/**
+	 * The bias neuron of the MLP.
+	 */
 	private InputNeuron biasNeuron;
+	
+	/**
+	 * The input layer of the MLP.
+	 */
 	private ArrayList<Neuron> inputLayer = new ArrayList<Neuron>();
+	
+	/**
+	 * The hidden layer of the MLP.
+	 */
 	private ArrayList<Neuron> hiddenLayer = new ArrayList<Neuron>();
+	
+	/**
+	 * The output layer of the MLP.
+	 */
 	private ArrayList<Neuron> outputLayer = new ArrayList<Neuron>();
+	
+	/**
+	 * The default transfer function is the sigmoid function.
+	 */
 	TransferFunction defaultTransferFunction = new SigmoidFunction();
 
+	/**
+	 * The constructor initializes also the bias neuron.
+	 */
 	public MLP() {
 		this.biasNeuron = new InputNeuron(BIAS_VALUE, new LinearFunction());
 		this.biasNeuron.setName("Bias Neuron 0");
 	}
 
+	/**
+	 * Sets a default transfer function.
+	 * @param transferFunction The default transfer function.
+	 */
 	public void setDefaultTransferFunction(TransferFunction transferFunction) {
 		this.defaultTransferFunction = transferFunction;
 	}
-	
+
+	/**
+	 * Gets the bias neuron.
+	 * @return
+	 */
 	public InputNeuron getBiasNeuron() {
 		return this.biasNeuron;
 	}
 
+	/**
+	 * Add an input neuron.
+	 * 
+	 * @param name Name of the neuron.
+	 * @param value The input value of the neuron.
+	 * @return Returns an input neuron.
+	 */
 	public InputNeuron addInputNeuron(String name, double value) {
 		InputNeuron neuron = new InputNeuron(value, new LinearFunction());
 		inputLayer.add(neuron);
@@ -52,6 +92,14 @@ public class MLP {
 		return neuron;
 	}
 
+	/**
+	 * Add an input neuron.
+	 * 
+	 * @param name Name of the neuron.
+	 * @param value The input value of the neuron.
+	 * @param transferFunction The transfer function of the neuron.
+	 * @return Returns an input neuron.
+	 */
 	public InputNeuron addInputNeuron(String name, double value, TransferFunction transferFunction) {
 		InputNeuron neuron = new InputNeuron(value, transferFunction);
 		inputLayer.add(neuron);
@@ -59,6 +107,12 @@ public class MLP {
 		return neuron;
 	}
 
+	/**
+	 * Add a hidden neuron.
+	 * 
+	 * @param name Name of the neuron.
+	 * @return Returns a neuron.
+	 */
 	public Neuron addHiddenNeuron(String name) {
 		Neuron neuron = new Neuron(this.defaultTransferFunction);
 		hiddenLayer.add(neuron);
@@ -66,6 +120,13 @@ public class MLP {
 		return neuron;
 	}
 
+	/**
+	 * Add a hidden neuron.
+	 * 
+	 * @param name Name of the neuron.
+	 * @param transferFunction The transfer function of the neuron.
+	 * @return Returns a neuron.
+	 */
 	public Neuron addHiddenNeuron(String name, TransferFunction transferFunction) {
 		Neuron neuron = new Neuron(transferFunction);
 		hiddenLayer.add(neuron);
@@ -73,6 +134,12 @@ public class MLP {
 		return neuron;
 	}
 
+	/**
+	 * Add an output neuron.
+	 * 
+	 * @param name Name of the neuron.
+	 * @return Returns a neuron.
+	 */
 	public Neuron addOutputNeuron(String name) {
 		Neuron neuron = new Neuron(this.defaultTransferFunction);
 		outputLayer.add(neuron);
@@ -80,6 +147,13 @@ public class MLP {
 		return neuron;
 	}
 
+	/**
+	 * Add an output neuron.
+	 * 
+	 * @param name Name of the neuron.
+	 * @param transferFunction The transfer function of the neuron.
+	 * @return Returns a neuron.
+	 */
 	public Neuron addOutputNeuron(String name, TransferFunction transferFunction) {
 		Neuron neuron = new Neuron(transferFunction);
 		outputLayer.add(neuron);
