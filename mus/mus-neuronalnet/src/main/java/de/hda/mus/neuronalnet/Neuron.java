@@ -62,6 +62,8 @@ public class Neuron {
 		return flaw * transferFunction.proceedDerivativeFunction(activation());
 	}
 	
+
+	
 	//Aktivierung
 	private double inputSummation(){
 		double sum = 0.0;

@@ -121,6 +121,7 @@ public class MLP {
 		hiddenLayer.add(neuron);
 		neuron.setName("Hidden " + name);
 		return neuron;
+		
 	}
 
 	/**
@@ -164,10 +165,34 @@ public class MLP {
 		return neuron;
 	}
 
+	public int countNeurons(){
+		return inputLayer.size()+hiddenLayer.size()+outputLayer.size()+1;
+	}
+	
+	public int startHidden(){
+		return inputLayer.size();
+	}
 	
 	
-	public void back_propagate(double learnStep_eta, double momentum_alpha){
+	public void back_propagate(double learnStep_eta, double momentum_alpha, double target){
 		
+		Double[][] deltaWeight = new Double[countNeurons()][hiddenLayer.size()];
+		//Bias
+		for(int j=0;j<hiddenLayer.size();j++ ){
+			deltaWeight[0][j] += (biasNeuron.activation() * hiddenLayer.get(j).flaw(target));//Hebb
+		}
+		//Input -> Hidden
+//		for(int i=1;i<hiddenLayer.size()+1;i++ ){
+//			for(int j=0;j<hiddenLayer.size();j++ ){
+//				deltaWeight[i][j] += (hiddenLayer.get(i).activation() * hiddenLayer.get(j).flaw(target));//Hebb
+//			}
+//		}
+//		//Hidden -> Output
+//		for(int i=hiddenLayer.size();i<countNeurons();i++ ){
+//			for(int j=0;j<hiddenLayer.size();j++ ){
+//				deltaWeight[i][j] += (biasNeuron.activation() * hiddenLayer.get(j).flaw(target));//Hebb
+//			}
+//		}
 	}
 
 	/**
