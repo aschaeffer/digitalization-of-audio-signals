@@ -8,11 +8,11 @@ public class Neuron {
 	//schwellwert
 	private double threshold;
 	
-	private HashMap<Neuron, Double> adjacentNeurons;
+	private HashMap<Neuron, Double> preNeurons;
 	
 	public Neuron(double threshold){
 		this.threshold = threshold;
-//		this.adjacentNeurons = new HashMap<Neuron, Double>();
+		this.setPreNeurons(new HashMap<Neuron, Double>());
 	}
 	
 	//Aktivierung
@@ -20,8 +20,8 @@ public class Neuron {
 		return 0.0;
 	}
 	
-	public void putAdjacentNeuron(Neuron neuron, Double value) {
-		adjacentNeurons.put(neuron, value);
+	public void putPreNeuron(Neuron neuron, Double value) {
+		preNeurons.put(neuron, value);
 	}
 
 	public void setThreshold(double threshold) {
@@ -32,12 +32,13 @@ public class Neuron {
 		return threshold;
 	}
 
-	public void setAdjacentNeurons(HashMap<Neuron, Double> adjacentNeurons) {
-		this.adjacentNeurons = adjacentNeurons;
+	public void setPreNeurons(HashMap<Neuron, Double> preNeurons) {
+		this.preNeurons = preNeurons;
 	}
 
-	public HashMap<Neuron, Double> getAdjacentNeurons() {
-		return adjacentNeurons;
+	public HashMap<Neuron, Double> getPreNeurons() {
+		return preNeurons;
 	}
+
 
 }
