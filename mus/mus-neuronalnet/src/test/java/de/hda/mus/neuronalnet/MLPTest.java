@@ -41,7 +41,7 @@ public class MLPTest {
 
 		multiLayerPerceptron.setDefaultTransferFunction(new SigmoidFunction());
 
-		bias = multiLayerPerceptron.addInputNeuron(1);
+		bias = multiLayerPerceptron.getBiasNeuron();
 		
 		neuron1 = multiLayerPerceptron.addInputNeuron(0);
 		neuron2 = multiLayerPerceptron.addInputNeuron(0);
