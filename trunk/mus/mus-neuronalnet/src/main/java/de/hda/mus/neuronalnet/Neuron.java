@@ -6,6 +6,8 @@ import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
 public class Neuron {
 	
+	private String name;
+	private Neuron bias;
 	private TransferFunction transferFunction;
 	private HashMap<Neuron, Double> preNeurons;
 	
@@ -20,12 +22,14 @@ public class Neuron {
 		inputSum = inputSummation();
 		Neuron[] neurons = new Neuron[preNeurons.size()];
 		preNeurons.keySet().toArray(neurons);
-//		System.out.println("inputSum <-> bias act" + inputSum +" <->"+neurons[0].activation());
-//		System.out.println("inputSum <-> bias thr" + inputSum +" <->"+preNeurons.get(neurons[0]));
-		if(inputSum>=preNeurons.get(neurons[0]))
+		double threshold = preNeurons.get(bias);
+		if(inputSum>=threshold) {
+			System.out.println(this.name + " feuert: inputSum (" + inputSum + ") >= threshold (" + threshold + ")");
 			return transferFunction.proceedFunction(inputSum);
-		else
+		} else {
+			System.out.println(this.name + " feuert nicht: inputSum (" + inputSum + ") < threshold (" + threshold + ")");
 			return 0.0;
+		}
 	}
 	
 	//Aktivierung
@@ -38,6 +42,9 @@ public class Neuron {
 	}
 		
 	public void putPreNeuron(Neuron neuron, Double value) {
+		if (this.preNeurons.size() == 0) {
+			this.bias = neuron;
+		}
 		preNeurons.put(neuron, value);
 	}
 
@@ -55,6 +62,14 @@ public class Neuron {
 
 	public TransferFunction getTransferFunction() {
 		return transferFunction;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 

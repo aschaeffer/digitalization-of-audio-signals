@@ -13,6 +13,7 @@ public class InputNeuron extends Neuron {
 	
 	@Override
 	public double activation(){
+		System.out.println(this.getName() + " feuert: value=" + getTransferFunction().proceedFunction(value) + " (" + this.getValue() + ")");
 		return getTransferFunction().proceedFunction(value);
 	}
 	
