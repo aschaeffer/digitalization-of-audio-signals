@@ -72,7 +72,14 @@ public class Neuron {
 		}
 		return sum;
 	}
-		
+
+	/**
+	 * Inserts the pre-neuron and the weight or updates
+	 * the weight for the given pre-neuron.
+	 * 
+	 * @param neuron The pre neuron
+	 * @param value The weight
+	 */
 	public void putPreNeuron(Neuron neuron, Double value) {
 		if (this.preNeurons.size() == 0) {
 			this.bias = neuron;
@@ -80,7 +87,7 @@ public class Neuron {
 		preNeurons.put(neuron, value);
 		neuron.getAdjacentNeurons().put(this, value);
 	}
-
+	
 	public void setPreNeurons(HashMap<Neuron, Double> preNeurons) {
 		this.preNeurons = preNeurons;
 	}
