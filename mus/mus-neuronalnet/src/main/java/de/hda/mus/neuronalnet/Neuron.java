@@ -10,7 +10,6 @@ public class Neuron {
 	//schwellwert
 	private double threshold;
 	private TransferFunction transferFunction;
-	
 	private HashMap<Neuron, Double> preNeurons;
 	
 	public Neuron(double threshold , TransferFunction transferFunction){
@@ -58,5 +57,15 @@ public class Neuron {
 		return preNeurons;
 	}
 
+	public void setTransferFunction(TransferFunction transferFunction) {
+		this.transferFunction = transferFunction;
+	}
 
+	public TransferFunction getTransferFunction() {
+		return transferFunction;
+	}
+
+
+	
+	
 }
