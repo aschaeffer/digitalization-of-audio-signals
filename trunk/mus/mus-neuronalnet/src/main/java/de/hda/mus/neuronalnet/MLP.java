@@ -15,15 +15,24 @@ public class MLP {
 //		� W�hrend des Trainings wird der quadratische Fehler f�r die Trainingsmenge f�r jeden Zyklus berechnet.
 //	Anmerkung:
 //		� Ein Trainingszyklus setzt sich aus Propagation- und Back-Propagation-Berechnungen f�r alle Muster der Trainingsmenge zusammen.
-	
-	// Neuron biasNeuron;
+
+	public static double BIAS_VALUE = 1;
+	private InputNeuron biasNeuron;
 	private ArrayList<Neuron> inputLayer = new ArrayList<Neuron>();
 	private ArrayList<Neuron> hiddenLayer = new ArrayList<Neuron>();
 	private ArrayList<Neuron> outputLayer = new ArrayList<Neuron>();
 	TransferFunction defaultTransferFunction = new SigmoidFunction();
 
+	public MLP() {
+		this.biasNeuron = new InputNeuron(BIAS_VALUE, this.defaultTransferFunction);
+	}
+
 	public void setDefaultTransferFunction(TransferFunction transferFunction) {
 		this.defaultTransferFunction = transferFunction;
+	}
+	
+	public InputNeuron getBiasNeuron() {
+		return this.biasNeuron;
 	}
 
 	public InputNeuron addInputNeuron(double value) {
