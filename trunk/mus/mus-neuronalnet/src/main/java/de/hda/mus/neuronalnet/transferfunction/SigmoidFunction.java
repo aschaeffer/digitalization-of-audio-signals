@@ -7,4 +7,9 @@ public class SigmoidFunction implements TransferFunction {
 		return 1 / (1 + Math.exp(-input));
 	}
 
+	@Override
+	public double proceedDerivativeFunction(double input) {
+		return 1 / (1 - input);
+	}
+
 }
