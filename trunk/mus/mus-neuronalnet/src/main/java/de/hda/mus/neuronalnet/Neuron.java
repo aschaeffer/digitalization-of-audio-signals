@@ -19,9 +19,10 @@ public class Neuron {
 		double inputSum = 0.0;
 		inputSum = inputSummation();
 		Neuron[] neurons = new Neuron[preNeurons.size()];
-		Neuron bias = preNeurons.keySet().toArray(neurons)[0];
-		System.out.println("bias neuron Value " + bias.activation());
-		if(inputSum>=bias.activation())
+		preNeurons.keySet().toArray(neurons);
+//		System.out.println("inputSum <-> bias act" + inputSum +" <->"+neurons[0].activation());
+//		System.out.println("inputSum <-> bias thr" + inputSum +" <->"+preNeurons.get(neurons[0]));
+		if(inputSum>=preNeurons.get(neurons[0]))
 			return transferFunction.proceedFunction(inputSum);
 		else
 			return 0.0;
