@@ -32,6 +32,16 @@ public class Neuron {
 		}
 	}
 	
+	private double injectFlaw(){
+		double flaw = 0.0;
+		
+		for(Neuron n : preNeurons.keySet()){
+			//sum += n.activation() * preNeurons.get(n);
+		}
+		
+		return flaw * transferFunction.proceedDerivativeFunction(activation());
+	}
+	
 	//Aktivierung
 	private double inputSummation(){
 		double sum = 0.0;

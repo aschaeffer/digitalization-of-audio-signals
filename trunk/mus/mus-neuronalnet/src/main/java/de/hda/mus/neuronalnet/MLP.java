@@ -86,7 +86,7 @@ public class MLP {
 	}
 	
 	public void propagate(double learnStep_eta, double momentum_alpha){
-		
+
 	}
 	
 	private void update_weight(){
