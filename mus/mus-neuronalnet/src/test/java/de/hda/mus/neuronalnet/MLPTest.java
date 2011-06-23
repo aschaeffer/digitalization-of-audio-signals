@@ -3,21 +3,46 @@ package de.hda.mus.neuronalnet;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
+
+/*
+Bias: 0
+Input: 1 2 
+Hidden: 3 4 
+Output: 5 
+Threshold
+0 3 1.166454e-02
+0 4 2.170463e-01
+0 5 
+Input -> Hidden
+1 3 8.514623e-02
+1 4 2.152450e-01
+2 3 -4.774473e-02
+2 4 1.153351e-01
+Hidden -> Output
+3 5 -1.969224e-02
+4 5 -3.293430e-02
+*/
+
 public class MLPTest {
+
+	MLP multiLayerPerceptron;
+	SigmoidFunction sigmoidFunction;
+	Neuron neuron1;
+	Neuron neuron2;
+	Neuron neuron3;
+	Neuron neuron4;
+	Neuron neuron5;
 
 	@Before
 	public void init() {
-		
-	}
-
-	@Test
-	public void xorMLPTest() {
-		MLP xorMLP = new MLP();
-		Neuron neuron1 = xorMLP.addInputNeuron(transferFunction);
-		Neuron neuron2 = xorMLP.addInputNeuron(transferFunction);
-		Neuron neuron3 = xorMLP.addHiddenNeuron(1.166454e-02, transferFunction);
-		Neuron neuron4 = xorMLP.addHiddenNeuron(2.170463e-01, transferFunction);
-		Neuron neuron5 = xorMLP.addOutputNeuron(-1.844412e-01, transferFunction);
+		multiLayerPerceptron = new MLP();
+		SigmoidFunction sigmoidFunction = new SigmoidFunction();
+		neuron1 = multiLayerPerceptron.addInputNeuron(sigmoidFunction);
+		neuron2 = multiLayerPerceptron.addInputNeuron(sigmoidFunction);
+		neuron3 = multiLayerPerceptron.addHiddenNeuron(1.166454e-02, sigmoidFunction);
+		neuron4 = multiLayerPerceptron.addHiddenNeuron(2.170463e-01, sigmoidFunction);
+		neuron5 = multiLayerPerceptron.addOutputNeuron(-1.844412e-01, sigmoidFunction);
 
 		neuron3.putPreNeuron(neuron1, 8.514623e-02);
 		neuron3.putPreNeuron(neuron2, -4.774473e-02);
@@ -27,25 +52,11 @@ public class MLPTest {
 
 		neuron5.putPreNeuron(neuron3, -1.969224e-02);
 		neuron5.putPreNeuron(neuron4, -3.293430e-02);
+	}
 
-		/*
-		Bias: 0
-		Input: 1 2 
-		Hidden: 3 4 
-		Output: 5 
-		Threshold
-		0 3 1.166454e-02
-		0 4 2.170463e-01
-		0 5 
-		Input -> Hidden
-		1 3 8.514623e-02
-		1 4 2.152450e-01
-		2 3 -4.774473e-02
-		2 4 1.153351e-01
-		Hidden -> Output
-		3 5 -1.969224e-02
-		4 5 -3.293430e-02
-		*/
+	@Test
+	public void xorMLPTest1() {
+		neuron1.
 	}
 
 }
