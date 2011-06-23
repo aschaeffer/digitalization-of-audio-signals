@@ -43,11 +43,20 @@ public class Neuron {
 		}
 	}
 	
-	private double injectFlaw(){
+	/**
+	 * calculate the flaw of the current 
+	 * only for hidden Neurons!
+	 * @param target is the expected value! it can be 0 or 1
+	 * @return flaw of the hidden Neuron
+	 */
+	public double flaw(double target){
 		double flaw = 0.0;
 		
-		for(Neuron n : preNeurons.keySet()){
-			//sum += n.activation() * preNeurons.get(n);
+		//calculate Output flaw injectflaw
+		for(Neuron outputNeuron : adjacentNeurons.keySet()){
+			double outputActivation = outputNeuron.activation();
+			double outputFlaw = -1*(target - outputActivation);
+			flaw += outputFlaw*transferFunction.proceedDerivativeFunction(outputActivation);
 		}
 		
 		return flaw * transferFunction.proceedDerivativeFunction(activation());
