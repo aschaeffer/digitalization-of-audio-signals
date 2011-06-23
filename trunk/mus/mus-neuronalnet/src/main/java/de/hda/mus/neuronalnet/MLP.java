@@ -6,16 +6,23 @@ import de.hda.mus.neuronalnet.transferfunction.LinearFunction;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
+/**
+ * Bitte implementieren Sie ein mehrschichtiges Perzeptron (MLP). Das MLP soll eine Eingangs-schicht, eine versteckte Schicht und eine Ausgabeschicht haben. Das von Ihnen zu implemen-tierende MLP soll ueber folgende Features verfolgen:
+ * - Anzahl der Neuronen in den Schichten konfigurierbar
+ * - Transferfunktion der Neuronen der Ausgabeschicht waehlbar
+ * - Lernrate und Momentum frei waehlbar
+ * - Single oder Batch Update waehlbar
+ * - Waehrend des Trainings wird der quadratische Fehler fuer die Trainingsmenge fuer jeden Zyklus berechnet.
+ * 
+ * Anmerkung:
+ * - Ein Trainingszyklus setzt sich aus Propagation- und Back-Propagation-Berechnungen fuer alle Muster der Trainingsmenge zusammen.
+ * 
+ * @author aschaeffer
+ * @author khalid
+ *
+ */
 public class MLP {
 
-//	Bitte implementieren Sie ein mehrschichtiges Perzeptron (MLP). Das MLP soll eine Eingangs-schicht, eine versteckte Schicht und eine Ausgabeschicht haben. Das von Ihnen zu implemen-tierende MLP soll �ber folgende Features verf�gen:
-//		� Anzahl der Neuronen in den Schichten konfigurierbar
-//		� Transferfunktion der Neuronen der Ausgabeschicht w�hlbar
-//		� Lernrate und Momentum frei w�hlbar
-//		� Single oder Batch Update w�hlbar
-//		� W�hrend des Trainings wird der quadratische Fehler f�r die Trainingsmenge f�r jeden Zyklus berechnet.
-//	Anmerkung:
-//		� Ein Trainingszyklus setzt sich aus Propagation- und Back-Propagation-Berechnungen f�r alle Muster der Trainingsmenge zusammen.
 
 	public static double BIAS_VALUE = 1;
 	private InputNeuron biasNeuron;
