@@ -9,14 +9,25 @@ public class Neuron {
 	private String name;
 	private Neuron bias;
 	private TransferFunction transferFunction;
-	private HashMap<Neuron, Double> preNeurons;
+
+	/**
+	 * Vorgängerneuronen und das zugehörige Gewicht
+	 */
+	private HashMap<Neuron, Double> preNeurons = new HashMap<Neuron, Double>();
+	
+	/**
+	 * Nachfolgerneuronen und das zugehörige Gewicht
+	 */
+	private HashMap<Neuron, Double> adjacentNeurons = new HashMap<Neuron, Double>();
 	
 	public Neuron(TransferFunction transferFunction){
-		this.setPreNeurons(new HashMap<Neuron, Double>());
 		this.transferFunction = transferFunction;
 	}
 	
-	//Aktivierung
+	/**
+	 * Aktivierungsfunktion des Neurons
+	 * @return output
+	 */
 	public double activation(){
 		double inputSum = 0.0;
 		inputSum = inputSummation();
@@ -56,6 +67,7 @@ public class Neuron {
 			this.bias = neuron;
 		}
 		preNeurons.put(neuron, value);
+		neuron.getAdjacentNeurons().put(this, value);
 	}
 
 	public void setPreNeurons(HashMap<Neuron, Double> preNeurons) {
@@ -64,6 +76,10 @@ public class Neuron {
 
 	public HashMap<Neuron, Double> getPreNeurons() {
 		return preNeurons;
+	}
+
+	public HashMap<Neuron, Double> getAdjacentNeurons() {
+		return adjacentNeurons;
 	}
 
 	public void setTransferFunction(TransferFunction transferFunction) {
