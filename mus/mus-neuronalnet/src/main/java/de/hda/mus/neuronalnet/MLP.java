@@ -1,7 +1,10 @@
 package de.hda.mus.neuronalnet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Map.Entry;
 
 import de.hda.mus.neuronalnet.transferfunction.LinearFunction;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
@@ -37,7 +40,7 @@ public class MLP {
 	/**
 	 * The input layer of the MLP.
 	 */
-	private ArrayList<Neuron> inputLayer = new ArrayList<Neuron>();
+	private ArrayList<InputNeuron> inputLayer = new ArrayList<InputNeuron>();
 	
 	/**
 	 * The hidden layer of the MLP.
@@ -181,4 +184,40 @@ public class MLP {
 	private void update_weight(){
 		
 	}
+
+	/**
+	 * Prints the MLP.
+	 */
+	public void printMLP() {
+		System.out.println("===========OUTPUT LAYER===========");
+		ListIterator<Neuron> outputLayerIterator = outputLayer.listIterator(0);
+		while (outputLayerIterator.hasNext()) {
+			Neuron neuron = outputLayerIterator.next();
+			System.out.println(" Name: " + neuron.getName());
+			Iterator<Entry<Neuron, Double>> preIterator =  neuron.getPreNeurons().entrySet().iterator();
+			while (preIterator.hasNext()) {
+				Entry<Neuron, Double> entry = preIterator.next();
+				System.out.println("   Pre: " + entry.getKey().getName() + " Weight: " + entry.getValue());
+			}
+		}
+		System.out.println("===========HIDDEN LAYER===========");
+		ListIterator<Neuron> hiddenLayerIterator = hiddenLayer.listIterator(0);
+		while (hiddenLayerIterator.hasNext()) {
+			Neuron neuron = hiddenLayerIterator.next();
+			System.out.println(" Name: " + neuron.getName());
+			Iterator<Entry<Neuron, Double>> preIterator =  neuron.getPreNeurons().entrySet().iterator();
+			while (preIterator.hasNext()) {
+				Entry<Neuron, Double> entry = preIterator.next();
+				System.out.println("   Pre: " + entry.getKey().getName() + " Weight: " + entry.getValue());
+			}
+		}
+		System.out.println("===========INPUT LAYER===========");
+		ListIterator<InputNeuron> inputLayerIterator = inputLayer.listIterator(0);
+		while (inputLayerIterator.hasNext()) {
+			InputNeuron neuron = inputLayerIterator.next();
+			System.out.println(" Name: " + neuron.getName());
+			System.out.println("   Value: " + neuron.getValue());
+		}
+	}
+
 }
