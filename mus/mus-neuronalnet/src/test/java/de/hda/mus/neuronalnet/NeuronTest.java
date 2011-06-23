@@ -54,18 +54,16 @@ public class NeuronTest {
 //		}
 //	}
 
-	@Test
-	public void flawBias() {
-		neuron1.setValue(0);
-		neuron2.setValue(0);
-		
-//		double output = neuron5.activation();
-		double error = bias.flaw(1);
-		System.out.println("error: "+error);
-	}
+//	@Test
+//	public void flawBiasTest() {
+//		neuron1.setValue(0);
+//		neuron2.setValue(0);
+//		double error = bias.flaw(1);
+//		System.out.println("error: "+error);
+//	}
 
 	@Test
-	public void flawBias() {
+	public void printMLP() {
 		neuron1.setValue(0);
 		neuron2.setValue(0);
 		multiLayerPerceptron.printMLP();
