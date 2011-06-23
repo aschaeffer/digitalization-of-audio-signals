@@ -4,8 +4,7 @@ public class SigmoidFunction implements TransferFunction {
 
 	@Override
 	public double proceedFunction(double input) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1 / (1 + Math.exp(-input));
 	}
 
 }

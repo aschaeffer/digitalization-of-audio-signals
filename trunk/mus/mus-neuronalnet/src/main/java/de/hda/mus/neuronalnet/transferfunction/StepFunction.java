@@ -4,9 +4,11 @@ public class StepFunction implements TransferFunction {
 
 	@Override
 	public double proceedFunction(double input) {
-		// TODO Auto-generated method stub
-		//returns only 0 and 1
-		return 0;
+		if (input < 0) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 }
