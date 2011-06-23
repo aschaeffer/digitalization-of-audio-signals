@@ -15,5 +15,13 @@ public class InputNeuron extends Neuron {
 	public double activation(){
 		return getTransferFunction().proceedFunction(value);
 	}
+	
+	public double getValue() {
+		return this.value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
+	}
 
 }
