@@ -1,6 +1,7 @@
 package de.hda.mus.neuronalnet;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import de.hda.mus.neuronalnet.transferfunction.LinearFunction;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
@@ -91,9 +92,16 @@ public class MLP {
 	public void back_propagate(double learnStep_eta, double momentum_alpha){
 		
 	}
-	
-	public void propagate(double learnStep_eta, double momentum_alpha){
 
+	/**
+	 * Forward propagation of the MLP
+	 */
+	public void propagate() {
+		ListIterator<Neuron> iterator = outputLayer.listIterator(0);
+		while (iterator.hasNext()) {
+			Neuron outputNeuron = iterator.next();
+			outputNeuron.activation();
+		}
 	}
 	
 	private void update_weight(){
