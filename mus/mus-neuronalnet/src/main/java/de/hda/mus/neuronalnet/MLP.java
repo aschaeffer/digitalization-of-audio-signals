@@ -1,5 +1,7 @@
 package de.hda.mus.neuronalnet;
 
+import java.util.ArrayList;
+
 public class MLP {
 
 //	Bitte implementieren Sie ein mehrschichtiges Perzeptron (MLP). Das MLP soll eine Eingangs-schicht, eine versteckte Schicht und eine Ausgabeschicht haben. Das von Ihnen zu implemen-tierende MLP soll über folgende Features verfügen:
@@ -11,14 +13,14 @@ public class MLP {
 //	Anmerkung:
 //		• Ein Trainingszyklus setzt sich aus Propagation- und Back-Propagation-Berechnungen für alle Muster der Trainingsmenge zusammen.
 	
-	private NeuronLayer inputLayer;
-	private NeuronLayer hiddenLayer;
-	private NeuronLayer outputLayer;
+	private ArrayList<Neuron> inputLayer;
+	private ArrayList<Neuron>  hiddenLayer;
+	private ArrayList<Neuron>  outputLayer;
 
 	public MLP(int numInputNeuron, int numHiddenNeuron, int numOutputNeuron) {
-		inputLayer = new NeuronLayer(numInputNeuron);
-		hiddenLayer = new NeuronLayer(numHiddenNeuron);
-		outputLayer = new NeuronLayer(numOutputNeuron);
+		inputLayer  = new ArrayList<Neuron>(numInputNeuron);
+		hiddenLayer = new ArrayList<Neuron>(numHiddenNeuron);
+		outputLayer = new ArrayList<Neuron>(numOutputNeuron);
 	}
 
 //	Bias: 0
