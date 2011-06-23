@@ -71,4 +71,17 @@ public class MLP {
 		return neuron;
 	}
 
+	
+	
+	public void back_propagate(double learnStep_eta, double momentum_alpha){
+		
+	}
+	
+	public void propagate(double learnStep_eta, double momentum_alpha){
+		
+	}
+	
+	private void update_weight(){
+		
+	}
 }
