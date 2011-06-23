@@ -9,8 +9,8 @@ public class LinearFunction implements TransferFunction {
 
 	@Override
 	public double proceedDerivativeFunction(double input) {
-		// TODO Auto-generated method stub
-		return 0;
+		// ableitung von x^1 ist 1
+		return 1;
 	}
 
 }
