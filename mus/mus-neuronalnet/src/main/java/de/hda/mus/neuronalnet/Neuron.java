@@ -6,14 +6,11 @@ import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
 public class Neuron {
 	
-	
-	//schwellwert
-	private double threshold;
 	private TransferFunction transferFunction;
 	private HashMap<Neuron, Double> preNeurons;
 	
-	public Neuron(double threshold , TransferFunction transferFunction){
-		this.threshold = threshold;
+	public Neuron(TransferFunction transferFunction){
+
 		this.setPreNeurons(new HashMap<Neuron, Double>());
 		this.transferFunction = transferFunction;
 	}
@@ -22,7 +19,9 @@ public class Neuron {
 	public double activation(){
 		double inputSum = 0.0;
 		inputSum = inputSummation();
-		if(inputSum>=threshold)
+		Neuron[] neurons = new Neuron[preNeurons.size()];
+		Neuron bias = preNeurons.keySet().toArray(neurons)[0];
+		if(inputSum>=bias.activation())
 			return transferFunction.proceedFunction(inputSum);
 		else
 			return 0.0;
@@ -39,14 +38,6 @@ public class Neuron {
 		
 	public void putPreNeuron(Neuron neuron, Double value) {
 		preNeurons.put(neuron, value);
-	}
-
-	public void setThreshold(double threshold) {
-		this.threshold = threshold;
-	}
-
-	public double getThreshold() {
-		return threshold;
 	}
 
 	public void setPreNeurons(HashMap<Neuron, Double> preNeurons) {

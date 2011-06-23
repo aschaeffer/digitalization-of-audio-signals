@@ -7,7 +7,7 @@ public class InputNeuron extends Neuron {
 	private double value;
 
 	public InputNeuron(double value, TransferFunction transferFunction) {
-		super(-1, transferFunction);
+		super(transferFunction);
 		this.value = value;
 	}
 	
