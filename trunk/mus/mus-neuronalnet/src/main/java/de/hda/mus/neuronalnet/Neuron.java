@@ -20,6 +20,15 @@ public class Neuron {
 		return 0.0;
 	}
 	
+	//Aktivierung
+	private double inputSummation(){
+		double sum = 0.0;
+		if(sum>=threshold)
+			return activation();
+		else
+			return 0.0;
+	}
+	
 	public void putPreNeuron(Neuron neuron, Double value) {
 		preNeurons.put(neuron, value);
 	}
