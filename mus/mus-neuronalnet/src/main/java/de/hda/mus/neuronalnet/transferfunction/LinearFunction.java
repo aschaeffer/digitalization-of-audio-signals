@@ -7,4 +7,10 @@ public class LinearFunction implements TransferFunction {
 		return input;
 	}
 
+	@Override
+	public double proceedDerivativeFunction(double input) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
