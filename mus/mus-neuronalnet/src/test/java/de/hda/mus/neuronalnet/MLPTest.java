@@ -1,5 +1,7 @@
 package de.hda.mus.neuronalnet;
 
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,8 +30,8 @@ public class MLPTest {
 
 	MLP multiLayerPerceptron;
 	SigmoidFunction sigmoidFunction;
-	Neuron neuron1;
-	Neuron neuron2;
+	InputNeuron neuron1;
+	InputNeuron neuron2;
 	Neuron neuron3;
 	Neuron neuron4;
 	Neuron neuron5;
@@ -38,8 +40,8 @@ public class MLPTest {
 	public void init() {
 		multiLayerPerceptron = new MLP();
 		SigmoidFunction sigmoidFunction = new SigmoidFunction();
-		neuron1 = multiLayerPerceptron.addInputNeuron(sigmoidFunction);
-		neuron2 = multiLayerPerceptron.addInputNeuron(sigmoidFunction);
+		neuron1 = multiLayerPerceptron.addInputNeuron(0, sigmoidFunction);
+		neuron2 = multiLayerPerceptron.addInputNeuron(0, sigmoidFunction);
 		neuron3 = multiLayerPerceptron.addHiddenNeuron(1.166454e-02, sigmoidFunction);
 		neuron4 = multiLayerPerceptron.addHiddenNeuron(2.170463e-01, sigmoidFunction);
 		neuron5 = multiLayerPerceptron.addOutputNeuron(-1.844412e-01, sigmoidFunction);
@@ -55,8 +57,39 @@ public class MLPTest {
 	}
 
 	@Test
-	public void xorMLPTest1() {
-		neuron1.
+	public void xorMLPTest00() {
+		neuron1.setValue(0);
+		neuron2.setValue(0);
+		double output = neuron5.activation();
+		System.out.println("n1:0 n2:0 n5:" + output);
+		assertEquals(output, 1);
+	}
+
+	@Test
+	public void xorMLPTest01() {
+		neuron1.setValue(0);
+		neuron2.setValue(1);
+		double output = neuron5.activation();
+		System.out.println("n1:0 n2:1 n5:" + output);
+		assertEquals(output, 0);
+	}
+
+	@Test
+	public void xorMLPTest10() {
+		neuron1.setValue(1);
+		neuron2.setValue(0);
+		double output = neuron5.activation();
+		System.out.println("n1:1 n2:0 n5:" + output);
+		assertEquals(output, 0);
+	}
+
+	@Test
+	public void xorMLPTest11() {
+		neuron1.setValue(1);
+		neuron2.setValue(1);
+		double output = neuron5.activation();
+		System.out.println("n1:1 n2:1 n5:" + output);
+		assertEquals(output, 1);
 	}
 
 }

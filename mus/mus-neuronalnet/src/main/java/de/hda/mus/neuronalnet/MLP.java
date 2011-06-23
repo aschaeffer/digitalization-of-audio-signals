@@ -20,8 +20,8 @@ public class MLP {
 	private ArrayList<Neuron> hiddenLayer = new ArrayList<Neuron>();
 	private ArrayList<Neuron> outputLayer = new ArrayList<Neuron>();
 
-	public Neuron addInputNeuron(TransferFunction transferFunction) {
-		Neuron neuron = new InputNeuron(transferFunction);
+	public InputNeuron addInputNeuron(double value, TransferFunction transferFunction) {
+		InputNeuron neuron = new InputNeuron(value, transferFunction);
 		inputLayer.add(neuron);
 		return neuron;
 	}
