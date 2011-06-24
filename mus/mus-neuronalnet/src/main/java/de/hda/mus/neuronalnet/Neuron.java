@@ -4,10 +4,28 @@ import java.util.HashMap;
 
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
+/**
+ * Repräsentiert ein Neuron
+ * 
+ * @author aschaeffer
+ * @author khalid
+ *
+ */
 public class Neuron {
 	
+	/**
+	 * Name des Neurons.
+	 */
 	private String name;
+	
+	/**
+	 * Das bias Neuron.
+	 */
 	private Neuron bias;
+	
+	/**
+	 * Die Transfer-Funktion, die dieses Neuron nutzen soll.
+	 */
 	private TransferFunction transferFunction;
 
 	/**
@@ -26,7 +44,7 @@ public class Neuron {
 	
 	/**
 	 * Aktivierungsfunktion des Neurons
-	 * @return output
+	 * @return output aka activation
 	 */
 	public double activation(){
 		double inputSum = 0.0;
@@ -44,9 +62,10 @@ public class Neuron {
 	}
 	
 	/**
-	 * calculate the flaw of the current 
-	 * only for hidden Neurons!
-	 * @param target is the expected value! it can be 0 or 1
+	 * Calculates the flaw of the current neuron.
+	 * Only used for hidden Neurons!
+	 * 
+	 * @param target is the expected value!
 	 * @return flaw of the hidden Neuron
 	 */
 	public double flaw(double target){
@@ -61,6 +80,12 @@ public class Neuron {
 		
 		return flaw * transferFunction.proceedDerivativeFunction(activation());
 	}
+	
+	/**
+	 * Returns the weighted flaw for a expected value. 
+	 * @param target the expected value
+	 * @return weighted flaw of the neuron
+	 */
 	public double weightedFlaw(double target){
 		double flaw = 0.0;
 		
@@ -71,9 +96,10 @@ public class Neuron {
 		return flaw;
 	}
 
-	
-	//Aktivierung
-	private double inputSummation(){
+	/**
+	 * Summation of the weighted inputs.
+	 */
+	private double inputSummation() {
 		double sum = 0.0;
 		for(Neuron n : preNeurons.keySet()){
 			sum += n.activation() * preNeurons.get(n);
@@ -100,31 +126,52 @@ public class Neuron {
 		this.preNeurons = preNeurons;
 	}
 
+	/**
+	 * Returns the pre neurons.
+	 * @return HashMap of neurons and their weight
+	 */
 	public HashMap<Neuron, Double> getPreNeurons() {
 		return preNeurons;
 	}
 
+	/**
+	 * Returns the adjacent neurons.
+	 * @return HashMap of neurons and their weight
+	 */
 	public HashMap<Neuron, Double> getAdjacentNeurons() {
 		return adjacentNeurons;
 	}
 
+	/**
+	 * Setter for the transfer function.
+	 * @param transferFunction The transfer function.
+	 */
 	public void setTransferFunction(TransferFunction transferFunction) {
 		this.transferFunction = transferFunction;
 	}
 
+	/**
+	 * Getter for the transfer function.
+	 * @return The transfer function
+	 */
 	public TransferFunction getTransferFunction() {
 		return transferFunction;
 	}
 
+	/**
+	 * Setter for the name.
+	 * @param name Name of the neuron.
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Getter for the name.
+	 * @return Name of the neuron.
+	 */
 	public String getName() {
 		return name;
 	}
 
-
-	
-	
 }
