@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="4" time="0.094" errors="0" skipped="0" tests="5" name="de.hda.mus.neuronalnet.MLPTest">
+  <properties>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/amd64"/>
+    <property name="java.vm.version" value="19.0-b09"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="DE"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/home/aschaeffer/workspace/audio/mus-neuronalnet"/>
+    <property name="java.runtime.version" value="1.6.0_20-b20"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="basedir" value="/home/aschaeffer/workspace/audio/mus-neuronalnet"/>
+    <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-openjdk/jre/lib/endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="surefire.real.class.path" value="/tmp/surefirebooter8559049412816485023.jar"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="os.name" value="Linux"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/amd64/server:/usr/lib/jvm/java-6-openjdk/jre/lib/amd64:/usr/lib/jvm/java-6-openjdk/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="surefire.test.class.path" value="/home/aschaeffer/workspace/audio/mus-neuronalnet/target/test-classes:/home/aschaeffer/workspace/audio/mus-neuronalnet/target/classes:/home/aschaeffer/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Server Compiler"/>
+    <property name="os.version" value="2.6.35-27-generic"/>
+    <property name="user.home" value="/home/aschaeffer"/>
+    <property name="user.timezone" value=""/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="user.name" value="aschaeffer"/>
+    <property name="java.class.path" value="/home/aschaeffer/workspace/audio/mus-neuronalnet/target/test-classes:/home/aschaeffer/workspace/audio/mus-neuronalnet/target/classes:/home/aschaeffer/.m2/repository/junit/junit/4.8.2/junit-4.8.2.jar:"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/usr/lib/jvm/java-6-openjdk/jre"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="de"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.6.0_20"/>
+    <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-openjdk/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-openjdk/jre/lib/resources.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/rt.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/jsse.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/jce.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/charsets.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/netx.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/plugin.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/rhino.jar:/usr/lib/jvm/java-6-openjdk/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-openjdk/jre/classes"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="localRepository" value="/home/aschaeffer/.m2/repository"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="gnome"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase time="0.031" classname="de.hda.mus.neuronalnet.MLPTest" name="xorMLPTest00">
+    <failure message="Use assertEquals(expected, actual, delta) to compare floating-point numbers" type="java.lang.AssertionError">java.lang.AssertionError: Use assertEquals(expected, actual, delta) to compare floating-point numbers
+	at org.junit.Assert.fail(Assert.java:91)
+	at org.junit.Assert.assertEquals(Assert.java:491)
+	at org.junit.Assert.assertEquals(Assert.java:480)
+	at de.hda.mus.neuronalnet.MLPTest.xorMLPTest00(MLPTest.java:71)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.runners.BlockJUnit4ClassRunner.runNotIgnored(BlockJUnit4ClassRunner.java:79)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:71)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:62)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.executeTestSet(AbstractDirectoryTestSuite.java:140)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.execute(AbstractDirectoryTestSuite.java:127)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</failure>
+    <system-out>Bias Neuron 0 feuert: value=1.0 (1.0)
+Bias Neuron 0 feuert: value=1.0 (1.0)
+Input neuron 1 feuert: value=0.0 (0.0)
+Input neuron 2 feuert: value=0.0 (0.0)
+Hidden neuron 4 feuert: inputSum (0.2170463) &gt;= threshold (0.2170463)
+Bias Neuron 0 feuert: value=1.0 (1.0)
+Input neuron 1 feuert: value=0.0 (0.0)
+Input neuron 2 feuert: value=0.0 (0.0)
+Hidden neuron 3 feuert: inputSum (0.01166454) &gt;= threshold (0.01166454)
+Output neuron 5 feuert nicht: inputSum (-0.21259197886915115) &lt; threshold (-0.1844412)
+n1:0 n2:0 n5:0.0
+</system-out>
+  </testcase>
+  <testcase time="0.001" classname="de.hda.mus.neuronalnet.MLPTest" name="xorMLPTest01">
+    <failure message="Use assertEquals(expected, actual, delta) to compare floating-point numbers" type="java.lang.AssertionError">java.lang.AssertionError: Use assertEquals(expected, actual, delta) to compare floating-point numbers
+	at org.junit.Assert.fail(Assert.java:91)
+	at org.junit.Assert.assertEquals(Assert.java:491)
+	at org.junit.Assert.assertEquals(Assert.java:480)
+	at de.hda.mus.neuronalnet.MLPTest.xorMLPTest01(MLPTest.java:80)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.runners.BlockJUnit4ClassRunner.runNotIgnored(BlockJUnit4ClassRunner.java:79)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:71)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:62)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.executeTestSet(AbstractDirectoryTestSuite.java:140)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.execute(AbstractDirectoryTestSuite.java:127)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</failure>
+    <system-out>Bias Neuron 0 feuert: value=1.0 (1.0)
+Bias Neuron 0 feuert: value=1.0 (1.0)
+Input neuron 1 feuert: value=0.0 (0.0)
+Input neuron 2 feuert: value=1.0 (1.0)
+Hidden neuron 4 feuert: inputSum (0.3323814) &gt;= threshold (0.2170463)
+Bias Neuron 0 feuert: value=1.0 (1.0)
+Input neuron 1 feuert: value=0.0 (0.0)
+Input neuron 2 feuert: value=1.0 (1.0)
+Hidden neuron 3 feuert nicht: inputSum (-0.03608019) &lt; threshold (0.01166454)
+Output neuron 5 feuert nicht: inputSum (-0.20362011728529295) &lt; threshold (-0.1844412)
+n1:0 n2:1 n5:0.0
+</system-out>
+  </testcase>
+  <testcase time="0.001" classname="de.hda.mus.neuronalnet.MLPTest" name="xorMLPTest10">
+    <failure message="Use assertEquals(expected, actual, delta) to compare floating-point numbers" type="java.lang.AssertionError">java.lang.AssertionError: Use assertEquals(expected, actual, delta) to compare floating-point numbers
+	at org.junit.Assert.fail(Assert.java:91)
+	at org.junit.Assert.assertEquals(Assert.java:491)
+	at org.junit.Assert.assertEquals(Assert.java:480)
+	at de.hda.mus.neuronalnet.MLPTest.xorMLPTest10(MLPTest.java:89)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.runners.BlockJUnit4ClassRunner.runNotIgnored(BlockJUnit4ClassRunner.java:79)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:71)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:62)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.executeTestSet(AbstractDirectoryTestSuite.java:140)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.execute(AbstractDirectoryTestSuite.java:127)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</failure>
+    <system-out>Bias Neuron 0 feuert: value=1.0 (1.0)
+Bias Neuron 0 feuert: value=1.0 (1.0)
+Input neuron 1 feuert: value=1.0 (1.0)
+Input neuron 2 feuert: value=0.0 (0.0)
+Hidden neuron 4 feuert: inputSum (0.4322913) &gt;= threshold (0.2170463)
+Bias Neuron 0 feuert: value=1.0 (1.0)
+Input neuron 1 feuert: value=1.0 (1.0)
+Input neuron 2 feuert: value=0.0 (0.0)
+Hidden neuron 3 feuert: inputSum (0.09681077) &gt;= threshold (0.01166454)
+Output neuron 5 feuert nicht: inputSum (-0.21473559383149599) &lt; threshold (-0.1844412)
+n1:1 n2:0 n5:0.0
+</system-out>
+  </testcase>
+  <testcase time="0.001" classname="de.hda.mus.neuronalnet.MLPTest" name="xorMLPTest11">
+    <failure message="Use assertEquals(expected, actual, delta) to compare floating-point numbers" type="java.lang.AssertionError">java.lang.AssertionError: Use assertEquals(expected, actual, delta) to compare floating-point numbers
+	at org.junit.Assert.fail(Assert.java:91)
+	at org.junit.Assert.assertEquals(Assert.java:491)
+	at org.junit.Assert.assertEquals(Assert.java:480)
+	at de.hda.mus.neuronalnet.MLPTest.xorMLPTest11(MLPTest.java:98)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.runners.BlockJUnit4ClassRunner.runNotIgnored(BlockJUnit4ClassRunner.java:79)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:71)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:49)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:62)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.executeTestSet(AbstractDirectoryTestSuite.java:140)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.execute(AbstractDirectoryTestSuite.java:127)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:177)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:345)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1009)
+</failure>
+    <system-out>Input neuron 2 feuert: value=1.0 (1.0)
+Input neuron 1 feuert: value=1.0 (1.0)
+Bias Neuron 0 feuert: value=1.0 (1.0)
+Hidden neuron 3 feuert: inputSum (0.049066040000000005) &gt;= threshold (0.01166454)
+Bias Neuron 0 feuert: value=1.0 (1.0)
+Input neuron 2 feuert: value=1.0 (1.0)
+Input neuron 1 feuert: value=1.0 (1.0)
+Bias Neuron 0 feuert: value=1.0 (1.0)
+Hidden neuron 4 feuert: inputSum (0.5476264) &gt;= threshold (0.2170463)
+Output neuron 5 feuert nicht: inputSum (-0.21539549593657745) &lt; threshold (-0.1844412)
+n1:1 n2:1 n5:0.0
+</system-out>
+  </testcase>
+  <testcase time="0.005" classname="de.hda.mus.neuronalnet.MLPTest" name="xorMLPSimTest"/>
+</testsuite>

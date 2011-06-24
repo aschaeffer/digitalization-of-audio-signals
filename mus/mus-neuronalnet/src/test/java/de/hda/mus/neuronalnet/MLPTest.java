@@ -26,6 +26,9 @@ import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
  4 5 -3.293430e-02
  */
 
+/**
+ * Tests for a XOR multi layer perceptron.
+ */
 public class MLPTest {
 
 	MLP multiLayerPerceptron = new MLP();
