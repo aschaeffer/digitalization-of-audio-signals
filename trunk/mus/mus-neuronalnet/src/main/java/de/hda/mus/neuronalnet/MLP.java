@@ -3,6 +3,7 @@ package de.hda.mus.neuronalnet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
 
@@ -149,6 +150,21 @@ public class MLP {
 		outputLayer.add(neuron);
 		neuron.setName("Output " + name);
 		return neuron;
+	}
+	
+	/**
+	 * Returns all neurons (bias, input neurons, hidden neurons and
+	 * output neurons) of the MLP.
+	 * 
+	 * @return A list of neurons
+	 */
+	public List<Neuron> getAllNeurons() {
+		ArrayList<Neuron> neurons = new ArrayList<Neuron>();
+		neurons.add(this.biasNeuron);
+		neurons.addAll(this.inputLayer);
+		neurons.addAll(this.hiddenLayer);
+		neurons.addAll(this.outputLayer);
+		return neurons;
 	}
 
 	/**
