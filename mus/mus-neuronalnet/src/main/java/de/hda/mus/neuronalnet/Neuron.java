@@ -2,6 +2,7 @@ package de.hda.mus.neuronalnet;
 
 import java.util.HashMap;
 
+import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
 /**
@@ -37,11 +38,24 @@ public class Neuron {
 	 * Nachfolgerneuronen und das zugehörige Gewicht
 	 */
 	private HashMap<Neuron, Double> adjacentNeurons = new HashMap<Neuron, Double>();
-	
-	public Neuron(TransferFunction transferFunction){
+
+	/**
+	 * Constructor for the neuron.
+	 * @param transferFunction The transfer function.
+	 */
+	public Neuron(TransferFunction transferFunction) {
 		this.transferFunction = transferFunction;
 	}
-	
+
+	/**
+	 * Constructor for the neuron using the sigmoid transfer function
+	 * as default.
+	 * 
+	 */
+	public Neuron() {
+		this.transferFunction = new SigmoidFunction();
+	}
+
 	/**
 	 * Aktivierungsfunktion des Neurons
 	 * @return output aka activation

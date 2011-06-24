@@ -90,7 +90,7 @@ public class MLP {
 	 * @return Returns an input neuron.
 	 */
 	public InputNeuron addInputNeuron(String name, double value) {
-		InputNeuron neuron = new InputNeuron(value, new LinearFunction());
+		InputNeuron neuron = new InputNeuron(value);
 		inputLayer.add(neuron);
 		neuron.setName("Input " + name);
 		return neuron;
