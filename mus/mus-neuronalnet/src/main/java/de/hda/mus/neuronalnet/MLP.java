@@ -176,23 +176,10 @@ public class MLP {
 	
 	public void back_propagate(double learnStep_eta, double momentum_alpha, double target){
 		
-		Double[][] deltaWeight = new Double[countNeurons()][hiddenLayer.size()];
-		//Bias
-		for(int j=0;j<hiddenLayer.size();j++ ){
-			deltaWeight[0][j] += (biasNeuron.activation() * hiddenLayer.get(j).flaw(target));//Hebb
-		}
-		//Input -> Hidden
-//		for(int i=1;i<hiddenLayer.size()+1;i++ ){
-//			for(int j=0;j<hiddenLayer.size();j++ ){
-//				deltaWeight[i][j] += (hiddenLayer.get(i).activation() * hiddenLayer.get(j).flaw(target));//Hebb
-//			}
+//		for(Neuron n: inputLayer){
+//			
 //		}
-//		//Hidden -> Output
-//		for(int i=hiddenLayer.size();i<countNeurons();i++ ){
-//			for(int j=0;j<hiddenLayer.size();j++ ){
-//				deltaWeight[i][j] += (biasNeuron.activation() * hiddenLayer.get(j).flaw(target));//Hebb
-//			}
-//		}
+		
 	}
 
 	/**
@@ -206,8 +193,23 @@ public class MLP {
 		}
 	}
 	
-	private void update_weight(){
+	public void learn(double learnStep_eta, double momentum_alpha, boolean batch_update){
 		
+	}
+	
+	public void simulation(double learnStep_eta, double momentum_alpha){
+		
+	}
+	
+	public ArrayList<Neuron> getOutputLayer(){
+		return outputLayer;
+	}
+	
+	public void xorSimulation(double learnStep_eta, double momentum_alpha){
+		double error = 1;
+		for(int i=1; error > 0.5;i++){
+			
+		}
 	}
 
 	/**
