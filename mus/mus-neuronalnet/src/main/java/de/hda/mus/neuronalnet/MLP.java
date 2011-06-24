@@ -209,8 +209,17 @@ public class MLP {
 		}
 	}
 	
-	public void learn(double learnStep_eta, double momentum_alpha, boolean batch_update){
-		
+	
+	public void learn(double learnStep_eta, double momentum_alpha, double target){
+		for(Neuron neuron : getAllNeurons()){
+			for(Neuron preNeuron : neuron.getPreNeurons().keySet()){
+				double update = -1 * learnStep_eta * preNeuron.weightedFlaw(target); //schritt gemäß Gradient
+				update += momentum_alpha * neuron.getOldUpdateValueForPreNeuron(preNeuron); //Momentum Term
+				neuron.putPreNeuron(preNeuron, neuron.getPreNeurons().get(preNeuron) + update); // Gewicht wird geändert
+				neuron.putOldUpdateValueForPreNeuron(preNeuron, update);//Speicherung des aktuellen updates
+				//reset des Gradienten
+			}
+		}
 	}
 	
 	public void simulation(double learnStep_eta, double momentum_alpha){

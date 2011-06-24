@@ -100,29 +100,42 @@ public class MLPTest {
 
 	@Test
 	public void xorMLPSimTest() {
-		
-		
+
 		double error = 0.0;
 		int[][] pattern = { { 0, 0, 1 }, { 1, 1, 1 }, { 1, 0, 0 }, { 0, 1, 0 } };
-		double learnStep_eta  = 0.8;
-		double momentum_alpha = 0.8;
+		double learnStep_eta = 0.8;
+		double momentum_alpha = 0.9;
 		boolean batch_update = true;
-		
+
 		for (int i = 1; error < 0.1; i++) {
 
-			error=0.0;
+			error = 0.0;
 			for (int[] p : pattern) {
 				neuron1.setValue(p[0]);
 				neuron2.setValue(p[1]);
-				
+
 				for (Neuron out : multiLayerPerceptron.getOutputLayer()) {
 					error += Math.pow((p[2] - out.activation()), 2);
 				}
+
+				if (!batch_update) {
+					multiLayerPerceptron.learn(learnStep_eta, momentum_alpha,
+							p[2]);
+				}
 			}
-			multiLayerPerceptron.learn(learnStep_eta, momentum_alpha, batch_update);
-			System.out.println(i+". SimStep Error="+error); 
-			//TODO delete break;
-			break;
+			if (batch_update) {
+				for (int[] p : pattern) {
+					neuron1.setValue(p[0]);
+					neuron2.setValue(p[1]);
+					multiLayerPerceptron.learn(learnStep_eta, momentum_alpha,
+							p[2]);
+				}
+			}
+			System.out.println(i + ". SimStep Error=" + error);
+			if (i == 10) {
+				// TODO delete break;
+				break;
+			}
 		}
 
 	}
