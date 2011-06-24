@@ -38,7 +38,12 @@ public class Neuron {
 	 * Nachfolgerneuronen und das zugehörige Gewicht
 	 */
 	private HashMap<Neuron, Double> adjacentNeurons = new HashMap<Neuron, Double>();
-
+	
+	/**
+	 * für das Lernern der Neuronen (Momentum)
+	 */
+	private HashMap<Neuron, Double> oldUpdateValues =  new HashMap<Neuron, Double>();
+	
 	/**
 	 * Constructor for the neuron.
 	 * @param transferFunction The transfer function.
@@ -134,6 +139,7 @@ public class Neuron {
 		}
 		preNeurons.put(neuron, value);
 		neuron.getAdjacentNeurons().put(this, value);
+		oldUpdateValues.put(neuron, 0.0);
 	}
 	
 	public void setPreNeurons(HashMap<Neuron, Double> preNeurons) {
@@ -186,6 +192,14 @@ public class Neuron {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	public void putOldUpdateValueForPreNeuron(Neuron pre, double updateValue) {
+		oldUpdateValues.put(pre, updateValue);
+	}
+	
+	public double getOldUpdateValueForPreNeuron(Neuron pre) {
+		return oldUpdateValues.get(pre);
 	}
 
 }
