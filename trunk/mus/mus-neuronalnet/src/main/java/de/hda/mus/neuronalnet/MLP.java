@@ -226,6 +226,10 @@ public class MLP {
 		
 	}
 	
+	public ArrayList<InputNeuron> getInputLayer(){
+		return inputLayer;
+	}
+	
 	public ArrayList<Neuron> getOutputLayer(){
 		return outputLayer;
 	}
