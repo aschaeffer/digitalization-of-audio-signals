@@ -8,23 +8,23 @@ import org.junit.Test;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 
 /*
-Bias: 0
-Input: 1 2 
-Hidden: 3 4 
-Output: 5 
-Threshold
-0 3 1.166454e-02
-0 4 2.170463e-01
-0 5 
-Input -> Hidden
-1 3 8.514623e-02
-1 4 2.152450e-01
-2 3 -4.774473e-02
-2 4 1.153351e-01
-Hidden -> Output
-3 5 -1.969224e-02
-4 5 -3.293430e-02
-*/
+ Bias: 0
+ Input: 1 2 
+ Hidden: 3 4 
+ Output: 5 
+ Threshold
+ 0 3 1.166454e-02
+ 0 4 2.170463e-01
+ 0 5 
+ Input -> Hidden
+ 1 3 8.514623e-02
+ 1 4 2.152450e-01
+ 2 3 -4.774473e-02
+ 2 4 1.153351e-01
+ Hidden -> Output
+ 3 5 -1.969224e-02
+ 4 5 -3.293430e-02
+ */
 
 public class MLPTest {
 
@@ -42,7 +42,7 @@ public class MLPTest {
 		multiLayerPerceptron.setDefaultTransferFunction(new SigmoidFunction());
 
 		bias = multiLayerPerceptron.getBiasNeuron();
-		
+
 		neuron1 = multiLayerPerceptron.addInputNeuron("neuron 1", 0);
 		neuron2 = multiLayerPerceptron.addInputNeuron("neuron 2", 0);
 		neuron3 = multiLayerPerceptron.addHiddenNeuron("neuron 3");
@@ -96,6 +96,35 @@ public class MLPTest {
 		double output = neuron5.activation();
 		System.out.println("n1:1 n2:1 n5:" + output);
 		assertEquals(output, 1);
+	}
+
+	@Test
+	public void xorMLPSimTest() {
+		
+		
+		double error = 0.0;
+		int[][] pattern = { { 0, 0, 1 }, { 1, 1, 1 }, { 1, 0, 0 }, { 0, 1, 0 } };
+		double learnStep_eta  = 0.8;
+		double momentum_alpha = 0.8;
+		boolean batch_update = true;
+		
+		for (int i = 1; error < 0.1; i++) {
+
+			error=0.0;
+			for (int[] p : pattern) {
+				neuron1.setValue(p[0]);
+				neuron2.setValue(p[1]);
+				
+				for (Neuron out : multiLayerPerceptron.getOutputLayer()) {
+					error += Math.pow((p[2] - out.activation()), 2);
+				}
+			}
+			multiLayerPerceptron.learn(learnStep_eta, momentum_alpha, batch_update);
+			System.out.println(i+". SimStep Error="+error); 
+			//TODO delete break;
+			break;
+		}
+
 	}
 
 }

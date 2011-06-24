@@ -61,7 +61,15 @@ public class Neuron {
 		
 		return flaw * transferFunction.proceedDerivativeFunction(activation());
 	}
-	
+	public double weightedFlaw(double target){
+		double flaw = 0.0;
+		
+		for(Neuron adjacentNeuron : adjacentNeurons.keySet()){
+			flaw += activation()*adjacentNeuron.flaw(target);
+		}
+		
+		return flaw;
+	}
 
 	
 	//Aktivierung
