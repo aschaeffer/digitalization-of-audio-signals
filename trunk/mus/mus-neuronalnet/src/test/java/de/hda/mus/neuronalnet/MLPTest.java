@@ -37,7 +37,7 @@ public class MLPTest {
 	InputNeuron neuron2;
 	Neuron neuron3;
 	Neuron neuron4;
-	Neuron neuron5;
+	OutputNeuron neuron5;
 
 	@Before
 	public void init() {
@@ -102,45 +102,87 @@ public class MLPTest {
 	}
 
 	@Test
-	public void xorMLPSimTest() {
+	public void xorMLPWeightedFlawTest() {
+		neuron1.setValue(1);
+		neuron2.setValue(1);
+		double act = neuron5.activation();
+		double flaw = neuron5.weightedFlaw(1);
+		System.out.println("n5:" + act + " flaw:"+flaw);
+		multiLayerPerceptron.printMLP();
+		assertEquals(act, 0.5);
+	}
 
-		double error = 0.0;
+	@Test
+	public void xorMLPSimTest() {
+		double max_error = 0.1;
 		int[][] pattern = { { 0, 0, 1 }, { 1, 1, 1 }, { 1, 0, 0 }, { 0, 1, 0 } };
 		double learnStep_eta = 0.8;
 		double momentum_alpha = 0.9;
 		boolean batch_update = true;
-
-		for (int i = 1; error < 0.1; i++) {
-
-			error = 0.0;
-			for (int[] p : pattern) {
-				neuron1.setValue(p[0]);
-				neuron2.setValue(p[1]);
-
-				for (Neuron out : multiLayerPerceptron.getOutputLayer()) {
-					error += Math.pow((p[2] - out.activation()), 2);
-				}
-
-				if (!batch_update) {
-					multiLayerPerceptron.learn(learnStep_eta, momentum_alpha,
-							p[2]);
-				}
-			}
-			if (batch_update) {
-				for (int[] p : pattern) {
-					neuron1.setValue(p[0]);
-					neuron2.setValue(p[1]);
-					multiLayerPerceptron.learn(learnStep_eta, momentum_alpha,
-							p[2]);
-				}
-			}
-			System.out.println(i + ". SimStep Error=" + error);
-			if (i == 10) {
-				// TODO delete break;
-				break;
-			}
-		}
-
+		multiLayerPerceptron.xorSimulation(learnStep_eta, momentum_alpha, pattern, max_error, batch_update);
 	}
+	
+//	@Test
+//	public void xorMLPSimTest() {
+//
+//		double error = 100.0;
+//		int[][] pattern = { { 0, 0, 0 }, { 1, 1, 0 }, { 1, 0, 1 }, { 0, 1, 1 } };
+//		double learnStep_eta = 0.8;
+//		double momentum_alpha = 0.9;
+//		boolean batch_update = true;
+//
+//		for (int i = 1; error > 0.1; i++) {
+//
+//			error = 0.0;
+//			for (int[] p : pattern) {
+//				neuron1.setValue(p[0]);
+//				neuron2.setValue(p[1]);
+//
+//				for (Neuron out : multiLayerPerceptron.getOutputLayer()) {
+//					error += Math.pow((p[2] - out.activation()), 2);
+//				}
+//
+//				if (!batch_update) {
+//					multiLayerPerceptron.learn(learnStep_eta, momentum_alpha, p[2]);
+//				}
+//			}
+////			System.out.println(i + ". SimStep Error=" + error +"--------------------------------");
+////			multiLayerPerceptron.printMLP();
+//			if (batch_update) {
+//				for (int[] p : pattern) {
+//					neuron1.setValue(p[0]);
+//					neuron2.setValue(p[1]);
+//					multiLayerPerceptron.learn(learnStep_eta, momentum_alpha, p[2]);
+//				}
+//			}
+////			Neuron n5 = multiLayerPerceptron.getOutputLayer().get(0);
+////			Neuron bias = multiLayerPerceptron.getBiasNeuron();
+////			System.out.println(i + ". SimStep Error=" + error + " neuron5 weight= "+n5.getPreNeurons().get(bias));
+//			System.out.println(i + ". SimStep Error=" + error +"--------------------------------");
+////			multiLayerPerceptron.printMLP();
+//			if (i == 1000) {
+//				// TODO delete break;
+//				break;
+//			}
+//		}
+//
+//		neuron1.setValue(0);
+//		neuron2.setValue(0);
+//		double output = neuron5.activation();
+//		System.out.println("n1:0 n2:0 n5:" + output);
+//		neuron1.setValue(0);
+//		neuron2.setValue(1);
+//		output = neuron5.activation();
+//		System.out.println("n1:0 n2:1 n5:" + output);
+//		neuron1.setValue(1);
+//		neuron2.setValue(0);
+//		output = neuron5.activation();
+//		System.out.println("n1:1 n2:0 n5:" + output);
+//		neuron1.setValue(1);
+//		neuron2.setValue(1);
+//		output = neuron5.activation();
+//		System.out.println("n1:1 n2:1 n5:" + output);
+//
+//	}
 
 }

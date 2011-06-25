@@ -71,13 +71,14 @@ public class Neuron {
 		Neuron[] neurons = new Neuron[preNeurons.size()];
 		preNeurons.keySet().toArray(neurons);
 		double threshold = preNeurons.get(bias);
-		if(inputSum>=threshold) {
-			System.out.println(this.name + " feuert: inputSum (" + inputSum + ") >= threshold (" + threshold + ")");
-			return transferFunction.proceedFunction(inputSum);
-		} else {
-			System.out.println(this.name + " feuert nicht: inputSum (" + inputSum + ") < threshold (" + threshold + ")");
-			return 0.0;
-		}
+		return transferFunction.proceedFunction(inputSum-threshold);
+//		if(inputSum>=threshold) {
+//			System.out.println(this.name + " feuert: inputSum (" + inputSum + ") >= threshold (" + threshold + ")");
+//			return transferFunction.proceedFunction(inputSum);
+//		} else {
+//			System.out.println(this.name + " feuert nicht: inputSum (" + inputSum + ") < threshold (" + threshold + ")");
+//			return 0.0;
+//		}
 	}
 	
 	/**
@@ -85,19 +86,11 @@ public class Neuron {
 	 * Only used for hidden Neurons!
 	 * 
 	 * @param target is the expected value!
-	 * @return flaw of the hidden Neuron
+	 * @return flaw of the output Neuron
 	 */
-	public double flaw(double target){
-		double flaw = 0.0;
-		
-		//calculate Output flaw injectflaw
-		for(Neuron outputNeuron : adjacentNeurons.keySet()){
-			double outputActivation = outputNeuron.activation();
-			double outputFlaw = -1*(target - outputActivation);
-			flaw += outputFlaw*transferFunction.proceedDerivativeFunction(outputActivation);
-		}
-		
-		return flaw * transferFunction.proceedDerivativeFunction(activation());
+	private double flaw(double target){
+
+		return -1*(target - activation()) * transferFunction.proceedDerivativeFunction(activation());
 	}
 	
 	/**
@@ -108,8 +101,9 @@ public class Neuron {
 	public double weightedFlaw(double target){
 		double flaw = 0.0;
 		
-		for(Neuron adjacentNeuron : adjacentNeurons.keySet()){
-			flaw += activation()*adjacentNeuron.flaw(target);
+		for(Neuron outputNeuron : adjacentNeurons.keySet()){
+			flaw += activation() * outputNeuron.weightedFlaw(target);
+//			System.out.println("flaw: "+flaw +"="+ activation()+"*"+adjacentNeuron.flaw(target));
 		}
 		
 		return flaw;
