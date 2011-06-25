@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
 
+import de.hda.mus.neuronalnet.neuron.HiddenNeuron;
 import de.hda.mus.neuronalnet.neuron.InputNeuron;
 import de.hda.mus.neuronalnet.neuron.Neuron;
 import de.hda.mus.neuronalnet.neuron.OutputNeuron;
@@ -49,12 +50,12 @@ public class MLP {
 	/**
 	 * The hidden layer of the MLP.
 	 */
-	private ArrayList<Neuron> hiddenLayer = new ArrayList<Neuron>();
+	private ArrayList<HiddenNeuron> hiddenLayer = new ArrayList<HiddenNeuron>();
 	
 	/**
 	 * The output layer of the MLP.
 	 */
-	private ArrayList<Neuron> outputLayer = new ArrayList<Neuron>();
+	private ArrayList<OutputNeuron> outputLayer = new ArrayList<OutputNeuron>();
 	
 	/**
 	 * The default transfer function is the sigmoid function.
@@ -120,8 +121,8 @@ public class MLP {
 	 * @param name Name of the neuron.
 	 * @return Returns a neuron.
 	 */
-	public Neuron addHiddenNeuron(String name) {
-		Neuron neuron = new Neuron(this.defaultTransferFunction);
+	public HiddenNeuron addHiddenNeuron(String name) {
+		HiddenNeuron neuron = new HiddenNeuron(this.defaultTransferFunction);
 		hiddenLayer.add(neuron);
 		neuron.setName("Hidden " + name);
 		return neuron;
@@ -135,8 +136,8 @@ public class MLP {
 	 * @param transferFunction The transfer function of the neuron.
 	 * @return Returns a neuron.
 	 */
-	public Neuron addHiddenNeuron(String name, TransferFunction transferFunction) {
-		Neuron neuron = new Neuron(transferFunction);
+	public HiddenNeuron addHiddenNeuron(String name, TransferFunction transferFunction) {
+		HiddenNeuron neuron = new HiddenNeuron(transferFunction);
 		hiddenLayer.add(neuron);
 		neuron.setName("Hidden " + name);
 		return neuron;
@@ -163,7 +164,7 @@ public class MLP {
 	 * @return Returns a neuron.
 	 */
 	public Neuron addOutputNeuron(String name, TransferFunction transferFunction) {
-		Neuron neuron = new Neuron(transferFunction);
+		OutputNeuron neuron = new OutputNeuron(transferFunction);
 		outputLayer.add(neuron);
 		neuron.setName("Output " + name);
 		return neuron;
@@ -205,7 +206,7 @@ public class MLP {
 	 * Forward propagation of the MLP
 	 */
 	public void propagate() {
-		ListIterator<Neuron> iterator = outputLayer.listIterator(0);
+		ListIterator<OutputNeuron> iterator = outputLayer.listIterator(0);
 		while (iterator.hasNext()) {
 			Neuron outputNeuron = iterator.next();
 			outputNeuron.activation();
@@ -245,7 +246,7 @@ public class MLP {
 		return inputLayer;
 	}
 	
-	public ArrayList<Neuron> getOutputLayer(){
+	public ArrayList<OutputNeuron> getOutputLayer(){
 		return outputLayer;
 	}
 	
@@ -293,7 +294,7 @@ public class MLP {
 	 */
 	public void printMLP() {
 		System.out.println("===========OUTPUT LAYER===========");
-		ListIterator<Neuron> outputLayerIterator = outputLayer.listIterator(0);
+		ListIterator<OutputNeuron> outputLayerIterator = outputLayer.listIterator(0);
 		while (outputLayerIterator.hasNext()) {
 			Neuron neuron = outputLayerIterator.next();
 			System.out.println(" Name: " + neuron.getName() + " Act: "+ neuron.activation());
@@ -304,7 +305,7 @@ public class MLP {
 			}
 		}
 		System.out.println("===========HIDDEN LAYER===========");
-		ListIterator<Neuron> hiddenLayerIterator = hiddenLayer.listIterator(0);
+		ListIterator<HiddenNeuron> hiddenLayerIterator = hiddenLayer.listIterator(0);
 		while (hiddenLayerIterator.hasNext()) {
 			Neuron neuron = hiddenLayerIterator.next();
 			System.out.println(" Name: " + neuron.getName());

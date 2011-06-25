@@ -18,10 +18,26 @@ public class OutputNeuron extends Neuron {
 	public OutputNeuron(TransferFunction transferFunction) {
 		super(transferFunction);
 	}
-	
+
+	/**
+	 * Aktivierungsfunktion des Neurons
+	 * @return output aka activation
+	 */
+	public double activation(){
+		double inputSum = 0.0;
+		inputSum = inputSummation();
+		Neuron[] neurons = new Neuron[this.getPreNeurons().size()];
+		this.getPreNeurons().keySet().toArray(neurons);
+		return this.getTransferFunction().proceedFunction(inputSum);
+	}
+
+	/**
+	 * TODO: doc
+	 */
 	@Override
 	public double weightedFlaw(double target){
 		double injFlaw = -1*(target - activation()) * getTransferFunction().proceedDerivativeFunction(activation());
 		return injFlaw*activation();
 	}
+
 }
