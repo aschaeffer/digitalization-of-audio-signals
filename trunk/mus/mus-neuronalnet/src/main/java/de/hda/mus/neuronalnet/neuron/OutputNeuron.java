@@ -9,7 +9,7 @@ import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
  * @author khalid
  *
  */
-public class OutputNeuron extends AbstractNeuron {
+public class OutputNeuron extends AbstractNeuron implements Neuron {
 
 	/**
 	 * Constructor for the output neuron.
