@@ -71,4 +71,14 @@ public class InputNeuron extends AbstractNeuron implements Neuron {
 		return 0;
 	}
 
+	/**
+	 * Returns the flaw for a expected value. 
+	 * @param target the expected value
+	 * @return flaw of the neuron
+	 */
+	@Override
+	public double flaw(double target){
+		return 0;
+	}
+
 }

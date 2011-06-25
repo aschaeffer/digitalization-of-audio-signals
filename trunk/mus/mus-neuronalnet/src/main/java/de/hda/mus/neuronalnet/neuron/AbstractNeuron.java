@@ -144,4 +144,6 @@ public abstract class AbstractNeuron {
 		return oldUpdateValues.get(pre);
 	}
 
+	public abstract double flaw(double target);
+
 }
