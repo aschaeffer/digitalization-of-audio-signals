@@ -117,7 +117,7 @@ public class MLPTest {
 
 	@Test
 	public void xorMLPSimTest() {
-		double max_error = 0.1;
+		double max_error = 0.01;
 		int[][] pattern = { { 0, 0, 1 }, { 1, 1, 1 }, { 1, 0, 0 }, { 0, 1, 0 } };
 		double learnStep_eta = 0.8;
 		double momentum_alpha = 0.9;

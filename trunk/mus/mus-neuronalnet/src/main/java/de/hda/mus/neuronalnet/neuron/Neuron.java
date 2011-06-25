@@ -70,8 +70,10 @@ public class Neuron {
 		inputSum = inputSummation();
 		Neuron[] neurons = new Neuron[preNeurons.size()];
 		preNeurons.keySet().toArray(neurons);
-		double threshold = preNeurons.get(bias);
-		return transferFunction.proceedFunction(inputSum-threshold);
+		return transferFunction.proceedFunction(inputSum);
+		
+//		double threshold = preNeurons.get(bias);
+//		return transferFunction.proceedFunction(inputSum-threshold);
 //		if(inputSum>=threshold) {
 //			System.out.println(this.name + " feuert: inputSum (" + inputSum + ") >= threshold (" + threshold + ")");
 //			return transferFunction.proceedFunction(inputSum);
@@ -99,14 +101,15 @@ public class Neuron {
 	 * @return weighted flaw of the neuron
 	 */
 	public double weightedFlaw(double target){
-		double flaw = 0.0;
+		double implizitFlaw = 0.0;
 		
 		for(Neuron outputNeuron : adjacentNeurons.keySet()){
-			flaw += activation() * outputNeuron.weightedFlaw(target);
-//			System.out.println("flaw: "+flaw +"="+ activation()+"*"+adjacentNeuron.flaw(target));
+			double weight = adjacentNeurons.get(outputNeuron);
+			double deltaFlaw = outputNeuron.weightedFlaw(target);
+			implizitFlaw += weight * deltaFlaw;
 		}
 		
-		return flaw;
+		return implizitFlaw*activation();
 	}
 
 	/**
