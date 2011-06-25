@@ -21,8 +21,21 @@ public class HebianTeacher {
 	public HebianTeacher(MLP multiLayerPerceptron) {
 		this.multiLayerPerceptron = multiLayerPerceptron;
 	}
+//	double max_error = 0.1;
+//	int[][] pattern = { { 0, 0, 1 }, { 1, 1, 1 }, { 1, 0, 0 }, { 0, 1, 0 } };
+//	double learnStep_eta = 0.8;
+//	double momentum_alpha = 0.9;
+//	boolean batch_update = true;
 
-	public void teach(Integer maxIterations) {
+	public void teach(Double maxError, Double learnStep_eta, Double momentum_alpha, Integer maxIterations) {
+		Integer currentIteration = 0;
+		Boolean done = false;
+		while ((currentIteration < maxIterations) && !done) {
+			
+			
+			// increase iteration counter
+			currentIteration++;
+		}
 		
 	}
 

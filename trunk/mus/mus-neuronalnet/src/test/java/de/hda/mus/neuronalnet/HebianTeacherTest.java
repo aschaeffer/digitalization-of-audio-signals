@@ -59,7 +59,7 @@ public class HebianTeacherTest {
 		teacher.addRule(new double[] {1, 1}, new double[] {1});
 		teacher.addRule(new double[] {0, 1}, new double[] {0});
 		teacher.addRule(new double[] {1, 0}, new double[] {0});
-		teacher.teach(1000);
+		teacher.teach(0.1, 0.8, 0.9, 1000);
 	}
 
 }

@@ -156,6 +156,20 @@ public class MLP {
 	}
 	
 	/**
+	 * Add an output neuron.
+	 * 
+	 * @param name Name of the neuron.
+	 * @param transferFunction The transfer function of the neuron.
+	 * @return Returns a neuron.
+	 */
+	public Neuron addOutputNeuron(String name, TransferFunction transferFunction) {
+		Neuron neuron = new Neuron(transferFunction);
+		outputLayer.add(neuron);
+		neuron.setName("Output " + name);
+		return neuron;
+	}
+
+	/**
 	 * Returns all neurons (bias, input neurons, hidden neurons and
 	 * output neurons) of the MLP.
 	 * 
@@ -170,27 +184,13 @@ public class MLP {
 		return neurons;
 	}
 
-	/**
-	 * Add an output neuron.
-	 * 
-	 * @param name Name of the neuron.
-	 * @param transferFunction The transfer function of the neuron.
-	 * @return Returns a neuron.
-	 */
-	public Neuron addOutputNeuron(String name, TransferFunction transferFunction) {
-		Neuron neuron = new Neuron(transferFunction);
-		outputLayer.add(neuron);
-		neuron.setName("Output " + name);
-		return neuron;
-	}
-
-	public int countNeurons(){
-		return inputLayer.size()+hiddenLayer.size()+outputLayer.size()+1;
-	}
-	
-	public int startHidden(){
-		return inputLayer.size();
-	}
+//	public int countNeurons(){
+//		return inputLayer.size()+hiddenLayer.size()+outputLayer.size()+1;
+//	}
+//	
+//	public int startHidden(){
+//		return inputLayer.size();
+//	}
 	
 	
 	public void back_propagate(double learnStep_eta, double momentum_alpha, double target){
