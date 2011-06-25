@@ -1,7 +1,6 @@
 package de.hda.mus.neuronalnet;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -42,27 +41,32 @@ public class MLP {
 	/**
 	 * The bias neuron of the MLP.
 	 */
-	private InputNeuron biasNeuron;
+	protected InputNeuron biasNeuron;
 
 	/**
 	 * The input layer of the MLP.
 	 */
-	private ArrayList<InputNeuron> inputLayer = new ArrayList<InputNeuron>();
+	protected ArrayList<InputNeuron> inputLayer = new ArrayList<InputNeuron>();
 
 	/**
 	 * The hidden layer of the MLP.
 	 */
-	private ArrayList<HiddenNeuron> hiddenLayer = new ArrayList<HiddenNeuron>();
+	protected ArrayList<HiddenNeuron> hiddenLayer = new ArrayList<HiddenNeuron>();
 
 	/**
 	 * The output layer of the MLP.
 	 */
-	private ArrayList<OutputNeuron> outputLayer = new ArrayList<OutputNeuron>();
+	protected ArrayList<OutputNeuron> outputLayer = new ArrayList<OutputNeuron>();
 
 	/**
 	 * The default transfer function is the sigmoid function.
 	 */
-	TransferFunction defaultTransferFunction = new SigmoidFunction();
+	public TransferFunction defaultTransferFunction = new SigmoidFunction();
+
+	/**
+	 * The default pattern 
+	 */
+	protected int[][] pattern = {};
 
 	/**
 	 * The constructor initializes also the bias neuron.
@@ -362,4 +366,15 @@ public class MLP {
 		}
 	}
 
+	public void reset() {
+		// for specialized classes
+	}
+
+	public void setPattern(int[][] pattern) {
+		this.pattern = pattern;
+	}
+
+	public int[][] getPattern() {
+		return pattern;
+	}
 }
