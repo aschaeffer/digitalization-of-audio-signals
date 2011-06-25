@@ -9,7 +9,7 @@ import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
  * @author khalid
  *
  */
-public class OutputNeuron extends Neuron {
+public class OutputNeuron extends AbstractNeuron {
 
 	/**
 	 * Constructor for the output neuron.
@@ -26,7 +26,7 @@ public class OutputNeuron extends Neuron {
 	public double activation(){
 		double inputSum = 0.0;
 		inputSum = inputSummation();
-		Neuron[] neurons = new Neuron[this.getPreNeurons().size()];
+		AbstractNeuron[] neurons = new AbstractNeuron[this.getPreNeurons().size()];
 		this.getPreNeurons().keySet().toArray(neurons);
 		return this.getTransferFunction().proceedFunction(inputSum);
 	}

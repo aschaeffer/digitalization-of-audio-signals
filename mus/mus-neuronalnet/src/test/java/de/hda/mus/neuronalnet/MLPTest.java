@@ -5,8 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.hda.mus.neuronalnet.neuron.HiddenNeuron;
 import de.hda.mus.neuronalnet.neuron.InputNeuron;
-import de.hda.mus.neuronalnet.neuron.Neuron;
+import de.hda.mus.neuronalnet.neuron.AbstractNeuron;
 import de.hda.mus.neuronalnet.neuron.OutputNeuron;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 
@@ -38,8 +39,8 @@ public class MLPTest {
 	InputNeuron bias;
 	InputNeuron neuron1;
 	InputNeuron neuron2;
-	Neuron neuron3;
-	Neuron neuron4;
+	HiddenNeuron neuron3;
+	HiddenNeuron neuron4;
 	OutputNeuron neuron5;
 
 	@Before
