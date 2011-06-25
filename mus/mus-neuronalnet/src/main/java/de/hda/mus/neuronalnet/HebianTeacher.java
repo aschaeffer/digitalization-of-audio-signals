@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.hda.mus.neuronalnet.neuron.InputNeuron;
-import de.hda.mus.neuronalnet.neuron.Neuron;
 import de.hda.mus.neuronalnet.neuron.OutputNeuron;
 
 /**

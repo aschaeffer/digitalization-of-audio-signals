@@ -10,7 +10,7 @@ import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
  * @author khalid
  *
  */
-public class InputNeuron extends AbstractNeuron {
+public class InputNeuron extends AbstractNeuron implements Neuron {
 
 	/**
 	 * The input value.

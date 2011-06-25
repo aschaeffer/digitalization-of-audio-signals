@@ -27,17 +27,17 @@ public abstract class AbstractNeuron {
 	/**
 	 * Vorgängerneuronen und das zugehörige Gewicht
 	 */
-	private HashMap<AbstractNeuron, Double> preNeurons = new HashMap<AbstractNeuron, Double>();
+	private HashMap<Neuron, Double> preNeurons = new HashMap<Neuron, Double>();
 	
 	/**
 	 * Nachfolgerneuronen und das zugehörige Gewicht
 	 */
-	private HashMap<AbstractNeuron, Double> adjacentNeurons = new HashMap<AbstractNeuron, Double>();
+	private HashMap<Neuron, Double> adjacentNeurons = new HashMap<Neuron, Double>();
 	
 	/**
 	 * für das Lernern der Neuronen (Momentum)
 	 */
-	private HashMap<AbstractNeuron, Double> oldUpdateValues =  new HashMap<AbstractNeuron, Double>();
+	private HashMap<Neuron, Double> oldUpdateValues =  new HashMap<Neuron, Double>();
 	
 	/**
 	 * Constructor for the neuron.
@@ -65,7 +65,7 @@ public abstract class AbstractNeuron {
 	 */
 	protected double inputSummation() {
 		double sum = 0.0;
-		for(AbstractNeuron n : preNeurons.keySet()){
+		for(Neuron n : preNeurons.keySet()){
 			sum += n.activation() * preNeurons.get(n);
 		}
 		return sum;
@@ -78,9 +78,9 @@ public abstract class AbstractNeuron {
 	 * @param neuron The pre neuron
 	 * @param value The weight
 	 */
-	public void putPreNeuron(AbstractNeuron neuron, Double value) {
+	public void putPreNeuron(Neuron neuron, Double value) {
 		preNeurons.put(neuron, value);
-		neuron.getAdjacentNeurons().put(this, value);
+		neuron.getAdjacentNeurons().put((Neuron) this, value);
 		oldUpdateValues.put(neuron, 0.0);
 	}
 	
@@ -92,7 +92,7 @@ public abstract class AbstractNeuron {
 	 * Returns the pre neurons.
 	 * @return HashMap of neurons and their weight
 	 */
-	public HashMap<AbstractNeuron, Double> getPreNeurons() {
+	public HashMap<Neuron, Double> getPreNeurons() {
 		return preNeurons;
 	}
 
@@ -100,7 +100,7 @@ public abstract class AbstractNeuron {
 	 * Returns the adjacent neurons.
 	 * @return HashMap of neurons and their weight
 	 */
-	public HashMap<AbstractNeuron, Double> getAdjacentNeurons() {
+	public HashMap<Neuron, Double> getAdjacentNeurons() {
 		return adjacentNeurons;
 	}
 
@@ -136,11 +136,11 @@ public abstract class AbstractNeuron {
 		return name;
 	}
 
-	public void putOldUpdateValueForPreNeuron(AbstractNeuron pre, double updateValue) {
+	public void putOldUpdateValueForPreNeuron(Neuron pre, double updateValue) {
 		oldUpdateValues.put(pre, updateValue);
 	}
 	
-	public double getOldUpdateValueForPreNeuron(AbstractNeuron pre) {
+	public double getOldUpdateValueForPreNeuron(Neuron pre) {
 		return oldUpdateValues.get(pre);
 	}
 

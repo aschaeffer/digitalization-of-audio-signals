@@ -2,7 +2,7 @@ package de.hda.mus.neuronalnet.neuron;
 
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
-public class HiddenNeuron extends AbstractNeuron {
+public class HiddenNeuron extends AbstractNeuron implements Neuron {
 
 	/**
 	 * Constructor for the output neuron.
@@ -19,7 +19,7 @@ public class HiddenNeuron extends AbstractNeuron {
 	public double activation(){
 		double inputSum = 0.0;
 		inputSum = inputSummation();
-		AbstractNeuron[] neurons = new AbstractNeuron[this.getPreNeurons().size()];
+		Neuron[] neurons = new Neuron[this.getPreNeurons().size()];
 		this.getPreNeurons().keySet().toArray(neurons);
 		return this.getTransferFunction().proceedFunction(inputSum);
 	}
@@ -33,7 +33,7 @@ public class HiddenNeuron extends AbstractNeuron {
 	public double weightedFlaw(double target){
 		double implizitFlaw = 0.0;
 		
-		for(AbstractNeuron outputNeuron : this.getAdjacentNeurons().keySet()){
+		for(Neuron outputNeuron : this.getAdjacentNeurons().keySet()){
 			double weight = this.getAdjacentNeurons().get(outputNeuron);
 			double deltaFlaw = outputNeuron.weightedFlaw(target);
 			implizitFlaw += weight * deltaFlaw;
