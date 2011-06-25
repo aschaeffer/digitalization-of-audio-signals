@@ -290,6 +290,10 @@ public class MLP {
 		return inputLayer;
 	}
 
+	public ArrayList<HiddenNeuron> getHiddenLayer() {
+		return hiddenLayer;
+	}
+
 	public ArrayList<OutputNeuron> getOutputLayer() {
 		return outputLayer;
 	}
