@@ -145,8 +145,8 @@ public class MLP {
 	 * @param name Name of the neuron.
 	 * @return Returns a neuron.
 	 */
-	public Neuron addOutputNeuron(String name) {
-		Neuron neuron = new Neuron(this.defaultTransferFunction);
+	public OutputNeuron addOutputNeuron(String name) {
+		OutputNeuron neuron = new OutputNeuron(this.defaultTransferFunction);
 		outputLayer.add(neuron);
 		neuron.setName("Output " + name);
 		return neuron;
@@ -209,17 +209,29 @@ public class MLP {
 		}
 	}
 	
-	
-	public void learn(double learnStep_eta, double momentum_alpha, double target){
+	private void update_weight(double learnStep_eta, double momentum_alpha, double target){
 		for(Neuron neuron : getAllNeurons()){
 			for(Neuron preNeuron : neuron.getPreNeurons().keySet()){
-				double update = -1 * learnStep_eta * preNeuron.weightedFlaw(target); //schritt gemäß Gradient
+//				System.out.println(neuron.getName() + "<-> "+preNeuron.getName());
+				double update = -1 * learnStep_eta * neuron.weightedFlaw(target); //schritt gemäß Gradient
+//				System.out.println("neuron.weightedFlaw(target) "+neuron.weightedFlaw(target));
+//				System.out.println("update "+update);
 				update += momentum_alpha * neuron.getOldUpdateValueForPreNeuron(preNeuron); //Momentum Term
-				neuron.putPreNeuron(preNeuron, neuron.getPreNeurons().get(preNeuron) + update); // Gewicht wird geändert
+//				System.out.println("update "+update);
+				double newWeight = neuron.getPreNeurons().get(preNeuron) + update;
+
+//				System.out.println(neuron.getPreNeurons().get(preNeuron) +" + "+update +"=" + newWeight);
+				
+				neuron.putPreNeuron(preNeuron, newWeight); // Gewicht wird geändert
+//				System.out.println(neuron.getPreNeurons().get(preNeuron));
 				neuron.putOldUpdateValueForPreNeuron(preNeuron, update);//Speicherung des aktuellen updates
 				//reset des Gradienten
 			}
 		}
+	}
+	
+	public void learn(double learnStep_eta, double momentum_alpha, double target){
+		update_weight(learnStep_eta, momentum_alpha, target);
 	}
 	
 	public void simulation(double learnStep_eta, double momentum_alpha){
@@ -234,10 +246,37 @@ public class MLP {
 		return outputLayer;
 	}
 	
-	public void xorSimulation(double learnStep_eta, double momentum_alpha){
-		double error = 1;
-		for(int i=1; error > 0.5;i++){
+	public void xorSimulation(double learnStep_eta, double momentum_alpha, int[][] pattern, double max_error, boolean update_method){
+
+		System.out.println("start xor sim");
+		
+		double error = 1.0;
+		for (int i = 1; max_error < error; i++) {
+			error = 0.0;
+			for (int[] p : pattern) {
+				//setInput
+				for(int j=0;j<inputLayer.size();j++){
+					inputLayer.get(j).setValue(p[j]);
+				}
+
+				if (update_method) {
+					learn(learnStep_eta, momentum_alpha, p[2]);
+				}
+			}
+//			if (batch_update) {
+//				for (int[] p : pattern) {
+//					neuron1.setValue(p[0]);
+//					neuron2.setValue(p[1]);
+//					multiLayerPerceptron.learn(learnStep_eta, momentum_alpha, p[2]);
+//				}
+//			}
 			
+			System.out.println(i + ". SimStep Error=" + error +"--------------------------------");
+
+			if (i == 1000) {
+				// TODO delete break;
+				break;
+			}
 		}
 	}
 
@@ -249,11 +288,11 @@ public class MLP {
 		ListIterator<Neuron> outputLayerIterator = outputLayer.listIterator(0);
 		while (outputLayerIterator.hasNext()) {
 			Neuron neuron = outputLayerIterator.next();
-			System.out.println(" Name: " + neuron.getName());
+			System.out.println(" Name: " + neuron.getName() + " Act: "+ neuron.activation());
 			Iterator<Entry<Neuron, Double>> preIterator =  neuron.getPreNeurons().entrySet().iterator();
 			while (preIterator.hasNext()) {
 				Entry<Neuron, Double> entry = preIterator.next();
-				System.out.println("   Pre: " + entry.getKey().getName() + " Weight: " + entry.getValue());
+				System.out.println("   Pre: " + entry.getKey().getName() + " Weight: " + entry.getValue() + " Act: " + entry.getKey().activation());
 			}
 		}
 		System.out.println("===========HIDDEN LAYER===========");
@@ -264,7 +303,7 @@ public class MLP {
 			Iterator<Entry<Neuron, Double>> preIterator =  neuron.getPreNeurons().entrySet().iterator();
 			while (preIterator.hasNext()) {
 				Entry<Neuron, Double> entry = preIterator.next();
-				System.out.println("   Pre: " + entry.getKey().getName() + " Weight: " + entry.getValue());
+				System.out.println("   Pre: " + entry.getKey().getName() + " Weight: " + entry.getValue() + " Act: " + entry.getKey().activation());
 			}
 		}
 		System.out.println("===========INPUT LAYER===========");
@@ -272,7 +311,7 @@ public class MLP {
 		while (inputLayerIterator.hasNext()) {
 			InputNeuron neuron = inputLayerIterator.next();
 			System.out.println(" Name: " + neuron.getName());
-			System.out.println("   Value: " + neuron.getValue());
+			System.out.println("   Value: " + neuron.getValue() );
 		}
 	}
 
