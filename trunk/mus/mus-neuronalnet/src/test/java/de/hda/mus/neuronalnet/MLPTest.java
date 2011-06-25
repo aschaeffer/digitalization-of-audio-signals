@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.hda.mus.neuronalnet.neuron.InputNeuron;
+import de.hda.mus.neuronalnet.neuron.Neuron;
+import de.hda.mus.neuronalnet.neuron.OutputNeuron;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 
 /*

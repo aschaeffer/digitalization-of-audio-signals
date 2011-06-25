@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
 
+import de.hda.mus.neuronalnet.neuron.InputNeuron;
+import de.hda.mus.neuronalnet.neuron.Neuron;
+import de.hda.mus.neuronalnet.neuron.OutputNeuron;
 import de.hda.mus.neuronalnet.transferfunction.LinearFunction;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;

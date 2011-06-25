@@ -1,4 +1,4 @@
-package de.hda.mus.neuronalnet;
+package de.hda.mus.neuronalnet.neuron;
 
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
