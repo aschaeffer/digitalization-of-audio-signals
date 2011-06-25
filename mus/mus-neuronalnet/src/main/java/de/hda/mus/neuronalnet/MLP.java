@@ -252,8 +252,9 @@ public class MLP {
 	public void xorSimulation(double learnStep_eta, double momentum_alpha, int[][] pattern, double max_error, boolean update_method){
 
 		System.out.println("start xor sim");
-		
+//		System.out.println(learnStep_eta+" "+momentum_alpha+" "+pattern+" "+max_error+" "+update_method+" ");
 		double error = 1.0;
+
 		for (int i = 1; max_error < error; i++) {
 			error = 0.0;
 			for (int[] p : pattern) {
@@ -262,6 +263,11 @@ public class MLP {
 					inputLayer.get(j).setValue(p[j]);
 				}
 
+				for (Neuron out : getOutputLayer()) {
+					error += Math.pow((p[2] - out.activation()), 2);
+				}
+				
+				
 				if (update_method) {
 					learn(learnStep_eta, momentum_alpha, p[2]);
 				}
@@ -275,9 +281,8 @@ public class MLP {
 //			}
 			
 			System.out.println(i + ". SimStep Error=" + error +"--------------------------------");
-
-			if (i == 1000) {
-				// TODO delete break;
+			if(i == 1000){
+				printMLP();
 				break;
 			}
 		}

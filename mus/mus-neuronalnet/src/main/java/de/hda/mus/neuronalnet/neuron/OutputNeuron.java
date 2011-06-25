@@ -13,7 +13,6 @@ public class OutputNeuron extends Neuron {
 
 	/**
 	 * Constructor for the output neuron.
-	 * @param value The initial input value.
 	 * @param transferFunction The transfer function.
 	 */
 	public OutputNeuron(TransferFunction transferFunction) {
@@ -22,6 +21,7 @@ public class OutputNeuron extends Neuron {
 	
 	@Override
 	public double weightedFlaw(double target){
-		return -1*(target - activation()) * getTransferFunction().proceedDerivativeFunction(activation());
+		double injFlaw = -1*(target - activation()) * getTransferFunction().proceedDerivativeFunction(activation());
+		return injFlaw*activation();
 	}
 }
