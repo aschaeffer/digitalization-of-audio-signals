@@ -237,21 +237,21 @@ public class MLP {
 			double flawDelta) {
 		double update = -1 * learnStep_eta * flawDelta; // schritt gemäß
 														// Gradient
-		 System.out.println("neuron.weightedFlaw(target) "+flawDelta);
-		 System.out.println("update "+update);
+														// System.out.println("neuron.weightedFlaw(target) "+flawDelta);
+		// System.out.println("update "+update);
 		update += momentum_alpha
 				* currentNeuron.getOldUpdateValueForPreNeuron(preNeuron); // Momentum
 																			// Term
-		 System.out.println("update "+update);
+																			// System.out.println("update "+update);
 		double newWeight = currentNeuron.getPreNeurons().get(preNeuron)
 				+ update;
 
-		 System.out.println(currentNeuron.getPreNeurons().get(preNeuron)
-		 +" + "+update +"=" + newWeight);
+		// System.out.println(currentNeuron.getPreNeurons().get(preNeuron)
+		// +" + "+update +"=" + newWeight);
 
 		currentNeuron.putPreNeuron(preNeuron, newWeight); // Gewicht wird
 															// geändert
-		System.out.println(currentNeuron.getPreNeurons().get(preNeuron));
+															// System.out.println(currentNeuron.getPreNeurons().get(preNeuron));
 		currentNeuron.putOldUpdateValueForPreNeuron(preNeuron, update);// Speicherung
 																		// des
 																		// aktuellen
@@ -259,7 +259,15 @@ public class MLP {
 		// reset des Gradienten
 	}
 
-	public void learn(double learnStep_eta, double momentum_alpha,
+	/**
+	 * 
+	 * @param learnStep_eta
+	 * @param momentum_alpha
+	 * @param pattern
+	 * @param batch_update
+	 * @return gesamt Error nach dem Lernen
+	 */
+	public double learn(double learnStep_eta, double momentum_alpha,
 			int[][] pattern, boolean batch_update) {
 
 		for (Neuron neuron : getAllNeurons()) {
@@ -270,18 +278,38 @@ public class MLP {
 				double flawDelta = 0.0;
 
 				for (int[] p : pattern) {
+					for (int i = 0; i < inputLayer.size(); i++) {
+						inputLayer.get(i).setValue(p[i]);
+					}
+
 					flawDelta += neuron.weightedFlaw(p[2]);
-					if(!batch_update){
-						update_weight_neuron(learnStep_eta, momentum_alpha, neuron, preNeuron, flawDelta);
-						flawDelta=0.0;
+
+					if (!batch_update) {
+						update_weight_neuron(learnStep_eta, momentum_alpha,
+								neuron, preNeuron, flawDelta);
+						flawDelta = 0.0;
 					}
 				}
-				if(batch_update){
-					update_weight_neuron(learnStep_eta, momentum_alpha, neuron, preNeuron, flawDelta);
-					flawDelta=0.0;
+				if (batch_update) {
+					update_weight_neuron(learnStep_eta, momentum_alpha, neuron,
+							preNeuron, flawDelta);
+					flawDelta = 0.0;
 				}
+
 			}
 		}
+
+		double overallFlaw = 0.0;
+		for (Neuron output : outputLayer) {
+			for (int[] p : pattern) {
+				for (int i = 0; i < inputLayer.size(); i++) {
+					inputLayer.get(i).setValue(p[i]);
+				} 
+				overallFlaw += Math.pow((p[2] - output.activation()), 2);
+				System.out.println(overallFlaw);
+			}
+		}
+		return overallFlaw;
 	}
 
 	public ArrayList<InputNeuron> getInputLayer() {
@@ -291,30 +319,20 @@ public class MLP {
 	public ArrayList<OutputNeuron> getOutputLayer() {
 		return outputLayer;
 	}
-	
-	public double getError(int[][] pattern){
-		double error =0.0;
-		for (int[] p : pattern) {
-			for (OutputNeuron out : getOutputLayer()) {
-				error += Math.pow((p[2] - out.activation()), 2);
-			}
-		}
-		return error;
-	}
 
 	public void xorSimulation(double learnStep_eta, double momentum_alpha,
 			int[][] pattern, double max_error, boolean batch_update) {
 
 		System.out.println("start xor sim");
-		
+
 		double error = 1.0;
 		for (int i = 1; max_error < error; i++) {
-			error = getError(pattern);
-//			System.out.println(i + ". SimStep Error=" + error+ "--------------------------------");
-			learn(learnStep_eta, momentum_alpha, pattern, batch_update);
+			// System.out.println(i + ". SimStep Error=" + error+
+			// "--------------------------------");
+			error = learn(learnStep_eta, momentum_alpha, pattern, batch_update);
 			System.out.println(i + ". SimStep Error=" + error
 					+ "--------------------------------");
-			if (i == 10) {
+			if (i == 1000) {
 				printMLP();
 				break;
 			}
