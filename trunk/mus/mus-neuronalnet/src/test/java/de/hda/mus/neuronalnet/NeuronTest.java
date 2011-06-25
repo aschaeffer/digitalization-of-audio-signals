@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.hda.mus.neuronalnet.neuron.InputNeuron;
-import de.hda.mus.neuronalnet.neuron.Neuron;
+import de.hda.mus.neuronalnet.neuron.AbstractNeuron;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 
 public class NeuronTest {
@@ -15,9 +15,9 @@ public class NeuronTest {
 	InputNeuron bias;
 	InputNeuron neuron1;
 	InputNeuron neuron2;
-	Neuron neuron3;
-	Neuron neuron4;
-	Neuron neuron5;
+	AbstractNeuron neuron3;
+	AbstractNeuron neuron4;
+	AbstractNeuron neuron5;
 
 	@Before
 	public void init() {
