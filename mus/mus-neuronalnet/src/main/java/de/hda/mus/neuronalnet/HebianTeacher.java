@@ -3,6 +3,9 @@ package de.hda.mus.neuronalnet;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hda.mus.neuronalnet.neuron.InputNeuron;
+import de.hda.mus.neuronalnet.neuron.Neuron;
+
 /**
  * Trains a multi layer perceptron.
  * 
