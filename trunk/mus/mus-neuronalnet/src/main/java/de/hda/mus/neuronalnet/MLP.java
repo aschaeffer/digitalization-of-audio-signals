@@ -204,33 +204,7 @@ public class MLP {
 		return neurons;
 	}
 
-	// public int countNeurons(){
-	// return inputLayer.size()+hiddenLayer.size()+outputLayer.size()+1;
-	// }
-	//
-	// public int startHidden(){
-	// return inputLayer.size();
-	// }
 
-	public void back_propagate(double learnStep_eta, double momentum_alpha,
-			double target) {
-
-		// for(Neuron n: inputLayer){
-		//
-		// }
-
-	}
-
-	/**
-	 * Forward propagation of the MLP
-	 */
-	public void propagate() {
-		ListIterator<OutputNeuron> iterator = outputLayer.listIterator(0);
-		while (iterator.hasNext()) {
-			OutputNeuron outputNeuron = iterator.next();
-			outputNeuron.activation();
-		}
-	}
 
 	private void update_weight_neuron(double learnStep_eta,
 			double momentum_alpha, Neuron currentNeuron, Neuron preNeuron,
