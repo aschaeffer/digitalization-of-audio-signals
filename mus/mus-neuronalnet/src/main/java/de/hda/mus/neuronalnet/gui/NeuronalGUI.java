@@ -1,7 +1,7 @@
 package de.hda.mus.neuronalnet.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+//import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,22 +16,18 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 
 import de.hda.mus.neuronalnet.MLP;
+import de.hda.mus.neuronalnet.mlp.XorMLP;
 import de.hda.mus.neuronalnet.neuron.HiddenNeuron;
 import de.hda.mus.neuronalnet.neuron.InputNeuron;
 import de.hda.mus.neuronalnet.neuron.Neuron;
 import de.hda.mus.neuronalnet.neuron.OutputNeuron;
-import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
+//import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 
 public class NeuronalGUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	MLP multiLayerPerceptron = new MLP();
-	InputNeuron neuron1;
-	InputNeuron neuron2;
-	HiddenNeuron neuron3;
-	HiddenNeuron neuron4;
-	OutputNeuron neuron5;
+	MLP multiLayerPerceptron;
 
 	JPanel main = new JPanel();
 	ArrayList<JPanel> layers = new ArrayList<JPanel>();
@@ -43,10 +39,9 @@ public class NeuronalGUI extends JFrame implements ActionListener {
 	HashMap<OutputNeuron, Double> outputNeuronTargets = new HashMap<OutputNeuron, Double>();
 	Boolean learning = false;
 	Timer timer = new Timer(50, this);
-	int[][] pattern = { { 0, 0, 1 }, { 1, 1, 1 }, { 1, 0, 0 }, { 0, 1, 0 } };
 
-	public NeuronalGUI() {
-		this.initMLP(this.multiLayerPerceptron);
+	public NeuronalGUI(MLP multiLayerPerceptron) {
+		this.multiLayerPerceptron = multiLayerPerceptron;
 
 		main.setLayout(new BorderLayout());
 		main.add(this.createInputLayer(this.multiLayerPerceptron.getInputLayer()), BorderLayout.WEST);
@@ -224,7 +219,10 @@ public class NeuronalGUI extends JFrame implements ActionListener {
 					this.learning = false;
 					timer.stop();
 				} else if (buttonAction == "reset") {
-					this.resetMLP();
+					this.learning = false;
+					timer.stop();
+					this.multiLayerPerceptron.reset();
+					
 				}
 			}
 		}
@@ -267,7 +265,7 @@ public class NeuronalGUI extends JFrame implements ActionListener {
 		
 		// execute one iteration
 		iteration += 1.0;
-		error = multiLayerPerceptron.learn(learnStep_eta, momentum_alpha, pattern, batch_update);
+		error = multiLayerPerceptron.learn(learnStep_eta, momentum_alpha, multiLayerPerceptron.getPattern(), batch_update);
 
 		// update gui
 		iterationField.setText(""+iteration);
@@ -281,32 +279,8 @@ public class NeuronalGUI extends JFrame implements ActionListener {
 		}
 	}
 
-	public void initMLP(MLP multiLayerPerceptron) {
-		this.multiLayerPerceptron = multiLayerPerceptron;
-		this.multiLayerPerceptron.setDefaultTransferFunction(new SigmoidFunction());
-		neuron1 = multiLayerPerceptron.addInputNeuron("neuron 1", 0);
-		neuron2 = multiLayerPerceptron.addInputNeuron("neuron 2", 0);
-		neuron3 = multiLayerPerceptron.addHiddenNeuron("neuron 3");
-		neuron4 = multiLayerPerceptron.addHiddenNeuron("neuron 4");
-		neuron5 = multiLayerPerceptron.addOutputNeuron("neuron 5");
-		this.resetMLP();
-	}
-
-	public void resetMLP() {
-		InputNeuron bias = this.multiLayerPerceptron.getBiasNeuron();
-		neuron3.putPreNeuron(bias, 1.166454e-02); // set threshold
-		neuron3.putPreNeuron(neuron1, 8.514623e-02); // set weight
-		neuron3.putPreNeuron(neuron2, -4.774473e-02); // set weight
-		neuron4.putPreNeuron(bias, 2.170463e-01); // set threshold
-		neuron4.putPreNeuron(neuron1, 2.152450e-01); // set weight
-		neuron4.putPreNeuron(neuron2, 1.153351e-01); // set weight
-		neuron5.putPreNeuron(bias, -1.844412e-01); // set threshold
-		neuron5.putPreNeuron(neuron3, -1.969224e-02); // set weight
-		neuron5.putPreNeuron(neuron4, -3.293430e-02); // set weight
-	}
-	
 	public static void main(String[] args) {
-		NeuronalGUI gui = new NeuronalGUI();
+		NeuronalGUI gui = new NeuronalGUI(new XorMLP());
 		gui.setLocation(200, 350);
 		gui.setSize(800, 350);
 		gui.setVisible(true);
