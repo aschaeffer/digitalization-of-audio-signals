@@ -124,6 +124,22 @@ public class MLPTest {
 		double momentum_alpha = 0.9;
 		boolean batch_update = true;
 		multiLayerPerceptron.xorSimulation(learnStep_eta, momentum_alpha, pattern, max_error, batch_update);
+//		neuron1.setValue(0);
+//		neuron2.setValue(0);
+//		double output = neuron5.activation();
+//		System.out.println("n1:0 n2:0 n5:" + output);
+//		neuron1.setValue(0);
+//		neuron2.setValue(1);
+//		output = neuron5.activation();
+//		System.out.println("n1:0 n2:1 n5:" + output);
+//		neuron1.setValue(1);
+//		neuron2.setValue(0);
+//		output = neuron5.activation();
+//		System.out.println("n1:1 n2:0 n5:" + output);
+//		neuron1.setValue(1);
+//		neuron2.setValue(1);
+//		output = neuron5.activation();
+//		System.out.println("n1:1 n2:1 n5:" + output);
 	}
 	
 //	@Test

@@ -237,21 +237,21 @@ public class MLP {
 			double flawDelta) {
 		double update = -1 * learnStep_eta * flawDelta; // schritt gemäß
 														// Gradient
-		// System.out.println("neuron.weightedFlaw(target) "+neuron.weightedFlaw(target));
-		// System.out.println("update "+update);
+		 System.out.println("neuron.weightedFlaw(target) "+flawDelta);
+		 System.out.println("update "+update);
 		update += momentum_alpha
 				* currentNeuron.getOldUpdateValueForPreNeuron(preNeuron); // Momentum
 																			// Term
-		// System.out.println("update "+update);
+		 System.out.println("update "+update);
 		double newWeight = currentNeuron.getPreNeurons().get(preNeuron)
 				+ update;
 
-		// System.out.println(neuron.getPreNeurons().get(preNeuron)
-		// +" + "+update +"=" + newWeight);
+		 System.out.println(currentNeuron.getPreNeurons().get(preNeuron)
+		 +" + "+update +"=" + newWeight);
 
 		currentNeuron.putPreNeuron(preNeuron, newWeight); // Gewicht wird
 															// geändert
-		// System.out.println(neuron.getPreNeurons().get(preNeuron));
+		System.out.println(currentNeuron.getPreNeurons().get(preNeuron));
 		currentNeuron.putOldUpdateValueForPreNeuron(preNeuron, update);// Speicherung
 																		// des
 																		// aktuellen
@@ -310,12 +310,11 @@ public class MLP {
 		double error = 1.0;
 		for (int i = 1; max_error < error; i++) {
 			error = getError(pattern);
-			System.out.println(i + ". SimStep Error=" + error
-					+ "--------------------------------");
+//			System.out.println(i + ". SimStep Error=" + error+ "--------------------------------");
 			learn(learnStep_eta, momentum_alpha, pattern, batch_update);
 			System.out.println(i + ". SimStep Error=" + error
 					+ "--------------------------------");
-			if (i == 1000) {
+			if (i == 10) {
 				printMLP();
 				break;
 			}
