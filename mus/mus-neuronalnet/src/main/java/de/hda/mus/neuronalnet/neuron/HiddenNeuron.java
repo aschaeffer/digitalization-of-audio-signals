@@ -31,6 +31,16 @@ public class HiddenNeuron extends AbstractNeuron implements Neuron {
 	 */
 	@Override
 	public double weightedFlaw(double target){
+		return flaw(target)*activation();
+	}
+	
+	/**
+	 * Returns the flaw for a expected value. 
+	 * @param target the expected value
+	 * @return flaw of the neuron
+	 */
+	@Override
+	public double flaw(double target){
 		double implizitFlaw = 0.0;
 		
 		for(Neuron outputNeuron : this.getAdjacentNeurons().keySet()){
@@ -39,7 +49,7 @@ public class HiddenNeuron extends AbstractNeuron implements Neuron {
 			implizitFlaw += weight * deltaFlaw;
 		}
 		
-		return implizitFlaw*activation();
+		return implizitFlaw;
 	}
 
 }

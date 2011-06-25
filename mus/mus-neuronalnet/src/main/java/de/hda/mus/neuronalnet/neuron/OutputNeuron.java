@@ -30,14 +30,26 @@ public class OutputNeuron extends AbstractNeuron implements Neuron {
 		this.getPreNeurons().keySet().toArray(neurons);
 		return this.getTransferFunction().proceedFunction(inputSum);
 	}
-
+	
 	/**
-	 * TODO: doc
+	 * Returns the weighted flaw for a expected value. 
+	 * @param target the expected value
+	 * @return weighted flaw of the neuron
 	 */
 	@Override
 	public double weightedFlaw(double target){
+		return flaw(target)*activation();
+	}
+	
+	/**
+	 * Returns the flaw for a expected value. 
+	 * @param target the expected value
+	 * @return flaw of the neuron
+	 */
+	@Override
+	public double flaw(double target){
 		double injFlaw = -1*(target - activation()) * getTransferFunction().proceedDerivativeFunction(activation());
-		return injFlaw*activation();
+		return injFlaw;
 	}
 
 }
