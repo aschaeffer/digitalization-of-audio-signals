@@ -63,4 +63,12 @@ public class InputNeuron extends Neuron {
 		this.value = value;
 	}
 
+	/**
+	 * There is no weighted flaw for input neurons.
+	 */
+	@Override
+	public double weightedFlaw(double target) {
+		return 0;
+	}
+
 }
