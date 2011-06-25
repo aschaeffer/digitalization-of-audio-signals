@@ -163,7 +163,7 @@ public class MLP {
 	 * @param transferFunction The transfer function of the neuron.
 	 * @return Returns a neuron.
 	 */
-	public Neuron addOutputNeuron(String name, TransferFunction transferFunction) {
+	public OutputNeuron addOutputNeuron(String name, TransferFunction transferFunction) {
 		OutputNeuron neuron = new OutputNeuron(transferFunction);
 		outputLayer.add(neuron);
 		neuron.setName("Output " + name);
@@ -208,7 +208,7 @@ public class MLP {
 	public void propagate() {
 		ListIterator<OutputNeuron> iterator = outputLayer.listIterator(0);
 		while (iterator.hasNext()) {
-			Neuron outputNeuron = iterator.next();
+			OutputNeuron outputNeuron = iterator.next();
 			outputNeuron.activation();
 		}
 	}
@@ -264,7 +264,7 @@ public class MLP {
 					inputLayer.get(j).setValue(p[j]);
 				}
 
-				for (Neuron out : getOutputLayer()) {
+				for (OutputNeuron out : getOutputLayer()) {
 					error += Math.pow((p[2] - out.activation()), 2);
 				}
 				
@@ -296,7 +296,7 @@ public class MLP {
 		System.out.println("===========OUTPUT LAYER===========");
 		ListIterator<OutputNeuron> outputLayerIterator = outputLayer.listIterator(0);
 		while (outputLayerIterator.hasNext()) {
-			Neuron neuron = outputLayerIterator.next();
+			OutputNeuron neuron = outputLayerIterator.next();
 			System.out.println(" Name: " + neuron.getName() + " Act: "+ neuron.activation());
 			Iterator<Entry<Neuron, Double>> preIterator =  neuron.getPreNeurons().entrySet().iterator();
 			while (preIterator.hasNext()) {
@@ -307,7 +307,7 @@ public class MLP {
 		System.out.println("===========HIDDEN LAYER===========");
 		ListIterator<HiddenNeuron> hiddenLayerIterator = hiddenLayer.listIterator(0);
 		while (hiddenLayerIterator.hasNext()) {
-			Neuron neuron = hiddenLayerIterator.next();
+			HiddenNeuron neuron = hiddenLayerIterator.next();
 			System.out.println(" Name: " + neuron.getName());
 			Iterator<Entry<Neuron, Double>> preIterator =  neuron.getPreNeurons().entrySet().iterator();
 			while (preIterator.hasNext()) {

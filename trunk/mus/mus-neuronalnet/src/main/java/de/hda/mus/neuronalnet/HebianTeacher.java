@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import de.hda.mus.neuronalnet.neuron.InputNeuron;
 import de.hda.mus.neuronalnet.neuron.Neuron;
+import de.hda.mus.neuronalnet.neuron.OutputNeuron;
 
 /**
  * Trains a multi layer perceptron.
@@ -44,7 +45,7 @@ public class HebianTeacher {
 		for (int i=0; i<inputValues.size(); i++) {
 			inputPattern.put(this.multiLayerPerceptron.getInputLayer().get(i), inputValues.get(i));
 		}
-		HashMap<Neuron, Double> outputPattern = new HashMap<Neuron, Double>();
+		HashMap<OutputNeuron, Double> outputPattern = new HashMap<OutputNeuron, Double>();
 		for (int i=0; i<outputValues.size(); i++) {
 			outputPattern.put(this.multiLayerPerceptron.getOutputLayer().get(i), outputValues.get(i));
 		}
@@ -56,7 +57,7 @@ public class HebianTeacher {
 		for (int i=0; i<inputValues.length; i++) {
 			inputPattern.put(this.multiLayerPerceptron.getInputLayer().get(i), inputValues[i]);
 		}
-		HashMap<Neuron, Double> outputPattern = new HashMap<Neuron, Double>();
+		HashMap<OutputNeuron, Double> outputPattern = new HashMap<OutputNeuron, Double>();
 		for (int i=0; i<outputValues.length; i++) {
 			outputPattern.put(this.multiLayerPerceptron.getOutputLayer().get(i), outputValues[i]);
 		}
