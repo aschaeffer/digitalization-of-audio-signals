@@ -127,6 +127,13 @@ public class MLPnachVorlesung{
 		}
 	}
 
+	public double[] getOutputActivation(){
+		double[] output = new double[outputSize];
+		for ( int i=startOutput(); i < endOutput(); i++ ) {
+			output[i-startOutput()] = activity[i];
+		}
+		return output;
+	}
 
 	public void simulation(double eta, double alpha, double[][] pattern, boolean batch_update , double max_error) {
 		System.out.println("----simulation----");

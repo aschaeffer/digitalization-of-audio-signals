@@ -36,6 +36,7 @@ import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 public class MLPTest {
 
 	MLP multiLayerPerceptron = new MLP();
+	MLP mlpFinish = new MLP();
 	InputNeuron bias;
 	InputNeuron neuron1;
 	InputNeuron neuron2;
@@ -67,6 +68,30 @@ public class MLPTest {
 		neuron5.putPreNeuron(bias, -1.844412e-01); // set threshold
 		neuron5.putPreNeuron(neuron3, -1.969224e-02); // set weight
 		neuron5.putPreNeuron(neuron4, -3.293430e-02); // set weight
+		
+///* -
+		mlpFinish.setDefaultTransferFunction(new SigmoidFunction());
+
+		bias = mlpFinish.getBiasNeuron();
+
+		neuron1 = mlpFinish.addInputNeuron("neuron 1", 0);
+		neuron2 = mlpFinish.addInputNeuron("neuron 2", 1);
+		neuron3 = mlpFinish.addHiddenNeuron("neuron 3");
+		neuron4 = mlpFinish.addHiddenNeuron("neuron 4");
+		neuron5 = mlpFinish.addOutputNeuron("neuron 5");
+
+		neuron3.putPreNeuron(bias, -5.930721430666804); // set threshold
+		neuron3.putPreNeuron(neuron1, 3.835846530669538); // set weight
+		neuron3.putPreNeuron(neuron2, 3.808799936247644); // set weight
+
+		neuron4.putPreNeuron(bias, -2.7664328994583656); // set threshold
+		neuron4.putPreNeuron(neuron1, 6.290702460009742); // set weight
+		neuron4.putPreNeuron(neuron2, 6.25740081951328); // set weight
+
+		neuron5.putPreNeuron(bias, -3.2519613904918914); // set threshold
+		neuron5.putPreNeuron(neuron3, -8.398206239139247); // set weight
+		neuron5.putPreNeuron(neuron4, 7.384794323630908); // set weight
+		
 	}
 
 	@Test
@@ -115,6 +140,29 @@ public class MLPTest {
 		multiLayerPerceptron.printMLP();
 		assertEquals(act, 0.5);
 	}
+	
+	
+	
+	@Test
+	public void xorMLPFinishTest() {
+		mlpFinish.printMLP();
+		neuron1.setValue(0);
+		neuron2.setValue(0);
+		double output = neuron5.activation();
+		System.out.println("n1:0 n2:0 n5:" + output);
+		neuron1.setValue(0);
+		neuron2.setValue(1);
+		output = neuron5.activation();
+		System.out.println("n1:0 n2:1 n5:" + output);
+		neuron1.setValue(1);
+		neuron2.setValue(0);
+		output = neuron5.activation();
+		System.out.println("n1:1 n2:0 n5:" + output);
+		neuron1.setValue(1);
+		neuron2.setValue(1);
+		output = neuron5.activation();
+		System.out.println("n1:1 n2:1 n5:" + output);
+	}
 
 	@Test
 	public void xorMLPSimTest() {
@@ -123,23 +171,24 @@ public class MLPTest {
 		double learnStep_eta = 0.8;
 		double momentum_alpha = 0.9;
 		boolean batch_update = true;
+		mlpFinish.xorSimulation(learnStep_eta, momentum_alpha, pattern, max_error, batch_update);
 		multiLayerPerceptron.xorSimulation(learnStep_eta, momentum_alpha, pattern, max_error, batch_update);
-//		neuron1.setValue(0);
-//		neuron2.setValue(0);
-//		double output = neuron5.activation();
-//		System.out.println("n1:0 n2:0 n5:" + output);
-//		neuron1.setValue(0);
-//		neuron2.setValue(1);
-//		output = neuron5.activation();
-//		System.out.println("n1:0 n2:1 n5:" + output);
-//		neuron1.setValue(1);
-//		neuron2.setValue(0);
-//		output = neuron5.activation();
-//		System.out.println("n1:1 n2:0 n5:" + output);
-//		neuron1.setValue(1);
-//		neuron2.setValue(1);
-//		output = neuron5.activation();
-//		System.out.println("n1:1 n2:1 n5:" + output);
+		neuron1.setValue(0);
+		neuron2.setValue(0);
+		double output = neuron5.activation();
+		System.out.println("n1:0 n2:0 n5:" + output);
+		neuron1.setValue(0);
+		neuron2.setValue(1);
+		output = neuron5.activation();
+		System.out.println("n1:0 n2:1 n5:" + output);
+		neuron1.setValue(1);
+		neuron2.setValue(0);
+		output = neuron5.activation();
+		System.out.println("n1:1 n2:0 n5:" + output);
+		neuron1.setValue(1);
+		neuron2.setValue(1);
+		output = neuron5.activation();
+		System.out.println("n1:1 n2:1 n5:" + output);
 	}
 	
 //	@Test
