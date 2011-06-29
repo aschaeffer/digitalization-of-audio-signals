@@ -24,6 +24,8 @@ public class MLPnachVorlesung {
 	private Double[][] oldUpdate;
 	public Double[] activity;
 	public Double[][] weights;
+	
+	private Random random;
 
 	
 
@@ -71,24 +73,25 @@ public class MLPnachVorlesung {
 			}
 			activity[i] = 0.0;
 		}
+		random = new Random();
 		generateRandomWeights();
 	}
 
 	private void generateRandomWeights() {
 		// Bias
 		for (int i = startHidden(); i < endOutput(); i++) {
-			weights[0][i] = Math.random() - 0.5;
+			weights[0][i] = random.nextDouble() - 0.5;
 		}
 		// Input -> Hidden
 		for (int i = startInput(); i < endInput(); i++) {
 			for (int j = startHidden(); j < endHidden(); j++) {
-				weights[i][j] = Math.random() - 0.5;
+				weights[i][j] = random.nextDouble() - 0.5;
 			}
 		}
 		// Hidden -> Output
 		for (int i = startHidden(); i < endHidden(); i++) {
 			for (int j = startOutput(); j < endOutput(); j++) {
-				weights[i][j] = Math.random() - 0.5;
+				weights[i][j] = random.nextDouble() - 0.5;
 			}
 		}
 
