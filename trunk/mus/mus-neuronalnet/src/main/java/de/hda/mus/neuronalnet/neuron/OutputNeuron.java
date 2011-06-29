@@ -26,8 +26,8 @@ public class OutputNeuron extends AbstractNeuron implements Neuron {
 	public double activation(){
 		double inputSum = 0.0;
 		inputSum = inputSummation();
-		AbstractNeuron[] neurons = new AbstractNeuron[this.getPreNeurons().size()];
-		this.getPreNeurons().keySet().toArray(neurons);
+//		AbstractNeuron[] neurons = new AbstractNeuron[this.getPreNeurons().size()];
+//		this.getPreNeurons().keySet().toArray(neurons);
 		return this.getTransferFunction().proceedFunction(inputSum);
 	}
 	
@@ -48,8 +48,8 @@ public class OutputNeuron extends AbstractNeuron implements Neuron {
 	 */
 	@Override
 	public double flaw(double target){
-		double injFlaw = -1*(target - activation()) * getTransferFunction().proceedDerivativeFunction(activation());
-		return injFlaw;
+		double injFlaw = -1*(target - activation());
+		return injFlaw * getTransferFunction().proceedDerivativeFunction(activation());
 	}
 
 }

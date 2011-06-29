@@ -8,6 +8,7 @@ public interface Neuron {
 
 	public double activation();
 	public double weightedFlaw(double target);
+	public double flaw(double target);
 	public String getName();
 	public void setName(String name);
 	public TransferFunction getTransferFunction();
