@@ -302,8 +302,7 @@ public class MLP {
 		return outputLayer;
 	}
 
-	public void xorSimulation(double learnStep_eta, double momentum_alpha,
-			int[][] pattern, double max_error, boolean batch_update) {
+	public void xorSimulation(double learnStep_eta, double momentum_alpha,	int[][] pattern, double max_error, boolean batch_update) {
 
 		System.out.println("start xor sim");
 
