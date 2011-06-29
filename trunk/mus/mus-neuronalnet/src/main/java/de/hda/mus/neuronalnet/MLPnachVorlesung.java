@@ -1,37 +1,45 @@
 package de.hda.mus.neuronalnet;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Random;
 
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
-public class MLPnachVorlesung{
+public class MLPnachVorlesung {
 
 	private int mlpSize;
 	private int inputSize;
 	private int hiddenSize;
 	private int outputSize;
 	private TransferFunction transferFunction;
-	
 
 	private Double[][] deltaWeight;
 	private Double[][] oldUpdate;
-	public Double[]    activity;
-	public Double[][]   weights;
+	public Double[] activity;
+	public Double[][] weights;
+
 	
 
-	public MLPnachVorlesung(int inputSize, int hiddenSize, int outputSize, Double[][] weights, TransferFunction transferFunction) {	
+	public MLPnachVorlesung(int inputSize, int hiddenSize, int outputSize,
+			Double[][] weights, TransferFunction transferFunction) {
 		this.inputSize = inputSize;
 		this.hiddenSize = hiddenSize;
 		this.outputSize = outputSize;
-		mlpSize = 1+inputSize+ hiddenSize+ outputSize;
-		
+		mlpSize = 1 + inputSize + hiddenSize + outputSize;
+		this.transferFunction = transferFunction;
 		this.weights = weights;
+		
 		deltaWeight = new Double[mlpSize][mlpSize];
 		oldUpdate = new Double[mlpSize][mlpSize];
 		activity = new Double[mlpSize];
-		
+
 		for (int i = 0; i < mlpSize; i++) {
 			for (int j = 0; j < mlpSize; j++) {
 				deltaWeight[i][j] = 0.0;
@@ -39,11 +47,54 @@ public class MLPnachVorlesung{
 			}
 			activity[i] = 0.0;
 		}
-//		printMatrix(weights);
-		this.transferFunction = transferFunction;
+		// printMatrix(weights);
 	}
 
-	public MLPnachVorlesung(Double[][] weights) {		
+	public MLPnachVorlesung(int inputSize, int hiddenSize, int outputSize,
+			TransferFunction transferFunction) {
+		this.inputSize = inputSize;
+		this.hiddenSize = hiddenSize;
+		this.outputSize = outputSize;
+		this.mlpSize = 1 + inputSize + hiddenSize + outputSize;
+		this.transferFunction = transferFunction;
+		this.weights = new Double[mlpSize][mlpSize];
+		
+		deltaWeight = new Double[mlpSize][mlpSize];
+		oldUpdate = new Double[mlpSize][mlpSize];
+		activity = new Double[mlpSize];
+
+		for (int i = 0; i < mlpSize; i++) {
+			for (int j = 0; j < mlpSize; j++) {
+				deltaWeight[i][j] = 0.0;
+				oldUpdate[i][j] = 0.0;
+				weights[i][j] = 0.0;
+			}
+			activity[i] = 0.0;
+		}
+		generateRandomWeights();
+	}
+
+	private void generateRandomWeights() {
+		// Bias
+		for (int i = startHidden(); i < endOutput(); i++) {
+			weights[0][i] = Math.random() - 0.5;
+		}
+		// Input -> Hidden
+		for (int i = startInput(); i < endInput(); i++) {
+			for (int j = startHidden(); j < endHidden(); j++) {
+				weights[i][j] = Math.random() - 0.5;
+			}
+		}
+		// Hidden -> Output
+		for (int i = startHidden(); i < endHidden(); i++) {
+			for (int j = startOutput(); j < endOutput(); j++) {
+				weights[i][j] = Math.random() - 0.5;
+			}
+		}
+
+	}
+
+	public MLPnachVorlesung(Double[][] weights) {
 		for (int i = 0; i < mlpSize; i++) {
 			for (int j = 0; j < mlpSize; j++) {
 				deltaWeight[i][j] = 0.0;
@@ -52,87 +103,91 @@ public class MLPnachVorlesung{
 		}
 		this.weights = weights;
 	}
-	
+
 	public void propagate(double[] inputs) {
 		activity[0] = 1.0;
-		
-		//fill input fields
-		for (int i = 0; i < (endInput()-startInput()); i++) {
-			activity[i+startInput()] = (double) inputs[i];
+
+		// fill input fields
+		for (int i = 0; i < (endInput() - startInput()); i++) {
+			activity[i + startInput()] = (double) inputs[i];
 		}
-		
-        //propagate the activation 
-        for ( int i=startHidden(); i < endOutput();i++ ) {
-            double activation = activity[0] * weights[0][i];
-            for ( int j=1; j < endHidden() ; j++ ) {
-                activation += activity[j] * weights[j][i];
-//                System.out.println(activation+"+="+ activity[j] +"*"+ weights[j][i]);
-            }
-            activity[i] = transferFunction.proceedFunction(activation);
-        }
-//        printArray("Activity: ",activity);
+
+		// propagate the activation
+		for (int i = startHidden(); i < endOutput(); i++) {
+			double activation = activity[0] * weights[0][i];
+			for (int j = 1; j < endHidden(); j++) {
+				activation += activity[j] * weights[j][i];
+				// System.out.println(activation+"+="+ activity[j] +"*"+
+				// weights[j][i]);
+			}
+			activity[i] = transferFunction.proceedFunction(activation);
+		}
+		// printArray("Activity: ",activity);
 	}
 
 	public void back_propagate(double target) {
-
-		Double[] delta = new Double[mlpSize];
+		double[] delta = new double[mlpSize];
 		// initial delta array
 		for (int i = 0; i < delta.length; i++) {
-				delta[i] = 0.0;
+			delta[i] = 0.0;
 		}
 		// injizierter Fehler
 		for (int i = startOutput(); i < endOutput(); i++) {
-			delta[i] = (-1) * (target - activity[i])* transferFunction.proceedDerivativeFunction(activity[i]);
-//			System.out.println(target+"-"+activity[i]+")*"+transferFunction.proceedDerivativeFunction(activity[i]));
+			delta[i] = (-1) * (target - activity[i])
+					* transferFunction.proceedDerivativeFunction(activity[i]);
+			// System.out.println(target+"-"+activity[i]+")*"+transferFunction.proceedDerivativeFunction(activity[i]));
 		}
 		// implizierter Fehler
 		for (int i = startHidden(); i < endHidden(); i++) {
 			for (int j = startOutput(); j < endOutput(); j++) {
 				delta[i] += weights[i][j] * delta[j];
-//				System.out.println("weight= "+ weight +"*"+ delta[j]);
+				// System.out.println("weight= "+ weight +"*"+ delta[j]);
 			}
-			delta[i] *= transferFunction.proceedDerivativeFunction(activity[i]);;
-		}
-		//calculate Gradient
-		//Bias
-		for (int i = startHidden(); i < endOutput(); i++) {
-			deltaWeight[0][i] += (activity[0] * delta[i]);
+			delta[i] *= transferFunction.proceedDerivativeFunction(activity[i]);
 			
 		}
-		//Input -> Hidden
+		// calculate Gradient
+		// Bias
+		for (int i = startHidden(); i < endOutput(); i++) {
+			deltaWeight[0][i] += (activity[0] * delta[i]);
+
+		}
+		// Input -> Hidden
 		for (int i = startInput(); i < endInput(); i++) {
 			for (int j = startHidden(); j < endHidden(); j++) {
 				deltaWeight[i][j] += (activity[i] * delta[j]);
 			}
 		}
-		//Hidden -> Output
+		// Hidden -> Output
 		for (int i = startHidden(); i < endHidden(); i++) {
 			for (int j = startOutput(); j < endOutput(); j++) {
 				deltaWeight[i][j] += (activity[i] * delta[j]);
 			}
 		}
+		
 //		printArray("delta: ", delta);
 //		printMatrix(deltaWeight);
 	}
 
-	 public void update_weight(double learningRate, double momentum) {
-	        double update = 0;
-//	        printMatrix(weights);
-//	        System.out.println("-------------------");
-//	        printMatrix(deltaWeight);
-	        for ( int i=0; i < mlpSize; i++ ) {
-	            for ( int j= 0; j < mlpSize; j++ ) {
-	            	if(deltaWeight[i][j] == 0){
-	            		continue;
-	            	}
-	                update = ( -1 * deltaWeight[i][j] * learningRate ) + ( momentum * oldUpdate[i][j] );
-	                oldUpdate[i][j] = update;
-	                weights[i][j] +=  update;
-	                deltaWeight[i][j] = 0.0;
-	            }
-	        }
-	    }
-	
+	public void update_weight(double learningRate, double momentum) {
+		double update = 0;
+		// printMatrix(weights);
+		// System.out.println("-------------------");
+//		printMatrix(deltaWeight);
+		for (int i = 0; i < mlpSize; i++) {
+			for (int j = 0; j < mlpSize; j++) {
+				if (deltaWeight[i][j] == 0) {
+					continue;
+				}
+				update = (-1 * deltaWeight[i][j] * learningRate)
+						+ (momentum * oldUpdate[i][j]);
+				oldUpdate[i][j] = update;
+				weights[i][j] += update;
+				deltaWeight[i][j] = 0.0;
+			}
+		}
+	}
+
 	public void reset_delta() {
 		for (int i = 0; i < mlpSize; i++) {
 			for (int j = 0; j < mlpSize; j++) {
@@ -141,23 +196,26 @@ public class MLPnachVorlesung{
 		}
 	}
 
-	public double[] getOutputActivation(){
+	public double[] getOutputActivation() {
 		double[] output = new double[outputSize];
-		for ( int i=startOutput(); i < endOutput(); i++ ) {
-			output[i-startOutput()] = activity[i];
+		for (int i = startOutput(); i < endOutput(); i++) {
+			output[i - startOutput()] = activity[i];
 		}
 		return output;
 	}
-	
 
-	public void simulation(double eta, double alpha, double[][] pattern, boolean batch_update , double max_error) {
+	public void simulation(double eta, double alpha, double[][] pattern,
+			boolean batch_update, double max_error) {
 		System.out.println("----simulation----");
-		int max_iteration = 1000;
-		for (int i = 1; i < max_iteration; i++) {
+		int max_iteration = 100000;
+		for (int i = 1; i <= max_iteration; i++) {
 
 			for (double[] p : pattern) {
 				propagate(p);
-				back_propagate(p[2]);
+				for(int q = inputSize; q<p.length;q++){
+					back_propagate(p[q]);
+				}
+				
 				if (!batch_update) {
 					update_weight(eta, alpha);
 					reset_delta();
@@ -169,41 +227,41 @@ public class MLPnachVorlesung{
 			}
 			double error = 0.0;
 			for (double[] p : pattern) {
-				propagate(p);
-				error += calculateError(p[2]);
-//				System.out.println("Patter "+p[0]+" "+p[1]+"->"+activity[5]);
+				error += calculateError(p);
 			}
 			System.out.println(i + ".Step error= " + error);
-			if(max_error>error){
+			if (max_error > error) {
 				break;
-			}			
+			}
 		}
+		printMatrix(weights);
 	}
-	
-    public double calculateError(double target) {
-        double error = 0.0;
-        for ( int i=startOutput(); i < endOutput(); i++ ) {
-        	error += Math.pow( target-activity[i],2);
-        }
-        return error;
-    }
+
+	public double calculateError(double[] pattern) {
+		double error = 0.0;
+		propagate(pattern);
+		for (int i = 0; i < outputSize; i++) {
+			error += Math.pow(pattern[inputSize+i] - getOutputActivation()[i], 2);
+		}
+		return error;
+	}
 
 	private int startInput() {
 		return 1;
 	}
-	
+
 	private int startHidden() {
-		return 1+inputSize;
+		return 1 + inputSize;
 	}
 
 	private int startOutput() {
-		return 1+inputSize+hiddenSize;
+		return 1 + inputSize + hiddenSize;
 	}
-	
+
 	private int endInput() {
 		return startHidden();
 	}
-	
+
 	private int endHidden() {
 		return startOutput();
 	}
@@ -211,20 +269,19 @@ public class MLPnachVorlesung{
 	private int endOutput() {
 		return mlpSize;
 	}
-	
-	
-	public static void printArray(String preDesc, Double[] array) {
+
+	public static void printArray(String preDesc, double[] array) {
 		System.out.print(preDesc);
-		DecimalFormat format = new DecimalFormat("0.000000");
+		DecimalFormat format = new DecimalFormat("0.000");
 		for (int i = 0; i < array.length; i++) {
 			Double v = array[i];
-			System.out.print((v >= 0 ? " " : "") + format.format(v) + " ||");		
+			System.out.print((v >= 0 ? " " : "") + format.format(v) + " ||");
 		}
 		System.out.println();
 	}
-	
+
 	public static void printMatrix(Double[][] matrix) {
-		DecimalFormat format = new DecimalFormat("0.000000");
+		DecimalFormat format = new DecimalFormat("0.000");
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix.length; j++) {
 				Double v = matrix[i][j];
@@ -233,30 +290,69 @@ public class MLPnachVorlesung{
 			System.out.println();
 		}
 	}
-	
-	public void writeWeightsInCSV(){
-		try
-		{
-//			File file = new File("resources/weights"+System.currentTimeMillis()+".csv");
+
+	public void writeWeightsInCSV() {
+		try {
+			// File file = new
+			// File("resources/weights"+System.currentTimeMillis()+".csv");
 			File file = new File("resources/weights.csv");
 			FileWriter fw = new FileWriter(file);
 			StringBuffer sb = new StringBuffer();
-			
-			
+
 			for (int i = 0; i < mlpSize; i++) {
 				for (int j = 0; j < mlpSize; j++) {
-					sb.append(weights[i][j]+";");
+					sb.append(weights[i][j] + ";");
 				}
 				sb.append("\n");
 			}
-			
+
 			fw.write(sb.toString());
-			
+
 			fw.flush();
 			fw.close();
+		} catch (Exception e) {
+
 		}
-		catch(Exception e){
-			
+	}
+
+	public static double[][] readPattern(String filename) {
+		ArrayList<ArrayList<Double>> patterns = new ArrayList<ArrayList<Double>>();
+		try {
+			FileReader file = new FileReader(filename);
+			BufferedReader data = new BufferedReader(file);
+			String line = "";
+
+			while ((line = data.readLine()) != null) {
+				String[] splitLine = line.split(" ");
+				ArrayList<Double> tmpPattern = new ArrayList<Double>();
+				double output1 = new Double(splitLine[0]);
+				double output2 = new Double(splitLine[1]);
+				for (int i = 3; i < splitLine.length; i++) {
+					if (splitLine[i].contains(";")) {
+						continue;
+					}
+					tmpPattern.add(new Double(splitLine[i]));
+				}
+				tmpPattern.add(output1);
+				tmpPattern.add(output2);
+
+				patterns.add(tmpPattern);
+			}
+
+			file.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Datei nicht gefunden");
+		} catch (IOException e) {
+			System.out.println("E/A-Fehler");
 		}
+
+		double[][] patternArray = new double[patterns.size()][patterns.get(0)
+				.size()];
+		for (int i = 0; i < patterns.size(); i++) {
+			for (int j = 0; j < patterns.get(i).size(); j++) {
+				patternArray[i][j] = patterns.get(i).get(j);
+			}
+		}
+		return patternArray;
 	}
 }

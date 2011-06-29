@@ -38,6 +38,10 @@ public class MLPnachVTest {
 
 	private static MLPnachVorlesung xorMLP;
 	private static MLPnachVorlesung xorMLPFinish;
+	private static MLPnachVorlesung trainMLP_pca;
+	private static MLPnachVorlesung trainMLP_raw;
+	private static MLPnachVorlesung testMLP_pca;
+	private static MLPnachVorlesung testMLP_raw;
 
 	@BeforeClass
 	public static void init() {
@@ -93,34 +97,38 @@ public class MLPnachVTest {
 		weightsFinish[4][5] =  7.384794323630908;
 		
 		xorMLPFinish = new MLPnachVorlesung(2, 2, 1, weightsFinish, new SigmoidFunction());
+		
+		trainMLP_pca = new MLPnachVorlesung(90, 10, 2, new SigmoidFunction());
+		testMLP_pca  = new MLPnachVorlesung(90, 10, 2, new SigmoidFunction());
+		trainMLP_raw = new MLPnachVorlesung(906, 20, 2, new SigmoidFunction());
+		testMLP_raw  = new MLPnachVorlesung(906, 20, 2, new SigmoidFunction());
 	}
 
-	@Test
-	public void xorMLPnachVSimTest() {
-
-//		int[][] pattern = { { 0, 0, 0 }, { 1, 1, 0 }, { 1, 0, 1 }, { 0, 1, 1 } };
-		double[][] pattern = { { 0, 0, 0 }, { 0, 1, 1 }, { 1, 0, 1 }, { 1, 1, 0 }};
-		double learnStep_eta = 0.8;
-		double momentum_alpha = 0.9;
-		boolean batch_update = true;
-		double max_error = 0.01;
-		xorMLP.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
-		xorMLP.writeWeightsInCSV();
-	}
-	
 //	@Test
-//	public void xorMLPFinishTest() {
-//		double[][] pattern = { { 0, 0, 0 }, { 1, 1, 0 }, { 1, 0, 1 }, { 0, 1, 1 } };
+//	public void xorMLPnachVSimTest() {
+//
+//		double[][] pattern = { { 0, 0, 0 }, { 0, 1, 1 }, { 1, 0, 1 }, { 1, 1, 0 }};
 //		double learnStep_eta = 0.8;
 //		double momentum_alpha = 0.9;
 //		boolean batch_update = true;
 //		double max_error = 0.01;
-//		
-//		xorMLPFinish.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+//		xorMLP.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+//		xorMLP.writeWeightsInCSV();
 //	}
-//	
+	
 	@Test
-	public void xorMLPA3Test() {
+	public void xorMLPFinishTest() {
+		double[][] pattern = { { 0, 0, 0 }, { 1, 1, 0 }, { 1, 0, 1 }, { 0, 1, 1 } };
+		double learnStep_eta = 0.8;
+		double momentum_alpha = 0.9;
+		boolean batch_update = true;
+		double max_error = 0.01;
+		
+		xorMLPFinish.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+	}
+	
+	@Test
+	public void xorMLPA3CSVoutputsTest() {
 		for(int i1 = 0; i1 <= 10;i1++){
 			for(int i2 = 0; i2 <= 10;i2++){
 				double input1 = i1/10d;
@@ -132,4 +140,57 @@ public class MLPnachVTest {
 			}
 		}
 	}
+	
+//	@Test
+//	public void pca_train_MLPTest() {
+//		String pca_train_filename = "resources/train_pca";
+//		double[][] pattern = MLPnachVorlesung.readPattern(pca_train_filename);
+//		
+//		double learnStep_eta = 0.8;
+//		double momentum_alpha = 0.9;
+//		boolean batch_update = true;
+//		double max_error = 0.01;
+//		System.out.println("pca_train_MLPTest - patterns:"+pattern.length+" inputs:"+pattern[0].length);
+//		trainMLP_pca.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+//	}
+	
+	@Test
+	public void pca_test_MLPTest() {
+		String pca_train_filename = "resources/test_pca";
+		double[][] pattern = MLPnachVorlesung.readPattern(pca_train_filename);
+		
+		double learnStep_eta = 1;
+		double momentum_alpha = 1;
+		boolean batch_update = true;
+		double max_error = 0.01;
+		System.out.println("pca_test_MLPTest - patterns:"+pattern.length+" inputs:"+pattern[0].length);
+		testMLP_pca.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+	}
+	
+//	@Test
+//	public void raw_train_MLPTest() {
+//		String raw_train_filename = "resources/train_raw";
+//		double[][] pattern = MLPnachVorlesung.readPattern(raw_train_filename);
+//		
+//		double learnStep_eta = 0.8;
+//		double momentum_alpha = 0.9;
+//		boolean batch_update = true;
+//		double max_error = 0.01;
+//		System.out.println("raw_train_MLPTest - patterns:"+pattern.length+" inputs:"+pattern[0].length);
+//		trainMLP_raw.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+//	}
+//	
+//	@Test
+//	public void raw_test_MLPTest() {
+//		String raw_train_filename = "resources/test_raw";
+//		double[][] pattern = MLPnachVorlesung.readPattern(raw_train_filename);
+//		
+//		double learnStep_eta = 0.8;
+//		double momentum_alpha = 0.9;
+//		boolean batch_update = true;
+//		double max_error = 0.01;
+//		System.out.println("raw_test_MLPTest - patterns:"+pattern.length+" inputs:"+pattern[0].length);
+//		testMLP_raw.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+//	}
+	
 }
