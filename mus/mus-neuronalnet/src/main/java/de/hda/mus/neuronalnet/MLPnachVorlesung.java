@@ -1,5 +1,7 @@
 package de.hda.mus.neuronalnet;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.text.DecimalFormat;
 
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
@@ -134,7 +136,32 @@ public class MLPnachVorlesung{
 		}
 		return output;
 	}
-
+	
+	public void writeWeightsInCSV(){
+		try
+		{
+//			File file = new File("resources/weights"+System.currentTimeMillis()+".csv");
+			File file = new File("resources/weights.csv");
+			FileWriter fw = new FileWriter(file);
+			StringBuffer sb = new StringBuffer();
+			
+			
+			for (int i = 0; i < mlpSize; i++) {
+				for (int j = 0; j < mlpSize; j++) {
+					sb.append(weights[i][j]+";");
+				}
+				sb.append("\n");
+			}
+			
+			fw.write(sb.toString());
+			
+			fw.flush();
+			fw.close();
+		}
+		catch(Exception e){
+			
+		}
+	}
 	public void simulation(double eta, double alpha, double[][] pattern, boolean batch_update , double max_error) {
 		System.out.println("----simulation----");
 		int max_iteration = 100000;

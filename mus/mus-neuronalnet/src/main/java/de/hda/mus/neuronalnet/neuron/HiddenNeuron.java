@@ -19,8 +19,8 @@ public class HiddenNeuron extends AbstractNeuron implements Neuron {
 	public double activation(){
 		double inputSum = 0.0;
 		inputSum = inputSummation();
-		Neuron[] neurons = new Neuron[this.getPreNeurons().size()];
-		this.getPreNeurons().keySet().toArray(neurons);
+//		Neuron[] neurons = new Neuron[this.getPreNeurons().size()];
+//		this.getPreNeurons().keySet().toArray(neurons);
 		return this.getTransferFunction().proceedFunction(inputSum);
 	}
 	
@@ -49,7 +49,7 @@ public class HiddenNeuron extends AbstractNeuron implements Neuron {
 			implizitFlaw += weight * deltaFlaw;
 		}
 		
-		return implizitFlaw;
+		return this.getTransferFunction().proceedDerivativeFunction(implizitFlaw);
 	}
 
 }

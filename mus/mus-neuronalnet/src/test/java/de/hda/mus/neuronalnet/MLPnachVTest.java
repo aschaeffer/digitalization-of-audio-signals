@@ -3,6 +3,7 @@ package de.hda.mus.neuronalnet;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.hda.mus.neuronalnet.neuron.HiddenNeuron;
@@ -35,11 +36,11 @@ import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
  */
 public class MLPnachVTest {
 
-	private MLPnachVorlesung xorMLP;
-	private MLPnachVorlesung xorMLPFinish;
+	private static MLPnachVorlesung xorMLP;
+	private static MLPnachVorlesung xorMLPFinish;
 
-	@Before
-	public void init() {
+	@BeforeClass
+	public static void init() {
 
 		Double[][] weights = new Double[6][6];
 		Double[][] weightsFinish = new Double[6][6];
@@ -68,6 +69,7 @@ public class MLPnachVTest {
 		weights[3][5] = -1.969224e-02;
 		weights[4][5] = -3.293430e-02;
 		xorMLP = new MLPnachVorlesung(2, 2, 1, weights, new SigmoidFunction());
+//		xorMLP.writeWeightsInCSV();
 		
 		//mlp finish
 		
@@ -103,6 +105,7 @@ public class MLPnachVTest {
 		boolean batch_update = true;
 		double max_error = 0.01;
 		xorMLP.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+		xorMLP.writeWeightsInCSV();
 	}
 	
 //	@Test
@@ -118,17 +121,14 @@ public class MLPnachVTest {
 //	
 	@Test
 	public void xorMLPA3Test() {
-
-		double learnStep_eta = 0.8;
-		double momentum_alpha = 0.9;
-		boolean batch_update = true;
-		double max_error = 0.01;
-		for(int input1 = 0; input1 <= 10;input1++){
-			for(int input2 = 0; input2 <= 10;input2++){
-				double[] pattern = {input1/10,input2/10};
+		for(int i1 = 0; i1 <= 10;i1++){
+			for(int i2 = 0; i2 <= 10;i2++){
+				double input1 = i1/10d;
+				double input2 = i2/10d;
+				double[] pattern = {input1,input2};
 				xorMLP.propagate(pattern);
 				
-				System.out.println(input1/10+";"+input2/10+";"+xorMLP.getOutputActivation()[0]);
+				System.out.println(input1+";"+input2+";"+xorMLP.getOutputActivation()[0]);
 			}
 		}
 	}
