@@ -17,8 +17,8 @@ public class MLPnachVorlesung{
 
 	private Double[][] deltaWeight;
 	private Double[][] oldUpdate;
-	private Double[]    activity;
-	private Double[][]   weights;
+	public Double[]    activity;
+	public Double[][]   weights;
 	
 
 	public MLPnachVorlesung(int inputSize, int hiddenSize, int outputSize, Double[][] weights, TransferFunction transferFunction) {	
@@ -121,7 +121,7 @@ public class MLPnachVorlesung{
 	        }
 	    }
 	
-	private void reset_delta() {
+	public void reset_delta() {
 		for (int i = 0; i < mlpSize; i++) {
 			for (int j = 0; j < mlpSize; j++) {
 				deltaWeight[i][j] = 0.0;
@@ -165,7 +165,7 @@ public class MLPnachVorlesung{
 	public void simulation(double eta, double alpha, double[][] pattern, boolean batch_update , double max_error) {
 		System.out.println("----simulation----");
 		int max_iteration = 100000;
-				for (int i = 1; i < max_iteration; i++) {
+		for (int i = 1; i < max_iteration; i++) {
 
 			for (double[] p : pattern) {
 				propagate(p);
@@ -192,7 +192,7 @@ public class MLPnachVorlesung{
 		}
 	}
 	
-    private double calculateError(double target) {
+    public double calculateError(double target) {
         double error = 0.0;
         for ( int i=startOutput(); i < endOutput(); i++ ) {
         	error += Math.pow( target-activity[i],2);
