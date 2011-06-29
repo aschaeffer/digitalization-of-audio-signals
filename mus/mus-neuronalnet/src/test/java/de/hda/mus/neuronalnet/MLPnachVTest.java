@@ -104,17 +104,17 @@ public class MLPnachVTest {
 		testMLP_raw  = new MLPnachVorlesung(906, 20, 2, new SigmoidFunction());
 	}
 
-//	@Test
-//	public void xorMLPnachVSimTest() {
-//
-//		double[][] pattern = { { 0, 0, 0 }, { 0, 1, 1 }, { 1, 0, 1 }, { 1, 1, 0 }};
-//		double learnStep_eta = 0.8;
-//		double momentum_alpha = 0.9;
-//		boolean batch_update = true;
-//		double max_error = 0.01;
-//		xorMLP.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
-//		xorMLP.writeWeightsInCSV();
-//	}
+	@Test
+	public void xorMLPnachVSimTest() {
+
+		double[][] pattern = { { 0, 0, 0 }, { 0, 1, 1 }, { 1, 0, 1 }, { 1, 1, 0 }};
+		double learnStep_eta = 0.8;
+		double momentum_alpha = 0.9;
+		boolean batch_update = true;
+		double max_error = 0.01;
+		xorMLP.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+		xorMLP.writeWeightsInCSV();
+	}
 	
 	@Test
 	public void xorMLPFinishTest() {
