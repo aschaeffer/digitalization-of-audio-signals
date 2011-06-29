@@ -281,7 +281,7 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 		error = 0.0;
 		for (double[] p : pattern) {
 			xorMLP.propagate(p);
-			error += xorMLP.calculateError(p[2]);
+			error += xorMLP.calculateError(p);
 		}
 
 		// update gui
