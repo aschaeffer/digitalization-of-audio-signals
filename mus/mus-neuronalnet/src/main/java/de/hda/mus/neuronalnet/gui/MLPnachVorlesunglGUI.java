@@ -26,6 +26,7 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 	double[][] pattern = { { 0, 0, 0 }, { 0, 1, 1 }, { 1, 0, 1 }, { 1, 1, 0 }};
 	double[] inputs = { 0, 0 };
 	double target = 0;
+	double error = 0.0;
 
 	ArrayList<JButton> inputNeuronButtons = new ArrayList<JButton>();
 	ArrayList<JButton> hiddenNeuronButtons = new ArrayList<JButton>();
@@ -171,15 +172,16 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 			int pos = inputNeuronButtons.indexOf(button);
 			int realpos = 1 + pos;
 			String name = "Input " + pos + "(" + realpos + ")";
-			double inputValue = this.inputs[pos];
-			double activity = xorMLP.activity[realpos];
 			if (event.getSource() == button) {
 				if (this.inputs[pos] == 0.0) {
 					this.inputs[pos] = 1.0;
 				} else if (this.inputs[pos] == 1.0) {
 					this.inputs[pos] = 0.0;
 				}
+				xorMLP.propagate(this.inputs);
 			}
+			double inputValue = this.inputs[pos];
+			double activity = xorMLP.activity[realpos];
 			button.setText("<html>" + name + "<br> Value: " + inputValue + "<br> Activation: " + activity + "</html>");
 		}
 		// hidden neurons
@@ -243,8 +245,8 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 		double learnStep_eta = 0.8;
 		double momentum_alpha = 0.9;
 		double max_error = 0.01;
-		double iteration = 0.0;
 		double error = 0.0;
+		double iteration = 0.0;
 		JTextField iterationField = null;
 		JTextField errorField = null;
 
@@ -262,7 +264,6 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 				iteration = fieldValue;
 				iterationField = textfield;
 			} else if (fieldId == "error") {
-				error = fieldValue;
 				errorField = textfield;
 			}
 		}
@@ -277,6 +278,7 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 		xorMLP.reset_delta();
 		
 		// calculate error
+		error = 0.0;
 		for (double[] p : pattern) {
 			xorMLP.propagate(p);
 			error += xorMLP.calculateError(p[2]);
@@ -288,7 +290,9 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 
 		// continue only if error > max_error!
 		if (error < max_error) {
-			System.out.println("done.");
+			// System.out.println("done.");
+			learning = false;
+			timer.stop();
 		} else {
 			timer.restart();
 		}
