@@ -94,8 +94,20 @@ public class MLPnachVorlesung{
 			delta[i] *= transferFunction.proceedDerivativeFunction(activity[i]);;
 		}
 		//calculate Gradient
-		for (int i = 0; i < mlpSize; i++) {
-			for (int j = 0; j < mlpSize; j++) {
+		//Bias
+		for (int i = startHidden(); i < endOutput(); i++) {
+			deltaWeight[0][i] += (activity[0] * delta[i]);
+			
+		}
+		//Input -> Hidden
+		for (int i = startInput(); i < endInput(); i++) {
+			for (int j = startHidden(); j < endHidden(); j++) {
+				deltaWeight[i][j] += (activity[i] * delta[j]);
+			}
+		}
+		//Hidden -> Output
+		for (int i = startHidden(); i < endHidden(); i++) {
+			for (int j = startOutput(); j < endOutput(); j++) {
 				deltaWeight[i][j] += (activity[i] * delta[j]);
 			}
 		}
@@ -137,34 +149,10 @@ public class MLPnachVorlesung{
 		return output;
 	}
 	
-	public void writeWeightsInCSV(){
-		try
-		{
-//			File file = new File("resources/weights"+System.currentTimeMillis()+".csv");
-			File file = new File("resources/weights.csv");
-			FileWriter fw = new FileWriter(file);
-			StringBuffer sb = new StringBuffer();
-			
-			
-			for (int i = 0; i < mlpSize; i++) {
-				for (int j = 0; j < mlpSize; j++) {
-					sb.append(weights[i][j]+";");
-				}
-				sb.append("\n");
-			}
-			
-			fw.write(sb.toString());
-			
-			fw.flush();
-			fw.close();
-		}
-		catch(Exception e){
-			
-		}
-	}
+
 	public void simulation(double eta, double alpha, double[][] pattern, boolean batch_update , double max_error) {
 		System.out.println("----simulation----");
-		int max_iteration = 100000;
+		int max_iteration = 1000;
 		for (int i = 1; i < max_iteration; i++) {
 
 			for (double[] p : pattern) {
@@ -183,7 +171,7 @@ public class MLPnachVorlesung{
 			for (double[] p : pattern) {
 				propagate(p);
 				error += calculateError(p[2]);
-				System.out.println("Patter "+p[0]+" "+p[1]+"->"+activity[5]);
+//				System.out.println("Patter "+p[0]+" "+p[1]+"->"+activity[5]);
 			}
 			System.out.println(i + ".Step error= " + error);
 			if(max_error>error){
@@ -243,6 +231,32 @@ public class MLPnachVorlesung{
 				System.out.print((v > 0 ? " " : "") + format.format(v) + " ||");
 			}
 			System.out.println();
+		}
+	}
+	
+	public void writeWeightsInCSV(){
+		try
+		{
+//			File file = new File("resources/weights"+System.currentTimeMillis()+".csv");
+			File file = new File("resources/weights.csv");
+			FileWriter fw = new FileWriter(file);
+			StringBuffer sb = new StringBuffer();
+			
+			
+			for (int i = 0; i < mlpSize; i++) {
+				for (int j = 0; j < mlpSize; j++) {
+					sb.append(weights[i][j]+";");
+				}
+				sb.append("\n");
+			}
+			
+			fw.write(sb.toString());
+			
+			fw.flush();
+			fw.close();
+		}
+		catch(Exception e){
+			
 		}
 	}
 }
