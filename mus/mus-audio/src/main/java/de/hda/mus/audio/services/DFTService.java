@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -164,6 +165,15 @@ public class DFTService {
 		Peaks peaks = PeakAnalyzerService.createPeaks(internalAff, samples);
 		AudioContainer dftContainer = new AudioContainer(dftFile, dftContent, peaks);
 		audioFileDAO.save(dftContainer, dftContent.getStartMark(), dftContent.getEndMark());
+	}
+	
+	public void saveCsv(File dftFile, double[] values) throws IOException {
+		FileOutputStream fos = new FileOutputStream(dftFile);
+		DataOutputStream dos = new DataOutputStream(fos);
+		for (int i=0; i<values.length; i++) {
+			dos.writeChars(""+i+";"+values[i]);
+		}
+		fos.close();	
 	}
 
 	private double[] getReXPart(double[] values, int timescale) {
