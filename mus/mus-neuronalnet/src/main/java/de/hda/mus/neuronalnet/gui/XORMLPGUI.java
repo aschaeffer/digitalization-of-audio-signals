@@ -17,7 +17,7 @@ import javax.swing.Timer;
 import de.hda.mus.neuronalnet.MLP;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 
-public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
+public class XORMLPGUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 	Boolean learning = false;
 	Timer timer = new Timer(50, this);
 
-	public MLPnachVorlesunglGUI() {
+	public XORMLPGUI() {
 		int maxSize = 1; // bias +1
 		for (int i = 0; i < size.length; i++) {
 			maxSize += size[i];
@@ -299,7 +299,7 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		MLPnachVorlesunglGUI gui = new MLPnachVorlesunglGUI();
+		XORMLPGUI gui = new XORMLPGUI();
 		gui.setLocation(200, 350);
 		gui.setSize(800, 350);
 		gui.setVisible(true);
