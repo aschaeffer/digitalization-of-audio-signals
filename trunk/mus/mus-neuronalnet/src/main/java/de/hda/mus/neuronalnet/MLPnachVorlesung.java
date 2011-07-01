@@ -203,6 +203,8 @@ public class MLPnachVorlesung {
 		return output;
 	}
 
+	
+	
 	public void simulation(double eta, double alpha, double[][] pattern,
 			boolean batch_update, double max_error) {
 		System.out.println("----simulation----");
@@ -233,6 +235,51 @@ public class MLPnachVorlesung {
 
 			if ((i % 100) == 0) {
 				System.out.println(i + ".Step error= " + error);
+			}
+
+			if (max_error > error) {
+				iter = i;
+				break;
+			}
+		}
+		System.out.println(iter + ".Step error= " + error);
+	}
+	
+	
+	public void simulation(double eta, double alpha, double[][] pattern, boolean batch_update, double max_error, double[][] expected) {
+		System.out.println("----simulation----");
+		int max_iteration = 100000;
+		int iter = 1;
+		double error =0.0;
+		for (int i = 1; i <= max_iteration; i++) {
+
+			for (double[] p : pattern) {
+				propagate(p);
+				back_propagate(p);
+				
+
+				if (!batch_update) {
+					update_weight(eta, alpha);
+					reset_delta();
+				}
+			}
+			if (batch_update) {
+				update_weight(eta, alpha);
+				reset_delta();
+			}
+			
+			error = 0.0;
+			for (double[] p : pattern) {
+				error += calculateError(p);
+			}
+
+			double expectedPattern_error = 0.0;
+			for (double[] p : expected) {
+				expectedPattern_error += calculateError(p);
+			}
+			
+			if ((i % 100) == 0) {
+				System.out.println(i + ".Step error= " + error + " expected pattern error %=" + (expectedPattern_error/expected.length)*100 );
 			}
 
 			if (max_error > error) {
