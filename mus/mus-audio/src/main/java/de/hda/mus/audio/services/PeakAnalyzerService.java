@@ -67,8 +67,7 @@ public class PeakAnalyzerService {
 				}
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("C A T C H in PeakAnalyzer - pos: " + pos);
-			System.out.println("C A T C H in PeakAnalyzer: " + i);
+			System.out.println("PeakAnalyzer: ArrayIndexOutOfBoundsException; pos: " + pos + " i: " + i);
 		}
 
 		return peaks;
