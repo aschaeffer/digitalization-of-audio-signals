@@ -295,7 +295,7 @@ public class MLPnachVorlesung {
 				break;
 			}
 		}
-		System.out.println(iter + ".Step error= " + error + " best available error on i("+best_error_iter+"): "+best_exp_error);
+		System.out.println(iter + ".Step error= " + error + " best available error i("+best_error_iter+"): "+best_exp_error);
 	}
 
 	public double calculateError(double[] pattern) {
