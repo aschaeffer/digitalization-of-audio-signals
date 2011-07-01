@@ -136,8 +136,18 @@ public class AudioFileDAO {
 				for (int bufferIndex = 0; bufferIndex < readLength; sampleIndex++, remainingSamples--) {
 					for (int channelIndex = 0; channelIndex < channels; channelIndex++) {
 						double sample = samples[channelIndex][sampleIndex];
-						sample = sample >= 0 ? sample * Short.MAX_VALUE : -sample * Short.MIN_VALUE;// denormalize
-						final short value = (short) (sample + 0.5);// round
+						short value = 0;
+						if (sample >= 0) {
+							sample = sample * Short.MAX_VALUE;
+							value = (short) (sample + 0.5); // round
+						} else {
+							sample = -sample * Short.MIN_VALUE;
+							value = (short) (sample - 0.5); // round
+						}
+						// Fixed
+						// sample = sample >= 0 ? sample * Short.MAX_VALUE : -sample * Short.MIN_VALUE;// denormalize
+						// final short value = (short) (sample + 0.5);// round
+						// End Fix
 						buffer[bufferIndex++] = (byte) (value >>> 0);// pack LSB
 						buffer[bufferIndex++] = (byte) (value >>> 8);// pack HSB
 						bytesRead += 2;

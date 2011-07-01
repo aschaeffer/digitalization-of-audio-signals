@@ -44,7 +44,21 @@ public class SNRService {
 //			return 10d * Math.log(nutzsignalleistung / rauschsignalleistung);
 //		}
 	}
-	
+
+	/**
+	 * Wir beachten hier erstmal nur Mono-Signale (Spur 0).
+	 * 
+	 * @param container1
+	 * @param container2
+	 * @return
+	 */
+	public double getSNR(double[] samples1, double[] samples2) {
+		double nutzsignalleistung = sumPow2OfArray(samples1);
+		double rauschsignalleistung = sumPow2DiffOfArray(samples1, samples2);
+		System.out.println(" + div: " + nutzsignalleistung / rauschsignalleistung + "  log: " + Math.log(nutzsignalleistung / rauschsignalleistung) + "  10*log: " + 10d * Math.log(nutzsignalleistung / rauschsignalleistung));
+		return 10d * Math.log(nutzsignalleistung / rauschsignalleistung);
+	}
+
 	private double sumPow2OfArray(double[] a) {
 		double s = 0;
 		for (int x=0; x<a.length; x++) {
