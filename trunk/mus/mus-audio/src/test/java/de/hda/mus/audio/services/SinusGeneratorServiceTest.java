@@ -7,9 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
@@ -17,31 +15,19 @@ import org.junit.Test;
 import de.hda.mus.audio.dao.AudioFileDAO;
 import de.hda.mus.audio.domains.AudioContainer;
 
+/**
+ * Erzeugen Sie zwei Dateien, die jeweils ein Sinussignal mit einer
+ * Frequenz von 400 Hz enthalten. Die Dateien sollen aber unterschiedliche
+ * Amplituden oder Phasen haben. Im Folgenden wird auf diese Dateien mit
+ * der Bezeichnung „Testdatei 400 Hz 1“ bzw. „Testdatei 400 Hz 2“ Bezug
+ * genommen. Superponieren Sie die beiden Dateien zu einer Datei mit der
+ * Bezeichnung „Testdatei 400 Hz superponiert“.
+ * 
+ * @author aschaeffer
+ *
+ */
 public class SinusGeneratorServiceTest {
 
-//	@Test
-//	public void testSinusGenerator() throws LineUnavailableException, InterruptedException {
-//		// Sinus Generator
-//		SinusGeneratorService sinusGenerator = new SinusGeneratorService();
-//		AudioContainer container = sinusGenerator.generate(new File("demo/sinus.wav"), 200f, 100, 0f, 2000);
-//
-//		// Output
-//		System.out.println(container.getTitle());
-//		System.out.println(container.getAudioContent().audioContentToString());
-//
-//		AudioPlayerService player = new AudioPlayerService();
-//		player.setAudioContent(container.getAudioContent());
-//		SourceDataLine sdl = AudioSystem.getSourceDataLine(container.getAudioFormat());
-//		player.setOutputLine(sdl);
-//		player.play();
-//		player.block();
-//	}
-
-//	Erzeugen Sie zwei Dateien, die jeweils ein Sinussignal mit einer Frequenz von 400 Hz enthal-
-//	ten. Die Dateien sollen aber unterschiedliche Amplituden oder Phasen haben. Im Folgenden
-//	wird auf diese Dateien mit der Bezeichnung „Testdatei 400 Hz 1“ bzw. „Testdatei 400 Hz 2“ Be-
-//	zug genommen. Superponieren Sie die beiden Dateien zu einer Datei mit der Bezeichnung
-//	„Testdatei 400 Hz superponiert“.
 
 	/**
 	 * Testdatei-400Hz-1.wav
@@ -169,47 +155,88 @@ public class SinusGeneratorServiceTest {
 	}
 
 	@Test
-	public void testSuperponieren() throws Exception {
+	public void testSuperponieren400Hz() throws Exception {
+
+		File sinus3 = new File("target/test-classes/demo/Testdatei-400Hz-1a.wav");
+		File sinus4 = new File("target/test-classes/demo/Testdatei-400Hz-2a.wav");
+		File sinus5 = new File("target/test-classes/demo/Testdatei-400Hz-3a.wav");
+		File superponiert = new File("target/test-classes/demo/Testdatei-400Hz-superponiert.wav");
+		File eleminierendSpuperponiert = new File("target/test-classes/demo/Testdatei-400Hz-eleminierendSuperponiert.wav");
+
 		SuperponierService superponierService = new SuperponierService();
 		SinusGeneratorService sinusGenerator = new SinusGeneratorService();
-		File sinus3 = new File("target/test-classes/demo/Testdatei-400Hz-1.wav");
-		File sinus4 = new File("target/test-classes/demo/Testdatei-400Hz-2.wav");
-		File superponiert = new File("target/test-classes/demo/Testdatei-400Hz-2.wav");
-		
-		// laden der dateien sinus
-//		AudioFileDAO audioFileDAO = new AudioFileDAO();
-//		AudioContainer container3 = audioFileDAO.load(sinus3);
-//		AudioContainer container4 = audioFileDAO.load(sinus4);
+		AudioFileDAO audioFileDAO = new AudioFileDAO();
 
-		// ... ueberlagerung der phase ist hoerbar:
-		AudioContainer container3 = sinusGenerator.generate(sinus3, 700f, 200, 0f, 1000);
-		AudioContainer container4 = sinusGenerator.generate(sinus4, 700f, 200, 0.75f, 1000);
-
-		// ... eleminierend:
-		// AudioContainer container3 = sinusGenerator.generate(sinus3, 400f, 200, 0f, 1000);
-		// AudioContainer container4 = sinusGenerator.generate(sinus4, 400f, 200, (float) Math.PI, 1000); // eleminierende Phase, har har
-		
-		// superponieren
-		AudioContainer container = superponierService.superponieren(container3, container4, superponiert, 1000);
-
+		// ... ueberlagerung der phase ist hoerbar bei diesen beiden schwingungen:
+		AudioContainer container3 = sinusGenerator.generate(sinus3, 400f, 200, 0f, 1000);
+		AudioContainer container4 = sinusGenerator.generate(sinus4, 400f, 200, 0.75f, 1000);
+		// beide superponieren
+		AudioContainer phasenUeberlagertSuperponiertContainer = superponierService.superponieren(container3, container4, superponiert, 1000);
 		// speichern...
-//		Boolean success = audioFileDAO.save(superponiertContainer, superponiertContainer.getAudioContent().getStartMark(), superponiertContainer.getAudioContent().getEndMark());
-//		assertTrue(success);
+		Boolean success = audioFileDAO.save(phasenUeberlagertSuperponiertContainer, phasenUeberlagertSuperponiertContainer.getAudioContent().getStartMark(), phasenUeberlagertSuperponiertContainer.getAudioContent().getEndMark());
+		assertTrue(success);
+
+		// ... eine schwingung, die eine eleminierende Phase hat:
+		AudioContainer container5 = sinusGenerator.generate(sinus5, 400f, 200, (float) Math.PI, 1000);
+		// beide superponieren
+		AudioContainer eleminierendSpuperponiertContainer = superponierService.superponieren(container3, container5, eleminierendSpuperponiert, 1000);
+		// speichern...
+		Boolean success2 = audioFileDAO.save(eleminierendSpuperponiertContainer, eleminierendSpuperponiertContainer.getAudioContent().getStartMark(), eleminierendSpuperponiertContainer.getAudioContent().getEndMark());
+		assertTrue(success2);
 		
 		// ... oder abspielen
-		AudioPlayerService player = new AudioPlayerService();
-		player.setAudioContent(container.getAudioContent());
-		SourceDataLine outputLine = AudioSystem.getSourceDataLine(container.getAudioFormat());
-		player.setOutputLine(outputLine);
-		player.play();
-		player.block();
+//		AudioPlayerService player = new AudioPlayerService();
+//		player.setAudioContent(container.getAudioContent());
+//		SourceDataLine outputLine = AudioSystem.getSourceDataLine(container.getAudioFormat());
+//		player.setOutputLine(outputLine);
+//		player.play();
+//		player.block();
+	}
+
+	@Test
+	public void testSuperponieren3000Hz() throws Exception {
+
+		File sinus3 = new File("target/test-classes/demo/Testdatei-3000Hz-1a.wav");
+		File sinus4 = new File("target/test-classes/demo/Testdatei-3000Hz-2a.wav");
+		File sinus5 = new File("target/test-classes/demo/Testdatei-3000Hz-3a.wav");
+		File superponiert = new File("target/test-classes/demo/Testdatei-3000Hz-superponiert.wav");
+		File eleminierendSpuperponiert = new File("target/test-classes/demo/Testdatei-3000Hz-eleminierendSuperponiert.wav");
+
+		SuperponierService superponierService = new SuperponierService();
+		SinusGeneratorService sinusGenerator = new SinusGeneratorService();
+		AudioFileDAO audioFileDAO = new AudioFileDAO();
+
+		// ... ueberlagerung der phase ist hoerbar bei diesen beiden schwingungen:
+		AudioContainer container3 = sinusGenerator.generate(sinus3, 3000f, 200, 0f, 1000);
+		AudioContainer container4 = sinusGenerator.generate(sinus4, 3000f, 200, 0.75f, 1000);
+		// beide superponieren
+		AudioContainer phasenUeberlagertSuperponiertContainer = superponierService.superponieren(container3, container4, superponiert, 1000);
+		// speichern...
+		Boolean success = audioFileDAO.save(phasenUeberlagertSuperponiertContainer, phasenUeberlagertSuperponiertContainer.getAudioContent().getStartMark(), phasenUeberlagertSuperponiertContainer.getAudioContent().getEndMark());
+		assertTrue(success);
+
+		// ... eine schwingung, die eine eleminierende Phase hat:
+		AudioContainer container5 = sinusGenerator.generate(sinus5, 3000f, 200, (float) Math.PI, 1000);
+		// beide superponieren
+		AudioContainer eleminierendSpuperponiertContainer = superponierService.superponieren(container3, container5, eleminierendSpuperponiert, 1000);
+		// speichern...
+		Boolean success2 = audioFileDAO.save(eleminierendSpuperponiertContainer, eleminierendSpuperponiertContainer.getAudioContent().getStartMark(), eleminierendSpuperponiertContainer.getAudioContent().getEndMark());
+		assertTrue(success2);
+		
+		// ... oder abspielen
+//		AudioPlayerService player = new AudioPlayerService();
+//		player.setAudioContent(container.getAudioContent());
+//		SourceDataLine outputLine = AudioSystem.getSourceDataLine(container.getAudioFormat());
+//		player.setOutputLine(outputLine);
+//		player.play();
+//		player.block();
 	}
 
 	@Test
 	public void testChangeSampleRate() throws FileNotFoundException, IOException, LineUnavailableException, InterruptedException, UnsupportedAudioFileException {
 		AudioFileDAO audioFileDAO = new AudioFileDAO();
 		File sprache_original= new File("target/test-classes/demo/sprache.wav");
-		File sprache_8khz = new File("target/test-classes/demo/sprache-8khz.wav");
+		File sprache_8khz = new File("target/test-classes/demo/sprache-8khz-changesamplerate.wav");
 		AudioContainer container = audioFileDAO.load(sprache_original);
 		Integer channels = container.getAudioFormat().getChannels();
 		Float sampleRate = 8000f; // container.getAudioFormat().getSampleRate();
@@ -222,4 +249,22 @@ public class SinusGeneratorServiceTest {
 		audioFileDAO.save(container, container.getAudioContent().getStartMark(), container.getAudioContent().getEndMark());
 	}
 
+	
+//	@Test
+//	public void testSinusGenerator() throws LineUnavailableException, InterruptedException {
+//		// Sinus Generator
+//		SinusGeneratorService sinusGenerator = new SinusGeneratorService();
+//		AudioContainer container = sinusGenerator.generate(new File("demo/sinus.wav"), 200f, 100, 0f, 2000);
+//
+//		// Output
+//		System.out.println(container.getTitle());
+//		System.out.println(container.getAudioContent().audioContentToString());
+//
+//		AudioPlayerService player = new AudioPlayerService();
+//		player.setAudioContent(container.getAudioContent());
+//		SourceDataLine sdl = AudioSystem.getSourceDataLine(container.getAudioFormat());
+//		player.setOutputLine(sdl);
+//		player.play();
+//		player.block();
+//	}
 }

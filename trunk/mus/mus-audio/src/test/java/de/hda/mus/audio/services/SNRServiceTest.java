@@ -1,7 +1,5 @@
 package de.hda.mus.audio.services;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.IOException;
 
