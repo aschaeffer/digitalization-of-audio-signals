@@ -250,8 +250,6 @@ public class MLP {
 		int iter = 1;
 		
 		double error =0.0;
-		double best_exp_error = 100;
-		int best_error_iter = 0;
 		for (int i = 1; i <= max_iteration; i++) {
 
 			for (double[] p : pattern) {
@@ -287,7 +285,11 @@ public class MLP {
 				break;
 			}
 		}
-		System.out.println(iter + ".Step error= " + error + " best available error i("+best_error_iter+"): "+best_exp_error);
+		int calTestError =0;
+		for (double[] p : expected) {
+			calTestError+= calculateErrorForTestPattern(p);
+		}
+		System.out.println(iter + ".Step error= " + error + " expected pattern error %=" + (calTestError*100/expected.length) );
 	}
 
 	public double calculateError(double[] pattern) {
@@ -382,9 +384,7 @@ public class MLP {
 				}
 				sb.append("\n");
 			}
-
 			fw.write(sb.toString());
-
 			fw.flush();
 			fw.close();
 		} catch (Exception e) {
@@ -398,7 +398,6 @@ public class MLP {
 			FileReader file = new FileReader(filename);
 			BufferedReader data = new BufferedReader(file);
 			String line = "";
-
 			
 			int row = 0;
 			while ((line = data.readLine()) != null) {
