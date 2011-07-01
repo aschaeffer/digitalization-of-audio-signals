@@ -171,7 +171,7 @@ public class DFTService {
 		FileOutputStream fos = new FileOutputStream(dftFile);
 		DataOutputStream dos = new DataOutputStream(fos);
 		for (int i=0; i<values.length; i++) {
-			dos.writeChars(""+i+";"+values[i]);
+			dos.writeChars(""+i+";"+values[i]+"\n");
 		}
 		fos.close();	
 	}
