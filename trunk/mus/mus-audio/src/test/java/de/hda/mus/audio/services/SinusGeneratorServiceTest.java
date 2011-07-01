@@ -267,4 +267,6 @@ public class SinusGeneratorServiceTest {
 //		player.play();
 //		player.block();
 //	}
+
+
 }
