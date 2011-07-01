@@ -3,7 +3,7 @@ package de.hda.mus.audio.services;
 /**
  * Instances of classes implementing this interface can be notified
  * about changes in a players state and loop state.
- * of AudioPlayer�s status or to its loop state
+ * of AudioPlayer's status or to its loop state
  * 
  * @author Joerg Stick
  * @version 1.0
