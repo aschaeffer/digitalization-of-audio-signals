@@ -1,379 +1,456 @@
 package de.hda.mus.neuronalnet;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map.Entry;
+import java.util.Random;
 
-import de.hda.mus.neuronalnet.neuron.HiddenNeuron;
-import de.hda.mus.neuronalnet.neuron.InputNeuron;
-import de.hda.mus.neuronalnet.neuron.Neuron;
-import de.hda.mus.neuronalnet.neuron.OutputNeuron;
-import de.hda.mus.neuronalnet.transferfunction.LinearFunction;
-import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 import de.hda.mus.neuronalnet.transferfunction.TransferFunction;
 
-/**
- * Bitte implementieren Sie ein mehrschichtiges Perzeptron (MLP). Das MLP soll
- * eine Eingangs-schicht, eine versteckte Schicht und eine Ausgabeschicht haben.
- * Das von Ihnen zu implemen-tierende MLP soll ueber folgende Features
- * verfolgen: - Anzahl der Neuronen in den Schichten konfigurierbar -
- * Transferfunktion der Neuronen der Ausgabeschicht waehlbar - Lernrate und
- * Momentum frei waehlbar - Single oder Batch Update waehlbar - Waehrend des
- * Trainings wird der quadratische Fehler fuer die Trainingsmenge fuer jeden
- * Zyklus berechnet.
- * 
- * Anmerkung: - Ein Trainingszyklus setzt sich aus Propagation- und
- * Back-Propagation-Berechnungen fuer alle Muster der Trainingsmenge zusammen.
- * 
- * @author aschaeffer
- * @author khalid
- * 
- */
 public class MLP {
 
-	/**
-	 * The bias weight is a constant.
-	 */
-	public static final double BIAS_VALUE = 1;
+	private int mlpSize;
+	private int inputSize;
+	private int hiddenSize;
+	private int outputSize;
+	private TransferFunction transferFunction;
 
-	/**
-	 * The bias neuron of the MLP.
-	 */
-	protected InputNeuron biasNeuron;
+	private Double[][] deltaWeight;
+	private Double[][] oldUpdate;
+	public Double[] activity;
+	public Double[][] weights;
 
-	/**
-	 * The input layer of the MLP.
-	 */
-	protected ArrayList<InputNeuron> inputLayer = new ArrayList<InputNeuron>();
+	private Random random;
 
-	/**
-	 * The hidden layer of the MLP.
-	 */
-	protected ArrayList<HiddenNeuron> hiddenLayer = new ArrayList<HiddenNeuron>();
+	public MLP(int inputSize, int hiddenSize, int outputSize,
+			Double[][] weights, TransferFunction transferFunction) {
+		this.inputSize = inputSize;
+		this.hiddenSize = hiddenSize;
+		this.outputSize = outputSize;
+		mlpSize = 1 + inputSize + hiddenSize + outputSize;
+		this.transferFunction = transferFunction;
+		this.weights = weights;
 
-	/**
-	 * The output layer of the MLP.
-	 */
-	protected ArrayList<OutputNeuron> outputLayer = new ArrayList<OutputNeuron>();
+		deltaWeight = new Double[mlpSize][mlpSize];
+		oldUpdate = new Double[mlpSize][mlpSize];
+		activity = new Double[mlpSize];
 
-	/**
-	 * The default transfer function is the sigmoid function.
-	 */
-	public TransferFunction defaultTransferFunction = new SigmoidFunction();
-
-	/**
-	 * The default pattern 
-	 */
-	protected int[][] pattern = {};
-
-	/**
-	 * The constructor initializes also the bias neuron.
-	 */
-	public MLP() {
-		this.biasNeuron = new InputNeuron(BIAS_VALUE, new LinearFunction());
-		this.biasNeuron.setName("Bias Neuron 0");
+		for (int i = 0; i < mlpSize; i++) {
+			for (int j = 0; j < mlpSize; j++) {
+				deltaWeight[i][j] = 0.0;
+				oldUpdate[i][j] = 0.0;
+			}
+			activity[i] = 0.0;
+		}
+		// printMatrix(weights);
 	}
 
-	/**
-	 * Sets a default transfer function.
-	 * 
-	 * @param transferFunction
-	 *            The default transfer function.
-	 */
-	public void setDefaultTransferFunction(TransferFunction transferFunction) {
-		this.defaultTransferFunction = transferFunction;
-	}
-
-	/**
-	 * Gets the bias neuron.
-	 * 
-	 * @return
-	 */
-	public InputNeuron getBiasNeuron() {
-		return this.biasNeuron;
-	}
-
-	/**
-	 * Add an input neuron.
-	 * 
-	 * @param name
-	 *            Name of the neuron.
-	 * @param value
-	 *            The input value of the neuron.
-	 * @return Returns an input neuron.
-	 */
-	public InputNeuron addInputNeuron(String name, double value) {
-		InputNeuron neuron = new InputNeuron(value);
-		inputLayer.add(neuron);
-		neuron.setName("Input " + name);
-		return neuron;
-	}
-
-	/**
-	 * Add an input neuron.
-	 * 
-	 * @param name
-	 *            Name of the neuron.
-	 * @param value
-	 *            The input value of the neuron.
-	 * @param transferFunction
-	 *            The transfer function of the neuron.
-	 * @return Returns an input neuron.
-	 */
-	public InputNeuron addInputNeuron(String name, double value,
+	public MLP(int inputSize, int hiddenSize, int outputSize,
 			TransferFunction transferFunction) {
-		InputNeuron neuron = new InputNeuron(value, transferFunction);
-		inputLayer.add(neuron);
-		neuron.setName("Input " + name);
-		return neuron;
+		this.inputSize = inputSize;
+		this.hiddenSize = hiddenSize;
+		this.outputSize = outputSize;
+		this.mlpSize = 1 + inputSize + hiddenSize + outputSize;
+		this.transferFunction = transferFunction;
+		this.weights = new Double[mlpSize][mlpSize];
+
+		deltaWeight = new Double[mlpSize][mlpSize];
+		oldUpdate = new Double[mlpSize][mlpSize];
+		activity = new Double[mlpSize];
+
+		for (int i = 0; i < mlpSize; i++) {
+			for (int j = 0; j < mlpSize; j++) {
+				deltaWeight[i][j] = 0.0;
+				oldUpdate[i][j] = 0.0;
+				weights[i][j] = 0.0;
+			}
+			activity[i] = 0.0;
+		}
+		random = new Random();
+		generateRandomWeights();
 	}
 
-	/**
-	 * Add a hidden neuron.
-	 * 
-	 * @param name
-	 *            Name of the neuron.
-	 * @return Returns a neuron.
-	 */
-	public HiddenNeuron addHiddenNeuron(String name) {
-		HiddenNeuron neuron = new HiddenNeuron(this.defaultTransferFunction);
-		hiddenLayer.add(neuron);
-		neuron.setName("Hidden " + name);
-		return neuron;
-
-	}
-
-	/**
-	 * Add a hidden neuron.
-	 * 
-	 * @param name
-	 *            Name of the neuron.
-	 * @param transferFunction
-	 *            The transfer function of the neuron.
-	 * @return Returns a neuron.
-	 */
-	public HiddenNeuron addHiddenNeuron(String name,
-			TransferFunction transferFunction) {
-		HiddenNeuron neuron = new HiddenNeuron(transferFunction);
-		hiddenLayer.add(neuron);
-		neuron.setName("Hidden " + name);
-		return neuron;
-	}
-
-	/**
-	 * Add an output neuron.
-	 * 
-	 * @param name
-	 *            Name of the neuron.
-	 * @return Returns a neuron.
-	 */
-	public OutputNeuron addOutputNeuron(String name) {
-		OutputNeuron neuron = new OutputNeuron(this.defaultTransferFunction);
-		outputLayer.add(neuron);
-		neuron.setName("Output " + name);
-		return neuron;
-	}
-
-	/**
-	 * Add an output neuron.
-	 * 
-	 * @param name
-	 *            Name of the neuron.
-	 * @param transferFunction
-	 *            The transfer function of the neuron.
-	 * @return Returns a neuron.
-	 */
-	public OutputNeuron addOutputNeuron(String name,
-			TransferFunction transferFunction) {
-		OutputNeuron neuron = new OutputNeuron(transferFunction);
-		outputLayer.add(neuron);
-		neuron.setName("Output " + name);
-		return neuron;
-	}
-
-	/**
-	 * Returns all neurons (bias, input neurons, hidden neurons and output
-	 * neurons) of the MLP.
-	 * 
-	 * @return A list of neurons
-	 */
-	public List<Neuron> getAllNeurons() {
-		ArrayList<Neuron> neurons = new ArrayList<Neuron>();
-		neurons.add(this.biasNeuron);
-		neurons.addAll(this.inputLayer);
-		neurons.addAll(this.hiddenLayer);
-		neurons.addAll(this.outputLayer);
-		return neurons;
-	}
-
-
-
-	private void update_weight_neuron(double learnStep_eta,
-			double momentum_alpha, Neuron currentNeuron, Neuron preNeuron,
-			double flawDelta) {
-		double update = -1 * learnStep_eta * flawDelta; // schritt gemäß
-														// Gradient
-														// System.out.println("neuron.weightedFlaw(target) "+flawDelta);
-		// System.out.println("update "+update);
-		update += momentum_alpha
-				* currentNeuron.getOldUpdateValueForPreNeuron(preNeuron); // Momentum
-																			// Term
-																			// System.out.println("update "+update);
-		double newWeight = currentNeuron.getPreNeurons().get(preNeuron)
-				+ update;
-
-		// System.out.println(currentNeuron.getPreNeurons().get(preNeuron)
-		// +" + "+update +"=" + newWeight);
-
-		currentNeuron.putPreNeuron(preNeuron, newWeight); // Gewicht wird
-															// geändert
-															// System.out.println(currentNeuron.getPreNeurons().get(preNeuron));
-		currentNeuron.putOldUpdateValueForPreNeuron(preNeuron, update);// Speicherung
-																		// des
-																		// aktuellen
-																		// updates
-		// reset des Gradienten
-	}
-
-	/**
-	 * 
-	 * @param learnStep_eta
-	 * @param momentum_alpha
-	 * @param pattern
-	 * @param batch_update
-	 * @return gesamt Error nach dem Lernen
-	 */
-	public double learn(double learnStep_eta, double momentum_alpha,
-			int[][] pattern, boolean batch_update) {
-
-		for (Neuron neuron : getAllNeurons()) {
-			for (Neuron preNeuron : neuron.getPreNeurons().keySet()) {
-				// System.out.println(neuron.getName() +
-				// "<-> "+preNeuron.getName());
-
-				double flawDelta = 0.0;
-
-				for (int[] p : pattern) {
-					for (int i = 0; i < inputLayer.size(); i++) {
-						inputLayer.get(i).setValue(p[i]);
-					}
-
-					flawDelta += neuron.weightedFlaw(p[2]);
-
-					if (!batch_update) {
-						update_weight_neuron(learnStep_eta, momentum_alpha,
-								neuron, preNeuron, flawDelta);
-						flawDelta = 0.0;
-					}
-				}
-				if (batch_update) {
-					update_weight_neuron(learnStep_eta, momentum_alpha, neuron,
-							preNeuron, flawDelta);
-					flawDelta = 0.0;
-				}
-
+	private void generateRandomWeights() {
+		// Bias
+		for (int i = startHidden(); i < endOutput(); i++) {
+			weights[0][i] = random.nextDouble() - 0.5;
+		}
+		// Input -> Hidden
+		for (int i = startInput(); i < endInput(); i++) {
+			for (int j = startHidden(); j < endHidden(); j++) {
+				weights[i][j] = random.nextDouble() - 0.5;
+			}
+		}
+		// Hidden -> Output
+		for (int i = startHidden(); i < endHidden(); i++) {
+			for (int j = startOutput(); j < endOutput(); j++) {
+				weights[i][j] = random.nextDouble() - 0.5;
 			}
 		}
 
-		double overallFlaw = 0.0;
-		for (Neuron output : outputLayer) {
-			for (int[] p : pattern) {
-				for (int i = 0; i < inputLayer.size(); i++) {
-					inputLayer.get(i).setValue(p[i]);
-				} 
-				overallFlaw += Math.pow((p[2] - output.activation()), 2);
-				System.out.println(overallFlaw);
+	}
+
+	public MLP(Double[][] weights) {
+		for (int i = 0; i < mlpSize; i++) {
+			for (int j = 0; j < mlpSize; j++) {
+				deltaWeight[i][j] = 0.0;
+				oldUpdate[i][j] = 0.0;
 			}
 		}
-		return overallFlaw;
+		this.weights = weights;
 	}
 
-	public ArrayList<InputNeuron> getInputLayer() {
-		return inputLayer;
+	public void propagate(double[] inputs) {
+		activity[0] = 1.0;
+
+		// fill input fields
+		for (int i = 0; i < (endInput() - startInput()); i++) {
+			activity[i + startInput()] = (double) inputs[i];
+		}
+
+		// propagate the activation
+		for (int i = startHidden(); i < endOutput(); i++) {
+			double activation = activity[0] * weights[0][i];
+			for (int j = 1; j < endHidden(); j++) {
+				activation += activity[j] * weights[j][i];
+				// System.out.println(activation+"+="+ activity[j] +"*"+
+				// weights[j][i]);
+			}
+			activity[i] = transferFunction.proceedFunction(activation);
+		}
+		// printArray("Activity: ",activity);
 	}
 
-	public ArrayList<HiddenNeuron> getHiddenLayer() {
-		return hiddenLayer;
+	public void back_propagate(double[] pattern) {
+		double[] delta = new double[mlpSize];
+		// initial delta array
+		for (int i = 0; i < delta.length; i++) {
+			delta[i] = 0.0;
+		}
+		// injizierter Fehler
+		for (int i = startOutput(); i < endOutput(); i++) {
+			delta[i] = (-1) * (pattern[inputSize+(i-startOutput())] - activity[i])
+					* transferFunction.proceedDerivativeFunction(activity[i]);
+			// System.out.println(target+"-"+activity[i]+")*"+transferFunction.proceedDerivativeFunction(activity[i]));
+		}
+		// implizierter Fehler
+		for (int i = startHidden(); i < endHidden(); i++) {
+			for (int j = startOutput(); j < endOutput(); j++) {
+				delta[i] += weights[i][j] * delta[j];
+				// System.out.println("weight= "+ weight +"*"+ delta[j]);
+			}
+			delta[i] *= transferFunction.proceedDerivativeFunction(activity[i]);
+		}
+		// calculate Gradient
+		// Bias
+		for (int i = startHidden(); i < endOutput(); i++) {
+			deltaWeight[0][i] += (activity[0] * delta[i]);
+
+		}
+		// Input -> Hidden
+		for (int i = startInput(); i < endInput(); i++) {
+			for (int j = startHidden(); j < endHidden(); j++) {
+				deltaWeight[i][j] += (activity[i] * delta[j]);
+			}
+		}
+		// Hidden -> Output
+		for (int i = startHidden(); i < endHidden(); i++) {
+			for (int j = startOutput(); j < endOutput(); j++) {
+				deltaWeight[i][j] += (activity[i] * delta[j]);
+			}
+		}
+		// printArray("delta: ", delta);
+		// printMatrix(deltaWeight);
 	}
 
-	public ArrayList<OutputNeuron> getOutputLayer() {
-		return outputLayer;
+	public void update_weight(double learningRate, double momentum) {
+		double update = 0;
+		// printMatrix(weights);
+		// System.out.println("-------------------");
+		// printMatrix(deltaWeight);
+		for (int i = 0; i < mlpSize; i++) {
+			for (int j = 0; j < mlpSize; j++) {
+				if (deltaWeight[i][j] == 0) {
+					continue;
+				}
+				update = (-1 * deltaWeight[i][j] * learningRate)
+						+ (momentum * oldUpdate[i][j]);
+				oldUpdate[i][j] = update;
+				weights[i][j] += update;
+				deltaWeight[i][j] = 0.0;
+			}
+		}
 	}
 
-	public void xorSimulation(double learnStep_eta, double momentum_alpha,	int[][] pattern, double max_error, boolean batch_update) {
+	public void reset_delta() {
+		for (int i = 0; i < mlpSize; i++) {
+			for (int j = 0; j < mlpSize; j++) {
+				deltaWeight[i][j] = 0.0;
+			}
+		}
+	}
 
-		System.out.println("start xor sim");
+	public double[] getOutputActivation() {
+		double[] output = new double[outputSize];
+		for (int i = startOutput(); i < endOutput(); i++) {
+			output[i - startOutput()] = activity[i];
+		}
+		return output;
+	}
 
-		double error = 1.0;
-		for (int i = 1; max_error < error; i++) {
-			// System.out.println(i + ". SimStep Error=" + error+
-			// "--------------------------------");
-			error = learn(learnStep_eta, momentum_alpha, pattern, batch_update);
-			System.out.println(i + ". SimStep Error=" + error
-					+ "--------------------------------");
-			if (i == 1000) {
-				printMLP();
+	
+	
+	public void simulation(double eta, double alpha, double[][] pattern,
+			boolean batch_update, double max_error) {
+		System.out.println("----simulation----");
+		int max_iteration = 100000;
+		int iter = 1;
+		double error =0.0;
+		for (int i = 1; i <= max_iteration; i++) {
+
+			for (double[] p : pattern) {
+				propagate(p);
+				back_propagate(p);
+				
+
+				if (!batch_update) {
+					update_weight(eta, alpha);
+					reset_delta();
+				}
+			}
+			if (batch_update) {
+				update_weight(eta, alpha);
+				reset_delta();
+			}
+			
+			error = 0.0;
+			for (double[] p : pattern) {
+				error += calculateError(p);
+			}
+
+			if ((i % 100) == 0) {
+				System.out.println(i + ".Step error= " + error);
+			}
+
+			if (max_error > error) {
+				iter = i;
 				break;
 			}
 		}
+		System.out.println(iter + ".Step error= " + error);
 	}
+	
+	
+	public void simulation(double eta, double alpha, double[][] pattern, boolean batch_update, double max_error, double[][] expected) {
+		System.out.println("----simulation----");
+		int max_iteration = 100000;
+		int iter = 1;
+		
+		double error =0.0;
+		double best_exp_error = 100;
+		int best_error_iter = 0;
+		for (int i = 1; i <= max_iteration; i++) {
 
-	/**
-	 * Prints the MLP.
-	 */
-	public void printMLP() {
-		System.out.println("===========OUTPUT LAYER===========");
-		ListIterator<OutputNeuron> outputLayerIterator = outputLayer
-				.listIterator(0);
-		while (outputLayerIterator.hasNext()) {
-			OutputNeuron neuron = outputLayerIterator.next();
-			System.out.println(" Name: " + neuron.getName() + " Act: "
-					+ neuron.activation());
-			Iterator<Entry<Neuron, Double>> preIterator = neuron
-					.getPreNeurons().entrySet().iterator();
-			while (preIterator.hasNext()) {
-				Entry<Neuron, Double> entry = preIterator.next();
-				System.out.println("   Pre: " + entry.getKey().getName()
-						+ " Weight: " + entry.getValue() + " Act: "
-						+ entry.getKey().activation());
+			for (double[] p : pattern) {
+				propagate(p);
+				back_propagate(p);
+				
+
+				if (!batch_update) {
+					update_weight(eta, alpha);
+					reset_delta();
+				}
+			}
+			if (batch_update) {
+				update_weight(eta, alpha);
+				reset_delta();
+			}
+			
+			error = 0.0;
+			for (double[] p : pattern) {
+				error += calculateError(p);
+			}
+								
+			if ((i % 100) == 0) {
+				int calTestError =0;
+				for (double[] p : expected) {
+					calTestError+= calculateErrorForTestPattern(p);
+				}
+				System.out.println(i + ".Step error= " + error + " expected pattern error %=" + (calTestError*100/expected.length) );
+			}
+
+			if (max_error > error) {
+				iter = i;
+				break;
 			}
 		}
-		System.out.println("===========HIDDEN LAYER===========");
-		ListIterator<HiddenNeuron> hiddenLayerIterator = hiddenLayer
-				.listIterator(0);
-		while (hiddenLayerIterator.hasNext()) {
-			HiddenNeuron neuron = hiddenLayerIterator.next();
-			System.out.println(" Name: " + neuron.getName());
-			Iterator<Entry<Neuron, Double>> preIterator = neuron
-					.getPreNeurons().entrySet().iterator();
-			while (preIterator.hasNext()) {
-				Entry<Neuron, Double> entry = preIterator.next();
-				System.out.println("   Pre: " + entry.getKey().getName()
-						+ " Weight: " + entry.getValue() + " Act: "
-						+ entry.getKey().activation());
+		System.out.println(iter + ".Step error= " + error + " best available error i("+best_error_iter+"): "+best_exp_error);
+	}
+
+	public double calculateError(double[] pattern) {
+		double error = 0.0;
+		propagate(pattern);
+		for (int i = 0; i < outputSize; i++) {
+			error += Math.pow(
+					pattern[inputSize + i] - getOutputActivation()[i], 2);
+		}
+		return error;
+	}
+	
+	private int calculateErrorForTestPattern(double[] testPattern) {
+
+		propagate(testPattern);
+		
+		if(testPattern[inputSize] > testPattern[inputSize+1]){
+			if(getOutputActivation()[0] > getOutputActivation()[1]){
+				return 1;
+			}
+			else{
+				return 0;
 			}
 		}
-		System.out.println("===========INPUT LAYER===========");
-		ListIterator<InputNeuron> inputLayerIterator = inputLayer
-				.listIterator(0);
-		while (inputLayerIterator.hasNext()) {
-			InputNeuron neuron = inputLayerIterator.next();
-			System.out.println(" Name: " + neuron.getName());
-			System.out.println("   Value: " + neuron.getValue());
+		else{
+			if(getOutputActivation()[0] < getOutputActivation()[1]){
+				return 1;
+			}
+			else{
+				return 0;
+			}
+		}
+		
+		
+	}
+
+	private int startInput() {
+		return 1;
+	}
+
+	private int startHidden() {
+		return 1 + inputSize;
+	}
+
+	private int startOutput() {
+		return 1 + inputSize + hiddenSize;
+	}
+
+	private int endInput() {
+		return startHidden();
+	}
+
+	private int endHidden() {
+		return startOutput();
+	}
+
+	private int endOutput() {
+		return mlpSize;
+	}
+
+	public static void printArray(String preDesc, double[] array) {
+		System.out.print(preDesc);
+		DecimalFormat format = new DecimalFormat("0.000");
+		for (int i = 0; i < array.length; i++) {
+			Double v = array[i];
+			System.out.print((v >= 0 ? " " : "") + format.format(v) + " ||");
+		}
+		System.out.println();
+	}
+
+	public static void printMatrix(Double[][] matrix) {
+		DecimalFormat format = new DecimalFormat("0.000");
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix.length; j++) {
+				Double v = matrix[i][j];
+				System.out.print((v > 0 ? " " : "") + format.format(v) + " ||");
+			}
+			System.out.println();
 		}
 	}
 
-	public void reset() {
-		// for specialized classes
+	public void writeWeightsInCSV(String filename) {
+		try {
+
+			File file = new File(filename);
+			FileWriter fw = new FileWriter(file);
+			StringBuffer sb = new StringBuffer();
+
+			for (int i = 0; i < mlpSize; i++) {
+				for (int j = 0; j < mlpSize; j++) {
+					sb.append(weights[i][j] + ";");
+				}
+				sb.append("\n");
+			}
+
+			fw.write(sb.toString());
+
+			fw.flush();
+			fw.close();
+		} catch (Exception e) {
+
+		}
+	}
+	
+	public void readWeightsFromCSV(String filename) {
+		try {
+
+			FileReader file = new FileReader(filename);
+			BufferedReader data = new BufferedReader(file);
+			String line = "";
+
+			
+			int row = 0;
+			while ((line = data.readLine()) != null) {
+				String[] splitLine = line.split(";");
+				for (int col = 0; col < mlpSize; col++) {
+					weights[row][col] = Double.parseDouble(splitLine[col]);
+				}
+				row++;
+			}
+			
+			file.close();
+		} catch (Exception e) {
+
+		}
 	}
 
-	public void setPattern(int[][] pattern) {
-		this.pattern = pattern;
-	}
+	public static double[][] readPattern(String filename) {
+		ArrayList<ArrayList<Double>> patterns = new ArrayList<ArrayList<Double>>();
+		try {
+			FileReader file = new FileReader(filename);
+			BufferedReader data = new BufferedReader(file);
+			String line = "";
 
-	public int[][] getPattern() {
-		return pattern;
+			while ((line = data.readLine()) != null) {
+				String[] splitLine = line.split(" ");
+				ArrayList<Double> tmpPattern = new ArrayList<Double>();
+				double output1 = new Double(splitLine[0]);
+				double output2 = new Double(splitLine[1]);
+				for (int i = 3; i < splitLine.length; i++) {
+					if (splitLine[i].contains(";")) {
+						continue;
+					}
+					tmpPattern.add(new Double(splitLine[i]));
+				}
+				tmpPattern.add(output1);
+				tmpPattern.add(output2);
+
+				patterns.add(tmpPattern);
+			}
+
+			file.close();
+		} catch (Exception e) {
+			System.out.println("Datei nicht gefunden");
+		}
+
+		double[][] patternArray = new double[patterns.size()][patterns.get(0)
+				.size()];
+		for (int i = 0; i < patterns.size(); i++) {
+			for (int j = 0; j < patterns.get(i).size(); j++) {
+				patternArray[i][j] = patterns.get(i).get(j);
+			}
+		}
+		return patternArray;
 	}
 }

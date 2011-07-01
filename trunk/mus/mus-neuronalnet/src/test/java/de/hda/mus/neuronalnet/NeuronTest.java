@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.hda.mus.backup.MLP;
 import de.hda.mus.neuronalnet.neuron.HiddenNeuron;
 import de.hda.mus.neuronalnet.neuron.InputNeuron;
 import de.hda.mus.neuronalnet.neuron.AbstractNeuron;

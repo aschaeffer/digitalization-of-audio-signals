@@ -14,14 +14,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
-import de.hda.mus.neuronalnet.MLPnachVorlesung;
+import de.hda.mus.neuronalnet.MLP;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 
 public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private MLPnachVorlesung xorMLP;
+	private MLP xorMLP;
 	int[] size = { 2, 2, 1 };
 	double[][] pattern = { { 0, 0, 0 }, { 0, 1, 1 }, { 1, 0, 1 }, { 1, 1, 0 }};
 	double[] inputs = { 0, 0 };
@@ -59,7 +59,7 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 		weights[0][5] = -1.844412e-01;
 		weights[3][5] = -1.969224e-02;
 		weights[4][5] = -3.293430e-02;
-		xorMLP = new MLPnachVorlesung(size[0], size[1], size[2], weights, new SigmoidFunction());
+		xorMLP = new MLP(size[0], size[1], size[2], weights, new SigmoidFunction());
 		xorMLP.propagate(this.inputs);
 
 		main.setLayout(new BorderLayout());

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package de.hda.mus.neuronalnet;
+package de.hda.mus.backup;
 
 import java.io.BufferedReader;
 import java.io.File;
