@@ -143,7 +143,7 @@ public class MLPnachVTest {
 		double learnStep_eta = 0.01;
 		double momentum_alpha = 0.9;
 		boolean batch_update = true;
-		double max_error = 100;
+		double max_error = 1;
 		System.out.println("raw_train_MLPTest - patterns:"+pattern.length+" inputs:"+pattern[0].length);
 		trainMLP_raw.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
 		
