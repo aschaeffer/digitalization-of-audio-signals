@@ -1,6 +1,6 @@
 package de.hda.mus.neuronalnet.mlp;
 
-import de.hda.mus.neuronalnet.MLP;
+import de.hda.mus.backup.MLP;
 import de.hda.mus.neuronalnet.neuron.HiddenNeuron;
 import de.hda.mus.neuronalnet.neuron.InputNeuron;
 import de.hda.mus.neuronalnet.neuron.OutputNeuron;

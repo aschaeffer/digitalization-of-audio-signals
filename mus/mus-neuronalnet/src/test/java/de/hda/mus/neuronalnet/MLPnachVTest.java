@@ -1,15 +1,8 @@
 package de.hda.mus.neuronalnet;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.hda.mus.neuronalnet.neuron.HiddenNeuron;
-import de.hda.mus.neuronalnet.neuron.InputNeuron;
-import de.hda.mus.neuronalnet.neuron.AbstractNeuron;
-import de.hda.mus.neuronalnet.neuron.OutputNeuron;
 import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
 
 /*
@@ -36,12 +29,9 @@ import de.hda.mus.neuronalnet.transferfunction.SigmoidFunction;
  */
 public class MLPnachVTest {
 
-	private static MLPnachVorlesung xorMLP;
-	private static MLPnachVorlesung xorMLPFinish;
-	private static MLPnachVorlesung trainMLP_pca;
-	private static MLPnachVorlesung trainMLP_raw;
-	private static MLPnachVorlesung testMLP_pca;
-	private static MLPnachVorlesung testMLP_raw;
+	private static MLP xorMLP;
+	private static MLP trainMLP_pca;
+	private static MLP trainMLP_raw;
 
 	@BeforeClass
 	public static void init() {
@@ -54,33 +44,22 @@ public class MLPnachVTest {
 				weightsFinish[i][j] = 0.0;
 			}
 		}
-//		neuron3.putPreNeuron(bias, 1.166454e-02); // set threshold
-//		neuron3.putPreNeuron(neuron1, 8.514623e-02); // set weight
-//		neuron3.putPreNeuron(neuron2, -4.774473e-02); // set weight
+
 		weights[0][3] =  1.166454e-02;
 		weights[1][3] =  8.514623e-02;
 		weights[2][3] = -4.774473e-02;
-//		neuron4.putPreNeuron(bias, 2.170463e-01); // set threshold
-//		neuron4.putPreNeuron(neuron1, 2.152450e-01); // set weight
-//		neuron4.putPreNeuron(neuron2, 1.153351e-01); // set weight
+
 		weights[0][4] =  2.170463e-01;
 		weights[1][4] =  2.152450e-01;
 		weights[2][4] =  1.153351e-01;
-//		neuron5.putPreNeuron(bias, -1.844412e-01); // set threshold
-//		neuron5.putPreNeuron(neuron3, -1.969224e-02); // set weight
-//		neuron5.putPreNeuron(neuron4, -3.293430e-02); // set weight
+
 		weights[0][5] = -1.844412e-01;
 		weights[3][5] = -1.969224e-02;
 		weights[4][5] = -3.293430e-02;
-		xorMLP = new MLPnachVorlesung(2, 2, 1, weights, new SigmoidFunction());
-//		xorMLP.writeWeightsInCSV();
+		xorMLP = new MLP(2, 2, 1, weights, new SigmoidFunction());
 
-		xorMLPFinish = new MLPnachVorlesung(2, 2, 1, new SigmoidFunction());
-		
-		trainMLP_pca = new MLPnachVorlesung(90, 10, 2, new SigmoidFunction());
-		testMLP_pca  = new MLPnachVorlesung(90, 10, 2, new SigmoidFunction());
-		trainMLP_raw = new MLPnachVorlesung(906, 10, 2, new SigmoidFunction());
-		testMLP_raw  = new MLPnachVorlesung(906, 10, 2, new SigmoidFunction());
+		trainMLP_pca = new MLP(90, 10, 2, new SigmoidFunction());
+		trainMLP_raw = new MLP(906, 10, 2, new SigmoidFunction());
 	}
 
 	@Test
@@ -92,32 +71,32 @@ public class MLPnachVTest {
 		boolean batch_update = true;
 		double max_error = 0.01;
 		xorMLP.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
-//		String filename = "resources/weights.csv";
-//		xorMLP.writeWeightsInCSV(filename);
+		String filename = "resources/weights.csv";
+		xorMLP.writeWeightsInCSV(filename);
 	}
 		
-//	@Test
-//	public void xorMLPA3CSVoutputsTest() {
-//		for(int i1 = 0; i1 <= 10;i1++){
-//			for(int i2 = 0; i2 <= 10;i2++){
-//				double input1 = i1/10d;
-//				double input2 = i2/10d;
-//				double[] pattern = {input1,input2};
-//				xorMLP.propagate(pattern);
-//				
-//				System.out.println(input1+";"+input2+";"+xorMLP.getOutputActivation()[0]);
-//			}
-//		}
-//	}
+	@Test
+	public void xorMLPA3CSVoutputsTest() {
+		for(int i1 = 0; i1 <= 10;i1++){
+			for(int i2 = 0; i2 <= 10;i2++){
+				double input1 = i1/10d;
+				double input2 = i2/10d;
+				double[] pattern = {input1,input2};
+				xorMLP.propagate(pattern);
+				
+				System.out.println(input1+";"+input2+";"+xorMLP.getOutputActivation()[0]);
+			}
+		}
+	}
 
 	@Test
 	public void pca_train_MLPTest() {
 		String pca_train_filename = "resources/train_pca";
 		String pca_weights_filename = "resources/pca_weights.csv";
-		double[][] pattern = MLPnachVorlesung.readPattern(pca_train_filename);
+		double[][] pattern = MLP.readPattern(pca_train_filename);
 		
 		String pca_test_filename = "resources/test_pca";
-		double[][] expectedPattern = MLPnachVorlesung.readPattern(pca_test_filename);
+		double[][] expectedPattern = MLP.readPattern(pca_test_filename);
 		
 		double learnStep_eta = 0.01;
 		double momentum_alpha = 0.7;
@@ -133,10 +112,10 @@ public class MLPnachVTest {
 	public void raw_train_MLPTest() {
 		String raw_train_filename = "resources/train_raw";
 		String raw_weights_filename = "resources/raw_weights.csv";
-		double[][] pattern = MLPnachVorlesung.readPattern(raw_train_filename);
+		double[][] pattern = MLP.readPattern(raw_train_filename);
 		
 		String raw_test_filename = "resources/test_raw";
-		double[][] expectedPattern = MLPnachVorlesung.readPattern(raw_test_filename);
+		double[][] expectedPattern = MLP.readPattern(raw_test_filename);
 		
 		double learnStep_eta = 0.01;
 		double momentum_alpha = 0.7;

@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
-import de.hda.mus.neuronalnet.MLP;
+import de.hda.mus.backup.MLP;
 import de.hda.mus.neuronalnet.mlp.XorMLP;
 import de.hda.mus.neuronalnet.neuron.HiddenNeuron;
 import de.hda.mus.neuronalnet.neuron.InputNeuron;

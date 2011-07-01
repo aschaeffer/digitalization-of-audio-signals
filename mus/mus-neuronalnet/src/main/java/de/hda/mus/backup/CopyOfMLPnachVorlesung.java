@@ -1,4 +1,4 @@
-package de.hda.mus.neuronalnet;
+package de.hda.mus.backup;
 
 import de.hda.mus.neuronalnet.neuron.Neuron;
 
