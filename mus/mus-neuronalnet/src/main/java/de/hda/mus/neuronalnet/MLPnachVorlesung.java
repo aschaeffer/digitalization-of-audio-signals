@@ -250,7 +250,10 @@ public class MLPnachVorlesung {
 		System.out.println("----simulation----");
 		int max_iteration = 100000;
 		int iter = 1;
+		
 		double error =0.0;
+		double best_exp_error = 100;
+		int best_error_iter = 0;
 		for (int i = 1; i <= max_iteration; i++) {
 
 			for (double[] p : pattern) {
@@ -278,6 +281,11 @@ public class MLPnachVorlesung {
 				expectedPattern_error += calculateError(p);
 			}
 			
+			if(best_exp_error>expectedPattern_error){
+				best_exp_error  = expectedPattern_error;
+				best_error_iter = i;
+			}
+			
 			if ((i % 100) == 0) {
 				System.out.println(i + ".Step error= " + error + " expected pattern error %=" + (expectedPattern_error/expected.length)*100 );
 			}
@@ -287,7 +295,7 @@ public class MLPnachVorlesung {
 				break;
 			}
 		}
-		System.out.println(iter + ".Step error= " + error);
+		System.out.println(iter + ".Step error= " + error + " best available error on i("+best_error_iter+"): "+best_exp_error);
 	}
 
 	public double calculateError(double[] pattern) {
