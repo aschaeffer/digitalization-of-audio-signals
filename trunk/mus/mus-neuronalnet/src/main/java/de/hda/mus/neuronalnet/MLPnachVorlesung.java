@@ -24,10 +24,8 @@ public class MLPnachVorlesung {
 	private Double[][] oldUpdate;
 	public Double[] activity;
 	public Double[][] weights;
-	
-	private Random random;
 
-	
+	private Random random;
 
 	public MLPnachVorlesung(int inputSize, int hiddenSize, int outputSize,
 			Double[][] weights, TransferFunction transferFunction) {
@@ -37,7 +35,7 @@ public class MLPnachVorlesung {
 		mlpSize = 1 + inputSize + hiddenSize + outputSize;
 		this.transferFunction = transferFunction;
 		this.weights = weights;
-		
+
 		deltaWeight = new Double[mlpSize][mlpSize];
 		oldUpdate = new Double[mlpSize][mlpSize];
 		activity = new Double[mlpSize];
@@ -60,7 +58,7 @@ public class MLPnachVorlesung {
 		this.mlpSize = 1 + inputSize + hiddenSize + outputSize;
 		this.transferFunction = transferFunction;
 		this.weights = new Double[mlpSize][mlpSize];
-		
+
 		deltaWeight = new Double[mlpSize][mlpSize];
 		oldUpdate = new Double[mlpSize][mlpSize];
 		activity = new Double[mlpSize];
@@ -128,7 +126,7 @@ public class MLPnachVorlesung {
 		// printArray("Activity: ",activity);
 	}
 
-	public void back_propagate(double target) {
+	public void back_propagate(double[] pattern) {
 		double[] delta = new double[mlpSize];
 		// initial delta array
 		for (int i = 0; i < delta.length; i++) {
@@ -136,7 +134,7 @@ public class MLPnachVorlesung {
 		}
 		// injizierter Fehler
 		for (int i = startOutput(); i < endOutput(); i++) {
-			delta[i] = (-1) * (target - activity[i])
+			delta[i] = (-1) * (pattern[inputSize+(i-startOutput())] - activity[i])
 					* transferFunction.proceedDerivativeFunction(activity[i]);
 			// System.out.println(target+"-"+activity[i]+")*"+transferFunction.proceedDerivativeFunction(activity[i]));
 		}
@@ -147,7 +145,6 @@ public class MLPnachVorlesung {
 				// System.out.println("weight= "+ weight +"*"+ delta[j]);
 			}
 			delta[i] *= transferFunction.proceedDerivativeFunction(activity[i]);
-			
 		}
 		// calculate Gradient
 		// Bias
@@ -167,16 +164,15 @@ public class MLPnachVorlesung {
 				deltaWeight[i][j] += (activity[i] * delta[j]);
 			}
 		}
-		
-//		printArray("delta: ", delta);
-//		printMatrix(deltaWeight);
+		// printArray("delta: ", delta);
+		// printMatrix(deltaWeight);
 	}
 
 	public void update_weight(double learningRate, double momentum) {
 		double update = 0;
 		// printMatrix(weights);
 		// System.out.println("-------------------");
-//		printMatrix(deltaWeight);
+		// printMatrix(deltaWeight);
 		for (int i = 0; i < mlpSize; i++) {
 			for (int j = 0; j < mlpSize; j++) {
 				if (deltaWeight[i][j] == 0) {
@@ -211,14 +207,15 @@ public class MLPnachVorlesung {
 			boolean batch_update, double max_error) {
 		System.out.println("----simulation----");
 		int max_iteration = 100000;
+		int iter = 1;
+		double error =0.0;
 		for (int i = 1; i <= max_iteration; i++) {
 
 			for (double[] p : pattern) {
 				propagate(p);
-				for(int q = inputSize; q<p.length;q++){
-					back_propagate(p[q]);
-				}
+				back_propagate(p);
 				
+
 				if (!batch_update) {
 					update_weight(eta, alpha);
 					reset_delta();
@@ -228,23 +225,30 @@ public class MLPnachVorlesung {
 				update_weight(eta, alpha);
 				reset_delta();
 			}
-			double error = 0.0;
+			
+			error = 0.0;
 			for (double[] p : pattern) {
 				error += calculateError(p);
 			}
-			System.out.println(i + ".Step error= " + error);
+
+			if ((i % 100) == 0) {
+				System.out.println(i + ".Step error= " + error);
+			}
+
 			if (max_error > error) {
+				iter = i;
 				break;
 			}
 		}
-		printMatrix(weights);
+		System.out.println(iter + ".Step error= " + error);
 	}
 
 	public double calculateError(double[] pattern) {
 		double error = 0.0;
 		propagate(pattern);
 		for (int i = 0; i < outputSize; i++) {
-			error += Math.pow(pattern[inputSize+i] - getOutputActivation()[i], 2);
+			error += Math.pow(
+					pattern[inputSize + i] - getOutputActivation()[i], 2);
 		}
 		return error;
 	}
@@ -294,11 +298,10 @@ public class MLPnachVorlesung {
 		}
 	}
 
-	public void writeWeightsInCSV() {
+	public void writeWeightsInCSV(String filename) {
 		try {
-			// File file = new
-			// File("resources/weights"+System.currentTimeMillis()+".csv");
-			File file = new File("resources/weights.csv");
+
+			File file = new File(filename);
 			FileWriter fw = new FileWriter(file);
 			StringBuffer sb = new StringBuffer();
 
@@ -313,6 +316,29 @@ public class MLPnachVorlesung {
 
 			fw.flush();
 			fw.close();
+		} catch (Exception e) {
+
+		}
+	}
+	
+	public void readWeightsFromCSV(String filename) {
+		try {
+
+			FileReader file = new FileReader(filename);
+			BufferedReader data = new BufferedReader(file);
+			String line = "";
+
+			
+			int row = 0;
+			while ((line = data.readLine()) != null) {
+				String[] splitLine = line.split(";");
+				for (int col = 0; col < mlpSize; col++) {
+					weights[row][col] = Double.parseDouble(splitLine[col]);
+				}
+				row++;
+			}
+			
+			file.close();
 		} catch (Exception e) {
 
 		}
@@ -343,10 +369,8 @@ public class MLPnachVorlesung {
 			}
 
 			file.close();
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			System.out.println("Datei nicht gefunden");
-		} catch (IOException e) {
-			System.out.println("E/A-Fehler");
 		}
 
 		double[][] patternArray = new double[patterns.size()][patterns.get(0)

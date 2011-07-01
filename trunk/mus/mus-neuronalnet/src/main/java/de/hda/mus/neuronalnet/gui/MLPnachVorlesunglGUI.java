@@ -272,7 +272,7 @@ public class MLPnachVorlesunglGUI extends JFrame implements ActionListener {
 		iteration += 1.0;
 		for (double[] p : this.pattern) {
 			xorMLP.propagate(p);
-			xorMLP.back_propagate(p[2]);
+			xorMLP.back_propagate(p);
 		}
 		xorMLP.update_weight(learnStep_eta, momentum_alpha);
 		xorMLP.reset_delta();
