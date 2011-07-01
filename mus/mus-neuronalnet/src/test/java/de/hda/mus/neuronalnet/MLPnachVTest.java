@@ -110,21 +110,21 @@ public class MLPnachVTest {
 //		}
 //	}
 
-	@Test
-	public void pca_train_MLPTest() {
-		String pca_train_filename = "resources/train_pca";
-		String pca_weights_filename = "resources/pca_weights.csv";
-		double[][] pattern = MLPnachVorlesung.readPattern(pca_train_filename);
-		
-		double learnStep_eta = 0.01;
-		double momentum_alpha = 0.7;
-		boolean batch_update = true;
-		double max_error = 1;
-		System.out.println("pca_train_MLPTest - patterns:"+pattern.length+" inputs:"+pattern[0].length);
-		trainMLP_pca.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
-		
-		trainMLP_pca.writeWeightsInCSV(pca_weights_filename);
-	}
+//	@Test
+//	public void pca_train_MLPTest() {
+//		String pca_train_filename = "resources/train_pca";
+//		String pca_weights_filename = "resources/pca_weights.csv";
+//		double[][] pattern = MLPnachVorlesung.readPattern(pca_train_filename);
+//		
+//		double learnStep_eta = 0.01;
+//		double momentum_alpha = 0.7;
+//		boolean batch_update = true;
+//		double max_error = 4;
+//		System.out.println("pca_train_MLPTest - patterns:"+pattern.length+" inputs:"+pattern[0].length);
+//		trainMLP_pca.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+//		
+//		trainMLP_pca.writeWeightsInCSV(pca_weights_filename);
+//	}
 
 //	@Test
 //	public void pca_test_MLPTest() {
@@ -134,21 +134,21 @@ public class MLPnachVTest {
 //
 //	}
 	
-//	@Test
-//	public void raw_train_MLPTest() {
-//		String raw_train_filename = "resources/train_raw";
-//		String raw_weights_filename = "resources/raw_weights.csv";
-//		double[][] pattern = MLPnachVorlesung.readPattern(raw_train_filename);
-//		
-//		double learnStep_eta = 0.01;
-//		double momentum_alpha = 0.9;
-//		boolean batch_update = true;
-//		double max_error = 1;
-//		System.out.println("raw_train_MLPTest - patterns:"+pattern.length+" inputs:"+pattern[0].length);
-//		trainMLP_raw.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
-//		
-//		trainMLP_raw.writeWeightsInCSV(raw_weights_filename);
-//	}
+	@Test
+	public void raw_train_MLPTest() {
+		String raw_train_filename = "resources/train_raw";
+		String raw_weights_filename = "resources/raw_weights.csv";
+		double[][] pattern = MLPnachVorlesung.readPattern(raw_train_filename);
+		
+		double learnStep_eta = 0.01;
+		double momentum_alpha = 0.9;
+		boolean batch_update = true;
+		double max_error = 100;
+		System.out.println("raw_train_MLPTest - patterns:"+pattern.length+" inputs:"+pattern[0].length);
+		trainMLP_raw.simulation(learnStep_eta, momentum_alpha, pattern, batch_update, max_error);
+		
+		trainMLP_raw.writeWeightsInCSV(raw_weights_filename);
+	}
 	
 //	@Test
 //	public void raw_test_MLPTest() {
